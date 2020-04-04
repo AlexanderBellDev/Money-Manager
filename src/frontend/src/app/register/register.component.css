@@ -1,0 +1,22 @@
+mat-form-field{
+  width: 60%;
+}
+.reg-button-row button,
+.reg-button-row a {
+  margin-right: 8px;
+}
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  transition: all 0s 50000s;
+  -webkit-text-fill-color: white !important;
+}
+.board-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.board-container > * {
+  width: 100%;
+}
