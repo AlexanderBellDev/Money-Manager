@@ -3,10 +3,18 @@
     <a [routerLink]="['/']">Home</a>
   </li>
 
-  <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+  <li *ngIf="!loginService.isUserLoggedIn()" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
     <a [routerLink]="['/register']">Register</a>
 
-  <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+  <li *ngIf="!loginService.isUserLoggedIn()" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
     <a [routerLink]="['/login']">Login</a>
+  </li>
+
+  <li *ngIf="loginService.isUserLoggedIn()" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+    <a [routerLink]="['/dashboard']">User Dashboard</a>
+  </li>
+
+  <li *ngIf="loginService.isUserLoggedIn()" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+    <a [routerLink]="['/logout']">Logout</a>
   </li>
 </ul>
