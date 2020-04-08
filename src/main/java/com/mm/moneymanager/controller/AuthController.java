@@ -78,18 +78,7 @@ public class AuthController {
     }
 
 
-//    @PostMapping("/api/checklogin")
-//    @CrossOrigin("http://localhost:4200")
-//    public ResponseEntity<?> checkLogin(@RequestBody User user){
-//        boolean result = userService.checkLogin(user.getUsername(), user.getPassword());
-//
-//        if(!result){
-//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-//        }
-//        return new ResponseEntity<>(HttpStatus.OK);
-//    }
-
-    @PostMapping("/signin")
+    @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody User loginRequest) {
 
         Authentication authentication = authenticationManager.authenticate(

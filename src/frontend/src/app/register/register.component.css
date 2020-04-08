@@ -1,6 +1,3 @@
-mat-form-field{
-  width: 60%;
-}
 .reg-button-row button,
 .reg-button-row a {
   margin-right: 8px;
@@ -20,3 +17,18 @@ input:-webkit-autofill:active {
 .board-container > * {
   width: 100%;
 }
+
+
+mat-card {
+  max-width: 600px;
+  margin: 3em auto;
+  text-align: center;
+  border: 1px solid #000;
+  background: whitesmoke;
+}
+
+mat-form-field {
+  display: block;
+  margin-bottom: 4px;
+}
+

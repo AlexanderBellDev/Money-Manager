@@ -11,7 +11,7 @@ export class LoginService {
   constructor(private http: HttpClient) { }
 
   checkUser(user){
-    return this.http.post<JwtToken>(`${environment.API_URL}/api/auth/signin`,user)
+    return this.http.post<JwtToken>(`${environment.API_URL}/api/auth/login`,user)
   }
 
   logout() {

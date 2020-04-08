@@ -1,60 +1,50 @@
-<div class="container" style="text-align: center">
+<mat-card>
+  <mat-card-content>
+
   <div *ngIf="submitted"><h3>Thanks for signing up!</h3> <br> <br> <h4>Redirecting to login page</h4></div>
 
   <h2 *ngIf="!submitted">Registration Form</h2>
   <form *ngIf="!submitted" [formGroup]="regForm" style="align-content: center" >
 
-    <div class="form-group">
       <mat-form-field appearance="fill" color="accent">
         <mat-label>Username</mat-label>
-        <input required formControlName="username" type="text" matInput>
+        <input title="username" required formControlName="username" type="text" matInput>
         <mat-error *ngIf="f.username.errors && f.username.errors.required">Username is required</mat-error>
         <mat-error   *ngIf="regForm.get('username').errors?.usernameExists">Username already exists</mat-error>
       </mat-form-field>
-    </div>
 
-    <div class="form-group">
       <mat-form-field appearance="fill" color="accent">
         <mat-label>Email</mat-label>
-        <input required formControlName="email" type="email" matInput>
+        <input title="email" required formControlName="email" type="email" matInput>
         <mat-error *ngIf="f.email.errors && f.email.errors.required">Email is required</mat-error>
         <mat-error   *ngIf="regForm.get('email').errors?.emailExists">Email already exists</mat-error>
         <mat-error *ngIf="f.email.errors && f.email.errors.email">Email must be a valid email address</mat-error>
       </mat-form-field>
-    </div>
 
-
-    <div class="form-group">
       <mat-form-field appearance="fill" color="accent">
         <mat-label>First Name</mat-label>
-        <input formControlName="firstName" required matInput>
+        <input title="first name" formControlName="firstName" required matInput>
         <mat-error *ngIf="regForm.get('firstName').invalid">Field is required</mat-error>
       </mat-form-field>
-    </div>
 
-    <div class="form-group">
       <mat-form-field appearance="fill" color="accent">
         <mat-label>Last Name</mat-label>
-        <input formControlName="surname" required matInput>
+        <input title="surname" formControlName="surname" required matInput>
         <mat-error *ngIf="regForm.get('surname').invalid">Field is required</mat-error>
       </mat-form-field>
-    </div>
 
-    <div class="form-group">
+
       <mat-form-field  appearance="fill" color="accent">
         <mat-label>Password</mat-label>
-        <input required type="password" formControlName="password" matInput>
+        <input title="password" required type="password" formControlName="password" matInput>
         <mat-error *ngIf="regForm.get('password').invalid">Field is required</mat-error>
       </mat-form-field>
-    </div>
 
-    <div class="form-group">
-      <mat-form-field  appearance="fill" color="accent">
+      <mat-form-field appearance="fill" color="accent">
         <mat-label>Confirm Password</mat-label>
-        <input required type="password" formControlName="confirmPassword" matInput>
+        <input title="confirm password" required type="password" formControlName="confirmPassword" matInput>
         <mat-error *ngIf="regForm.controls['confirmPassword'].pristine || regForm.controls['confirmPassword'].errors?.MatchPassword">Password does not match</mat-error>
       </mat-form-field>
-    </div>
 
     <div class="reg-button-row">
       <button mat-raised-button color="primary" type="submit" [disabled]="!regForm.valid" (click)="onSubmit()">Register</button>
@@ -64,4 +54,5 @@
     <br>
 
   </form>
-</div>
+  </mat-card-content>
+</mat-card>

@@ -32,7 +32,6 @@ public class UserServiceImpl implements UserService {
     }
 
     public List<String> checkUsernameExists(String username) {
-        System.out.println(userRepository.findAllByUsername(username));
         if (userRepository.findAllByUsername(username).isEmpty()) {
             return Collections.emptyList();
         } else {
