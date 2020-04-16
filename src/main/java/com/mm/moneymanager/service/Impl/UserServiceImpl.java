@@ -4,21 +4,18 @@ package com.mm.moneymanager.service.Impl;
 import com.mm.moneymanager.service.UserService;
 import com.mm.moneymanager.model.User;
 import com.mm.moneymanager.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-    private UserRepository userRepository;
-
-    public UserServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    private final UserRepository userRepository;
 
     public boolean saveUser(User user) {
-
         userRepository.save(user);
         return true;
     }
