@@ -15,9 +15,8 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
-    public boolean saveUser(User user) {
-        userRepository.save(user);
-        return true;
+    public User saveUser(User user) {
+       return userRepository.save(user);
     }
 
     public List<String> checkEmailExists(String email) {
@@ -36,8 +35,5 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    public boolean checkLogin(String username, String password) {
-        return userRepository.findByUsernameAndPassword(username, password) != null;
-    }
 }
 
