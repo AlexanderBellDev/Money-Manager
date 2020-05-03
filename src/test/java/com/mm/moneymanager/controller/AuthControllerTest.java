@@ -2,7 +2,8 @@ package com.mm.moneymanager.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mm.moneymanager.model.User;
+import com.mm.moneymanager.model.user.User;
+import com.mm.moneymanager.model.user.UserLogin;
 import com.mm.moneymanager.payload.JwtAuthenticationResponse;
 import com.mm.moneymanager.repository.RoleRepository;
 import com.mm.moneymanager.repository.UserRepository;
@@ -51,7 +52,7 @@ class AuthControllerTest {
 
     User user;
 
-    User loginUser;
+    UserLogin loginUser;
 
     String jsonContentLoginUser;
     String jsonContentUser;
@@ -69,14 +70,11 @@ class AuthControllerTest {
                 .username("alex1234")
                 .build();
 
-        loginUser = User.builder()
-                .username("alex1234")
-                .password("password")
-                .build();
-
         mapper = new ObjectMapper();
 
-        jsonContentLoginUser = mapper.writeValueAsString(loginUser);
+        loginUser = UserLogin.builder()
+                .username("alex")
+                .build();
 
         jsonContentUser = mapper.writeValueAsString(user);
     }
@@ -192,6 +190,8 @@ class AuthControllerTest {
     @Test
     void testAuthenticateUserGoodCredentials() throws Exception {
         //given
+        loginUser.setPassword("password");
+        jsonContentLoginUser = mapper.writeValueAsString(loginUser);
         ResponseEntity<JwtAuthenticationResponse> ok = ResponseEntity.ok(new JwtAuthenticationResponse("12345"));
         doReturn(ok).when(userService).login(loginUser);
 
@@ -207,17 +207,14 @@ class AuthControllerTest {
 
     @Test
     void testAuthenticateUserBadCredentials() throws Exception {
-        //given
-        ResponseEntity<String> unauthorized = new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
-        doReturn(unauthorized).when(userService).login(loginUser);
-
+        jsonContentLoginUser = mapper.writeValueAsString(loginUser);
         //when
         mvc.perform(post("/api/auth/login")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonContentLoginUser))
                 //then
-                .andExpect(status().isUnauthorized())
+                .andExpect(status().isBadRequest())
                 .andReturn();
     }
 }

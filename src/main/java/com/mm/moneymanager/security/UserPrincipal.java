@@ -1,7 +1,7 @@
 package com.mm.moneymanager.security;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.mm.moneymanager.model.User;
+import com.mm.moneymanager.model.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

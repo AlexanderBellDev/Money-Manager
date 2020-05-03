@@ -1,5 +1,6 @@
-package com.mm.moneymanager.model;
+package com.mm.moneymanager.model.user;
 
+import com.mm.moneymanager.model.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

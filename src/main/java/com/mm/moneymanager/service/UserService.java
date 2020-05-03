@@ -1,7 +1,8 @@
 package com.mm.moneymanager.service;
 
 
-import com.mm.moneymanager.model.User;
+import com.mm.moneymanager.model.user.User;
+import com.mm.moneymanager.model.user.UserLogin;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -14,5 +15,5 @@ public interface UserService {
 
     User registerUser(User user);
 
-    ResponseEntity<?> login(User user);
+    ResponseEntity<?> login(UserLogin user);
 }

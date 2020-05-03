@@ -4,11 +4,12 @@ package com.mm.moneymanager.service.Impl;
 import com.mm.moneymanager.exception.AppException;
 import com.mm.moneymanager.model.Role;
 import com.mm.moneymanager.model.RoleName;
+import com.mm.moneymanager.model.user.UserLogin;
 import com.mm.moneymanager.payload.JwtAuthenticationResponse;
 import com.mm.moneymanager.repository.RoleRepository;
 import com.mm.moneymanager.security.JwtTokenProvider;
 import com.mm.moneymanager.service.UserService;
-import com.mm.moneymanager.model.User;
+import com.mm.moneymanager.model.user.User;
 import com.mm.moneymanager.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -68,7 +69,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<?> login(User loginRequest) {
+    public ResponseEntity<?> login(UserLogin loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequest.getUsername(),

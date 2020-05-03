@@ -1,31 +1,16 @@
 package com.mm.moneymanager.controller;
 
-import com.mm.moneymanager.exception.AppException;
+import com.mm.moneymanager.model.user.UserLogin;
 import com.mm.moneymanager.payload.ApiResponse;
-import com.mm.moneymanager.payload.JwtAuthenticationResponse;
-import com.mm.moneymanager.security.CurrentUser;
-import com.mm.moneymanager.security.UserPrincipal;
 import com.mm.moneymanager.service.UserService;
-import com.mm.moneymanager.model.Role;
-import com.mm.moneymanager.model.RoleName;
-import com.mm.moneymanager.model.User;
-import com.mm.moneymanager.repository.RoleRepository;
-import com.mm.moneymanager.repository.UserRepository;
-import com.mm.moneymanager.security.JwtTokenProvider;
+import com.mm.moneymanager.model.user.User;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
-import java.util.Collections;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -66,7 +51,7 @@ public class AuthController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody User loginRequest) {
+    public ResponseEntity<?> authenticateUser(@Valid @RequestBody UserLogin loginRequest) {
         return userService.login(loginRequest);
     }
 
