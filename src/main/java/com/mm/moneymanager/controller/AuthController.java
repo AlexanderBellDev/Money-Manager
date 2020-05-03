@@ -3,6 +3,8 @@ package com.mm.moneymanager.controller;
 import com.mm.moneymanager.exception.AppException;
 import com.mm.moneymanager.payload.ApiResponse;
 import com.mm.moneymanager.payload.JwtAuthenticationResponse;
+import com.mm.moneymanager.security.CurrentUser;
+import com.mm.moneymanager.security.UserPrincipal;
 import com.mm.moneymanager.service.UserService;
 import com.mm.moneymanager.model.Role;
 import com.mm.moneymanager.model.RoleName;
@@ -31,48 +33,33 @@ import java.util.Collections;
 @RequiredArgsConstructor
 public class AuthController {
     private final UserService userService;
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final RoleRepository roleRepository;
-    private final AuthenticationManager authenticationManager;
-    private final JwtTokenProvider tokenProvider;
 
     @GetMapping("/checkemail/{email}")
-    public ResponseEntity<?> checkEmailExists(@PathVariable String email){
+    public ResponseEntity<?> checkEmailExists(@PathVariable String email) {
         return new ResponseEntity<>(userService.checkEmailExists(email), HttpStatus.OK);
     }
 
     @GetMapping("/checkusername/{username}")
-    public ResponseEntity<?> checkUsernameExists(@PathVariable String username){
+    public ResponseEntity<?> checkUsernameExists(@PathVariable String username) {
         return new ResponseEntity<>(userService.checkUsernameExists(username), HttpStatus.OK);
     }
 
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@Valid @RequestBody User user) {
-        if (userRepository.existsByUsername(user.getUsername())) {
-            return new ResponseEntity<>(new ApiResponse(false, "Username is already taken!"),
-                    HttpStatus.BAD_REQUEST);
+
+        if(!userService.checkEmailExists(user.getEmail()).isEmpty()){
+            return ResponseEntity.badRequest().body(new ApiResponse(false, "Email is already taken"));
         }
 
-        if (userRepository.existsByEmail(user.getEmail())) {
-            return new ResponseEntity<>(new ApiResponse(false, "Email Address already in use!"),
-                    HttpStatus.BAD_REQUEST);
+        if(!userService.checkUsernameExists(user.getUsername()).isEmpty()){
+            return ResponseEntity.badRequest().body(new ApiResponse(false, "Username is already taken"));
         }
 
-
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-
-        Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
-                .orElseThrow(() -> new AppException("User Role not set."));
-
-        user.setRoles(Collections.singleton(userRole));
-
-        User result = userRepository.save(user);
-
+        userService.registerUser(user);
 
         URI location = ServletUriComponentsBuilder
                 .fromPath("/api/users/{username}")
-                .buildAndExpand(result.getUsername()).toUri();
+                .buildAndExpand(user.getUsername()).toUri();
 
         return ResponseEntity.created(location).body(new ApiResponse(true, "User registered successfully"));
     }
@@ -80,18 +67,16 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody User loginRequest) {
-
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        loginRequest.getUsername(),
-                        loginRequest.getPassword()
-                )
-        );
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        String jwt = tokenProvider.generateToken(authentication);
-        return ResponseEntity.ok(new JwtAuthenticationResponse(jwt));
+        return userService.login(loginRequest);
     }
+
+
+
+
+//    @GetMapping("/{pollId}")
+//    public PollResponse getPollById(@CurrentUser UserPrincipal currentUser,
+//                                    @PathVariable Long pollId) {
+//        return pollService.getPollById(pollId, currentUser);
+//    }
 
 }

@@ -119,4 +119,15 @@ class UserServiceTest {
         assertTrue(returnedUsernameList.isEmpty());
         then(userRepository).should(times(1)).findAllByUsername(any(String.class));
     }
+
+    @Test
+    void registerUserTest() {
+
+    }
+
+    @Test
+    void loginTest() {
+    }
+
+
 }
