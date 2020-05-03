@@ -36,12 +36,12 @@ public class AuthController {
 
     @GetMapping("/checkemail/{email}")
     public ResponseEntity<?> checkEmailExists(@PathVariable String email) {
-        return new ResponseEntity<>(userService.checkEmailExists(email), HttpStatus.OK);
+        return ResponseEntity.ok().body(userService.checkEmailExists(email));
     }
 
     @GetMapping("/checkusername/{username}")
     public ResponseEntity<?> checkUsernameExists(@PathVariable String username) {
-        return new ResponseEntity<>(userService.checkUsernameExists(username), HttpStatus.OK);
+        return ResponseEntity.ok().body(userService.checkUsernameExists(username));
     }
 
     @PostMapping("/register")
