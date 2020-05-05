@@ -18,6 +18,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -27,6 +28,7 @@ import java.util.Collections;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -192,8 +194,7 @@ class AuthControllerTest {
         //given
         loginUser.setPassword("password");
         jsonContentLoginUser = mapper.writeValueAsString(loginUser);
-        ResponseEntity<JwtAuthenticationResponse> ok = ResponseEntity.ok(new JwtAuthenticationResponse("12345"));
-        doReturn(ok).when(userService).login(loginUser);
+        doReturn("12345").when(userService).login(loginUser);
 
         //when
         mvc.perform(post("/api/auth/login")
@@ -206,7 +207,7 @@ class AuthControllerTest {
     }
 
     @Test
-    void testAuthenticateUserBadCredentials() throws Exception {
+    void testAuthenticateUserInvalidCredentials() throws Exception {
         jsonContentLoginUser = mapper.writeValueAsString(loginUser);
         //when
         mvc.perform(post("/api/auth/login")
@@ -215,6 +216,24 @@ class AuthControllerTest {
                 .content(jsonContentLoginUser))
                 //then
                 .andExpect(status().isBadRequest())
+                .andReturn();
+    }
+
+    @Test
+    void testAuthenticateUserBadCredentials() throws Exception {
+        //given
+        loginUser.setPassword("password");
+        jsonContentLoginUser = mapper.writeValueAsString(loginUser);
+
+
+        //when
+        doThrow(BadCredentialsException.class).when(userService).login(loginUser);
+        mvc.perform(post("/api/auth/login")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonContentLoginUser))
+                //then
+                .andExpect(status().isUnauthorized())
                 .andReturn();
     }
 }

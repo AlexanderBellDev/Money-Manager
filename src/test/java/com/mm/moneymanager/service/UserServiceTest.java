@@ -3,7 +3,10 @@ package com.mm.moneymanager.service;
 import com.mm.moneymanager.model.Role;
 import com.mm.moneymanager.model.RoleName;
 import com.mm.moneymanager.model.user.User;
+import com.mm.moneymanager.model.user.UserLogin;
+import com.mm.moneymanager.repository.RoleRepository;
 import com.mm.moneymanager.repository.UserRepository;
+import com.mm.moneymanager.security.JwtTokenProvider;
 import com.mm.moneymanager.service.Impl.UserServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,11 +14,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -32,6 +38,21 @@ class UserServiceTest {
 
     @Mock
     UserRepository userRepository;
+
+    @Mock
+    AuthenticationManager authenticationManager;
+
+    @Mock
+    RoleRepository roleRepository;
+
+    @Mock
+    Authentication authentication;
+
+    @Mock
+    PasswordEncoder passwordEncoder;
+
+    @Mock
+    JwtTokenProvider jwtTokenProvider;
 
     Set<Role> roleSet;
 
@@ -87,7 +108,7 @@ class UserServiceTest {
 
         //then
         assertFalse(returnedEmailList.isEmpty());
-        assertEquals("exists",returnedEmailList.get(0));
+        assertEquals("exists", returnedEmailList.get(0));
         then(userRepository).should(times(1)).findAllByEmail(any(String.class));
 
     }
@@ -102,7 +123,7 @@ class UserServiceTest {
 
         //then
         assertFalse(returnedUsernameList.isEmpty());
-        assertEquals("exists",returnedUsernameList.get(0));
+        assertEquals("exists", returnedUsernameList.get(0));
         then(userRepository).should(times(1)).findAllByUsername(any(String.class));
     }
 
@@ -121,11 +142,60 @@ class UserServiceTest {
 
     @Test
     void registerUserTest() {
+        User userNew = User.builder()
+                .email("alex@alex.com")
+                .firstName("alex")
+                .surname("test")
+                .password("password")
+                .username("test1234")
+                .build();
+
+        given(passwordEncoder.encode(userNew.getPassword())).willReturn("ABCD");
+
+        Role userRole = new Role(2L, RoleName.ROLE_USER);
+
+        given(roleRepository.findByName(RoleName.ROLE_USER)).willReturn(Optional.of(userRole));
+
+        given(userRepository.save(userNew)).willReturn(user);
+
+        User userResult = userService.registerUser(userNew);
+
+        assertNotNull(userResult);
+
+        assertEquals("alex@alex.com", userResult.getEmail());
+
+        then(userRepository).should(times(1)).save(userNew);
 
     }
 
     @Test
     void loginTest() {
+            UserLogin loginRequest = UserLogin.builder()
+                .username("alex")
+                .password("password")
+                .build();
+
+        //given
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
+                loginRequest.getUsername(),
+                loginRequest.getPassword()
+        );
+
+        given(authenticationManager.authenticate(usernamePasswordAuthenticationToken)).willReturn(authentication);
+
+
+        SecurityContextHolder.getContext().setAuthentication(authenticationManager.authenticate(usernamePasswordAuthenticationToken));
+
+        given(jwtTokenProvider.generateToken(authentication)).willReturn("12345");
+
+
+        String returnedToken = userService.login(loginRequest);
+
+
+      assertEquals("12345",returnedToken);
+
+        then(authenticationManager).should(times(2)).authenticate(any());
+        then(jwtTokenProvider).should(times(1)).generateToken(authentication);
     }
 
 

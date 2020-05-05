@@ -2,6 +2,7 @@ package com.mm.moneymanager.controller;
 
 import com.mm.moneymanager.model.user.UserLogin;
 import com.mm.moneymanager.payload.ApiResponse;
+import com.mm.moneymanager.payload.JwtAuthenticationResponse;
 import com.mm.moneymanager.service.UserService;
 import com.mm.moneymanager.model.user.User;
 import lombok.RequiredArgsConstructor;
@@ -52,7 +53,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody UserLogin loginRequest) {
-        return userService.login(loginRequest);
+            return ResponseEntity.ok(new JwtAuthenticationResponse(userService.login(loginRequest)));
     }
 
 

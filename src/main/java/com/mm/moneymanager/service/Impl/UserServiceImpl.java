@@ -35,7 +35,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     public User saveUser(User user) {
-       return userRepository.save(user);
+        return userRepository.save(user);
     }
 
     public List<String> checkEmailExists(String email) {
@@ -69,7 +69,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<?> login(UserLogin loginRequest) {
+    public String login(UserLogin loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequest.getUsername(),
@@ -79,8 +79,8 @@ public class UserServiceImpl implements UserService {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        String jwt = tokenProvider.generateToken(authentication);
-        return ResponseEntity.ok(new JwtAuthenticationResponse(jwt));
+        return tokenProvider.generateToken(authentication);
+
     }
 
 }
