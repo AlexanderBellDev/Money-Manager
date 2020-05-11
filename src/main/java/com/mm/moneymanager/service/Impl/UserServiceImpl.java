@@ -33,11 +33,8 @@ public class UserServiceImpl implements UserService {
     private final JwtTokenProvider tokenProvider;
     private final RoleRepository roleRepository;
 
-    @Transactional
-    public User saveUser(User user) {
-        return userRepository.save(user);
-    }
 
+    @Transactional(readOnly = true)
     public List<String> checkEmailExists(String email) {
         if (userRepository.findAllByEmail(email).isEmpty()) {
             return Collections.emptyList();
@@ -46,6 +43,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Transactional(readOnly = true)
     public List<String> checkUsernameExists(String username) {
         if (userRepository.findAllByUsername(username).isEmpty()) {
             return Collections.emptyList();

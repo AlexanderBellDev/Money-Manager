@@ -67,24 +67,6 @@ class UserServiceTest {
     }
 
     @Test
-    void testSaveUser() {
-        //given
-        given(userRepository.save(any(User.class))).willReturn(user);
-
-
-        //when
-        User returnedUser = userService.saveUser(user);
-
-
-        //then
-        then(userRepository).should(times(1)).save(user);
-        assertNotNull(returnedUser);
-        assertEquals(1L, returnedUser.getId());
-        assertEquals("alex1234", returnedUser.getUsername());
-
-    }
-
-    @Test
     void testCheckEmailExistsNoMatch() {
         //given
         given(userRepository.findAllByEmail("alex@alex.com")).willReturn(Collections.emptyList());

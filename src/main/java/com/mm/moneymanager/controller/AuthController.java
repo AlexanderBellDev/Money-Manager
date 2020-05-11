@@ -1,10 +1,10 @@
 package com.mm.moneymanager.controller;
 
+import com.mm.moneymanager.model.user.User;
 import com.mm.moneymanager.model.user.UserLogin;
 import com.mm.moneymanager.payload.ApiResponse;
 import com.mm.moneymanager.payload.JwtAuthenticationResponse;
 import com.mm.moneymanager.service.UserService;
-import com.mm.moneymanager.model.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,11 +33,11 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@Valid @RequestBody User user) {
 
-        if(!userService.checkEmailExists(user.getEmail()).isEmpty()){
+        if (!userService.checkEmailExists(user.getEmail()).isEmpty()) {
             return ResponseEntity.badRequest().body(new ApiResponse(false, "Email is already taken"));
         }
 
-        if(!userService.checkUsernameExists(user.getUsername()).isEmpty()){
+        if (!userService.checkUsernameExists(user.getUsername()).isEmpty()) {
             return ResponseEntity.badRequest().body(new ApiResponse(false, "Username is already taken"));
         }
 
@@ -53,10 +53,8 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody UserLogin loginRequest) {
-            return ResponseEntity.ok(new JwtAuthenticationResponse(userService.login(loginRequest)));
+        return ResponseEntity.ok(new JwtAuthenticationResponse(userService.login(loginRequest)));
     }
-
-
 
 
 //    @GetMapping("/{pollId}")

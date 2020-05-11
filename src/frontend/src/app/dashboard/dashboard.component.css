@@ -1,0 +1,15 @@
+table {
+
+}
+
+table.center {
+  width: 70%;
+  margin-left:auto;
+  margin-right:auto;
+
+  text-align: center;
+}
+
+.mat-divider {
+  border-top-color: red;
+}

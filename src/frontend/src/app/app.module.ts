@@ -16,6 +16,7 @@ import {HttpClientModule} from "@angular/common/http";
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LogoutComponent } from './logout/logout.component';
 import {MatCardModule} from "@angular/material/card";
+import {MatTableModule} from "@angular/material/table";
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import {MatCardModule} from "@angular/material/card";
         MatInputModule,
         ReactiveFormsModule,
         HttpClientModule,
-        MatCardModule
+        MatCardModule,
+        MatTableModule,
     ],
   providers: [],
   bootstrap: [AppComponent]
