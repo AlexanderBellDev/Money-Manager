@@ -1,6 +1,6 @@
 package com.mm.moneymanager.repository;
 
-import com.mm.moneymanager.model.User;
+import com.mm.moneymanager.model.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

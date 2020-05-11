@@ -1,14 +1,18 @@
 package com.mm.moneymanager.service;
 
 
-import com.mm.moneymanager.model.User;
+import com.mm.moneymanager.model.user.User;
+import com.mm.moneymanager.model.user.UserLogin;
 
 import java.util.List;
 
 public interface UserService {
-    boolean saveUser(User user);
+    User saveUser(User user);
 
     List<String> checkEmailExists(String email);
     List<String> checkUsernameExists(String username);
-    boolean checkLogin(String username, String password);
+
+    User registerUser(User user);
+
+    String login(UserLogin user);
 }

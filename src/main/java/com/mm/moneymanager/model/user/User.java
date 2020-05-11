@@ -1,6 +1,8 @@
-package com.mm.moneymanager.model;
+package com.mm.moneymanager.model.user;
 
-import lombok.Data;
+import com.mm.moneymanager.model.Audit.DateAudit;
+import com.mm.moneymanager.model.Role;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -8,7 +10,10 @@ import java.util.Set;
 
 @Data
 @Entity
-public class User {
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class User extends DateAudit {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -21,6 +26,6 @@ public class User {
 
 
     @ManyToMany
-    private Set<Role> roles = new HashSet<>();
+    private Set<Role> roles;
 
 }
