@@ -1,1 +1,1 @@
-![Java CI with Gradle](https://github.com/AlexanderBellDev/Money-Manager/workflows/Java%20CI%20with%20Gradle/badge.svg?branch=master&event=pull_request)
+![Java CI with Gradle](https://github.com/AlexanderBellDev/Money-Manager/workflows/Java%20CI%20with%20Gradle/badge.svg?branch=master)
