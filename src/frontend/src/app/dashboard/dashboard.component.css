@@ -1,15 +1,11 @@
 table {
-
-}
-
-table.center {
   width: 70%;
-  margin-left:auto;
-  margin-right:auto;
-
-  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  /*border-collapse: collapse;*/
+  /*border: 1px solid black;*/
 }
 
-.mat-divider {
-  border-top-color: red;
+tr.mat-footer-row {
+  font-weight: bold;
 }

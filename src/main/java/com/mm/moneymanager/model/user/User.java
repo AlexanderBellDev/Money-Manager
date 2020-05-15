@@ -2,12 +2,13 @@ package com.mm.moneymanager.model.user;
 
 import com.mm.moneymanager.model.Audit.DateAudit;
 import com.mm.moneymanager.model.Role;
+import com.mm.moneymanager.model.debt.Debt;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.HashSet;
 import java.util.Set;
 
+@EqualsAndHashCode(callSuper = false)
 @Data
 @Entity
 @AllArgsConstructor
@@ -27,5 +28,9 @@ public class User extends DateAudit {
 
     @ManyToMany
     private Set<Role> roles;
+
+
+    @OneToMany(mappedBy = "user")
+    private Set<Debt> debts;
 
 }

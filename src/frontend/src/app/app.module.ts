@@ -12,11 +12,12 @@ import {MatButtonModule} from "@angular/material/button";
 import {FooterComponent} from './footer/footer.component';
 import {MatInputModule} from "@angular/material/input";
 import {ReactiveFormsModule} from "@angular/forms";
-import {HttpClientModule} from "@angular/common/http";
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { LogoutComponent } from './logout/logout.component';
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
+import {DashboardComponent} from './dashboard/dashboard.component';
+import {LogoutComponent} from './logout/logout.component';
 import {MatCardModule} from "@angular/material/card";
 import {MatTableModule} from "@angular/material/table";
+import {AuthInterceptorService} from "./service/auth-interceptor.service";
 
 @NgModule({
   declarations: [
@@ -27,20 +28,25 @@ import {MatTableModule} from "@angular/material/table";
     RegisterComponent,
     FooterComponent,
     DashboardComponent,
-    LogoutComponent
+    LogoutComponent,
+
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        BrowserAnimationsModule,
-        MatButtonModule,
-        MatInputModule,
-        ReactiveFormsModule,
-        HttpClientModule,
-        MatCardModule,
-        MatTableModule,
-    ],
-  providers: [],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    MatButtonModule,
+    MatInputModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    MatCardModule,
+    HttpClientModule,
+    MatTableModule
+  ],
+  providers: [
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true}
+  ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

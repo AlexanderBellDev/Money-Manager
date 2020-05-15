@@ -1,32 +1,34 @@
-<div style="text-align: center"><h2>User dashboard</h2>
+<!--suppress ALL -->
+<div style="text-align: center; padding-top: 2%"><h2>User dashboard</h2>
 </div>
-
 
 
 <div style="margin-left: 2%">
-  <p>Currently you are tracking <strong>{{debts.length}}</strong> debt</p>
+  <p *ngIf="debts.length>1">Currently you are tracking <strong>{{debts.length}}</strong> debts</p>
+  <p *ngIf="debts.length==1">Currently you are tracking <strong>{{debts.length}}</strong> debt</p>
 </div>
 
+<br>
 
-
-<div  >
-  <table mat-table class="center" [dataSource]="debts">
-
-    <!-- Position Column -->
-    <ng-container matColumnDef="description" >
-      <th style="text-align: center" mat-header-cell *matHeaderCellDef> Description </th>
-      <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+<div>
+  <table [dataSource]="debts" class="mat-elevation-z3" mat-table>
+    <!-- Item Column -->
+    <ng-container matColumnDef="company">
+      <th *matHeaderCellDef mat-header-cell> Company</th>
+      <td *matCellDef="let debt" mat-cell> {{debt.company}} </td>
+      <td *matFooterCellDef mat-footer-cell> Total</td>
     </ng-container>
 
-    <!-- Name Column -->
+    <!-- Cost Column -->
     <ng-container matColumnDef="amount">
-      <th style="text-align: center" mat-header-cell *matHeaderCellDef> Name </th>
-      <td mat-cell *matCellDef="let element"> {{element.amount}} </td>
+      <th *matHeaderCellDef mat-header-cell> Amount</th>
+      <td *matCellDef="let debt" mat-cell> {{debt.amount}} </td>
+      <td *matFooterCellDef mat-footer-cell> {{getTotalCost()}} </td>
     </ng-container>
-
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    <tr *matFooterRowDef="displayedColumns" mat-footer-row></tr>
   </table>
 
 </div>

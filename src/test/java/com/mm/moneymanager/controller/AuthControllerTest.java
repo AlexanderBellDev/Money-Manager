@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mm.moneymanager.model.user.User;
 import com.mm.moneymanager.model.user.UserLogin;
-import com.mm.moneymanager.payload.JwtAuthenticationResponse;
 import com.mm.moneymanager.repository.RoleRepository;
 import com.mm.moneymanager.repository.UserRepository;
 import com.mm.moneymanager.service.UserService;
@@ -15,9 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -87,7 +84,7 @@ class AuthControllerTest {
         given(userService.checkEmailExists("alex@alex.com")).willReturn(Collections.singletonList("exists"));
 
         //when
-        mvc.perform(get("/api/auth/checkemail/alex@alex.com")
+        mvc.perform(get("/api/v1/auth/checkemail/alex@alex.com")
                 .accept(MediaType.APPLICATION_JSON))
                 //then
                 .andExpect(status().isOk())
@@ -101,7 +98,7 @@ class AuthControllerTest {
         given(userService.checkEmailExists("alex@alex.com")).willReturn(Collections.emptyList());
 
         //when
-        mvc.perform(get("/api/auth/checkemail/alex@alex.com")
+        mvc.perform(get("/api/v1/auth/checkemail/alex@alex.com")
                 .accept(MediaType.APPLICATION_JSON))
                 //then
                 .andExpect(status().isOk())
@@ -115,7 +112,7 @@ class AuthControllerTest {
         given(userService.checkUsernameExists("alex")).willReturn(Collections.emptyList());
 
         //when
-        mvc.perform(get("/api/auth/checkusername/alex")
+        mvc.perform(get("/api/v1/auth/checkusername/alex")
                 .accept(MediaType.APPLICATION_JSON))
                 //then
                 .andExpect(status().isOk())
@@ -129,7 +126,7 @@ class AuthControllerTest {
         given(userService.checkUsernameExists("alex")).willReturn(Collections.singletonList("exists"));
 
         //when
-        mvc.perform(get("/api/auth/checkusername/alex")
+        mvc.perform(get("/api/v1/auth/checkusername/alex")
                 .accept(MediaType.APPLICATION_JSON))
                 //then
                 .andExpect(status().isOk())
@@ -144,7 +141,7 @@ class AuthControllerTest {
         given(userService.checkEmailExists(user.getEmail())).willReturn(Collections.emptyList());
 
         //when
-        mvc.perform(post("/api/auth/register")
+        mvc.perform(post("/api/v1/auth/register")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonContentUser))
@@ -160,7 +157,7 @@ class AuthControllerTest {
         given(userService.checkEmailExists(user.getEmail())).willReturn(Collections.emptyList());
 
         //when
-        mvc.perform(post("/api/auth/register")
+        mvc.perform(post("/api/v1/auth/register")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonContentUser))
@@ -178,7 +175,7 @@ class AuthControllerTest {
         given(userService.checkEmailExists(user.getEmail())).willReturn(Collections.singletonList("exists"));
 
         //when
-        mvc.perform(post("/api/auth/register")
+        mvc.perform(post("/api/v1/auth/register")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonContentUser))
@@ -197,7 +194,7 @@ class AuthControllerTest {
         doReturn("12345").when(userService).login(loginUser);
 
         //when
-        mvc.perform(post("/api/auth/login")
+        mvc.perform(post("/api/v1/auth/login")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonContentLoginUser))
@@ -210,7 +207,7 @@ class AuthControllerTest {
     void testAuthenticateUserInvalidCredentials() throws Exception {
         jsonContentLoginUser = mapper.writeValueAsString(loginUser);
         //when
-        mvc.perform(post("/api/auth/login")
+        mvc.perform(post("/api/v1/auth/login")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonContentLoginUser))

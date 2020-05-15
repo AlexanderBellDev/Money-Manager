@@ -1,11 +1,11 @@
 export class Debt {
 
-  description: string;
-  amount : number;
+  company: string;
+  amount: number;
 
 
-  constructor(description: string, amount: number) {
-    this.description = description;
+  constructor(company: string, amount: number) {
+    this.company = company;
     this.amount = amount;
   }
 }

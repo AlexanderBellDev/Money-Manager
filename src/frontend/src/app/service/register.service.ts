@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {environment} from "../../environments/environment";
 import {HttpClient} from "@angular/common/http";
 import {User} from "../model/user";
@@ -22,6 +22,6 @@ export class RegisterService {
 
 
   register(user){
-    return this.http.post<User>(`${environment.API_URL}/api/auth/register`,user)
+    return this.http.post<User>(`${environment.API_URL}/api/auth/v1/register`, user)
   }
 }

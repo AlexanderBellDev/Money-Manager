@@ -2,6 +2,7 @@ package com.mm.moneymanager.service;
 
 import com.mm.moneymanager.model.Role;
 import com.mm.moneymanager.model.RoleName;
+import com.mm.moneymanager.model.debt.Debt;
 import com.mm.moneymanager.model.user.User;
 import com.mm.moneymanager.model.user.UserLogin;
 import com.mm.moneymanager.repository.RoleRepository;
@@ -17,7 +18,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -28,7 +28,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
@@ -54,16 +53,17 @@ class UserServiceTest {
     @Mock
     JwtTokenProvider jwtTokenProvider;
 
-    Set<Role> roleSet;
+    Set<Role> roleSet = new HashSet<>();
+    Set<Debt> debtSet = new HashSet<>();
 
     User user;
 
     @BeforeEach
     void beforeEach() {
-        roleSet = new HashSet<>();
         roleSet.add(new Role(1L, RoleName.ROLE_USER));
+        debtSet.add(new Debt());
 
-        user = new User(1L, "alex1234", "alex", "smith", "alex@alex.com", "password", roleSet);
+        user = new User(1L, "alex1234", "alex", "smith", "alex@alex.com", "password", roleSet, debtSet);
     }
 
     @Test
