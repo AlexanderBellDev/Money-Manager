@@ -1,1 +1,34 @@
-<h2>Welcome to the dashboard!</h2>
+<!--suppress ALL -->
+<div style="text-align: center; padding-top: 2%"><h2>User dashboard</h2>
+</div>
+
+
+<div style="margin-left: 2%">
+  <p *ngIf="debts.length>1">Currently you are tracking <strong>{{debts.length}}</strong> debts</p>
+  <p *ngIf="debts.length==1">Currently you are tracking <strong>{{debts.length}}</strong> debt</p>
+</div>
+
+<br>
+
+<div>
+  <table [dataSource]="debts" class="mat-elevation-z3" mat-table>
+    <!-- Item Column -->
+    <ng-container matColumnDef="company">
+      <th *matHeaderCellDef mat-header-cell> Company</th>
+      <td *matCellDef="let debt" mat-cell> {{debt.company}} </td>
+      <td *matFooterCellDef mat-footer-cell> Total</td>
+    </ng-container>
+
+    <!-- Cost Column -->
+    <ng-container matColumnDef="amount">
+      <th *matHeaderCellDef mat-header-cell> Amount</th>
+      <td *matCellDef="let debt" mat-cell> {{debt.amount}} </td>
+      <td *matFooterCellDef mat-footer-cell> {{getTotalCost()}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    <tr *matFooterRowDef="displayedColumns" mat-footer-row></tr>
+  </table>
+
+</div>

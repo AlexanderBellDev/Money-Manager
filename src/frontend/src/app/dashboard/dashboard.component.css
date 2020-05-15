@@ -1,0 +1,11 @@
+table {
+  width: 70%;
+  margin-left: auto;
+  margin-right: auto;
+  /*border-collapse: collapse;*/
+  /*border: 1px solid black;*/
+}
+
+tr.mat-footer-row {
+  font-weight: bold;
+}

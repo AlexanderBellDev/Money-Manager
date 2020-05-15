@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {Debt} from "../model/debt";
+import {DebtService} from "../service/debt.service";
 
 @Component({
   selector: 'app-dashboard',
@@ -6,10 +8,20 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
+  debts: Debt[] = [];
 
-  constructor() { }
+  displayedColumns: string[] = ['company', 'amount'];
 
-  ngOnInit(): void {
+  constructor(private debtService: DebtService) {
   }
 
+  ngOnInit(): void {
+    this.debtService.retrieveDebts().subscribe(value => {
+      this.debts = value
+    })
+  }
+
+  getTotalCost() {
+    return this.debts.map(t => t.amount).reduce((acc, value) => acc + value, 0);
+  }
 }

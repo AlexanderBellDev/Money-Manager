@@ -20,7 +20,7 @@ export class UserValidators {
       .pipe(
         switchMap(() => {
           // Check if username is available
-          return this.http.get<any>(`${environment.API_URL}/api/auth/checkusername/${text}`)
+          return this.http.get<any>(`${environment.API_URL}/api/v1/auth/checkusername/${text}`)
         })
       );
   }
@@ -47,7 +47,7 @@ export class UserValidators {
       .pipe(
         switchMap(() => {
           // Check if username is available
-          return this.http.get<any>(`${environment.API_URL}/api/auth/checkemail/${text}`)
+          return this.http.get<any>(`${environment.API_URL}/api/v1/auth/checkemail/${text}`)
         })
       );
   }
