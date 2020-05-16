@@ -10,7 +10,7 @@ import {DebtService} from "../service/debt.service";
 export class DashboardComponent implements OnInit {
   debts: Debt[] = [];
 
-  displayedColumns: string[] = ['company', 'amount'];
+  displayedColumns: string[] = ['company', 'amount', 'action'];
 
   constructor(private debtService: DebtService) {
   }

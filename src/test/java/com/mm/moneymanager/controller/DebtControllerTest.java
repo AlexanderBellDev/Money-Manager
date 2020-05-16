@@ -1,11 +1,13 @@
 package com.mm.moneymanager.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mm.moneymanager.model.debt.Debt;
 import com.mm.moneymanager.model.debt.DebtDTO;
 import com.mm.moneymanager.model.user.User;
 import com.mm.moneymanager.repository.UserRepository;
 import com.mm.moneymanager.service.DebtService;
+import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,6 +19,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -26,11 +29,12 @@ import java.util.List;
 
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(DebtController.class)
-@ComponentScan(basePackages = "com.mm.moneymanager.security")
+@ComponentScan(basePackages = {"com.mm.moneymanager.security", "com.mm.moneymanager.exception"})
 class DebtControllerTest {
 
     @Autowired
@@ -51,8 +55,11 @@ class DebtControllerTest {
     @Autowired
     private MockMvc mvc;
 
+    String jsonContentDebt;
+    String jsonContentDebtMalformed;
+
     @BeforeEach
-    void setUp() {
+    void setUp() throws JsonProcessingException {
         user = User.builder()
                 .email("alex@alex.com")
                 .firstName("alex")
@@ -61,9 +68,20 @@ class DebtControllerTest {
                 .username("alex1234")
                 .build();
 
-        debtList = Collections.singletonList(new Debt(1L, "Ford", BigInteger.valueOf(10), user));
+        Debt fordDebt = new Debt(1L, "Ford", BigInteger.valueOf(10), user);
+        debtList = Collections.singletonList(fordDebt);
+
+        DebtDTO fordDebtDTO = new DebtDTO("ford", BigInteger.valueOf(10));
+
+        DebtDTO fordDebtDTOMalformed = DebtDTO.builder()
+                .amount(BigInteger.valueOf(10))
+                .build();
 
         mapper = new ObjectMapper();
+
+        jsonContentDebt = mapper.writeValueAsString(fordDebtDTO);
+
+        jsonContentDebtMalformed = mapper.writeValueAsString(fordDebtDTOMalformed);
     }
 
     @Test
@@ -94,4 +112,38 @@ class DebtControllerTest {
                 .andExpect(MockMvcResultMatchers.content().string(mapper.writeValueAsString(debtDTOList)))
                 .andReturn();
     }
+
+
+    @Test
+    @WithMockUser(username = "testuser")
+    void saveUserDebt() throws Exception {
+        //when
+        mvc.perform(MockMvcRequestBuilders.post("/api/v1/debt/userdebt")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonContentDebt))
+                //then
+                .andExpect(status().isCreated())
+                .andExpect(MockMvcResultMatchers.content().string("Debt saved"))
+                .andDo(print())
+                .andReturn();
+    }
+
+    @Test
+    @WithMockUser(username = "testuser")
+    void saveUserDebtMalformedObject() throws Exception {
+        //when
+        mvc.perform(MockMvcRequestBuilders.post("/api/v1/debt/userdebt")
+                .accept(MediaType.APPLICATION_JSON)
+                .characterEncoding("utf-8")
+                .content(jsonContentDebtMalformed)
+                .contentType(MediaType.APPLICATION_JSON))
+                //then
+                .andExpect(status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.company", Is.is("company is mandatory")))
+                .andDo(print())
+                .andReturn();
+    }
+
+
 }
