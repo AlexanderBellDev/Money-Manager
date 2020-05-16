@@ -17,7 +17,7 @@ import java.util.Set;
 public class User extends DateAudit {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     String username;
     String firstName;

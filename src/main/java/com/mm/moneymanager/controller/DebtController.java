@@ -7,10 +7,11 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
+import java.net.URI;
 import java.security.Principal;
 import java.util.Arrays;
 import java.util.List;
@@ -33,4 +34,14 @@ public class DebtController {
         List<DebtDTO> debtDTOList = Arrays.asList(modelMapper.map(allDebtsByUser, DebtDTO[].class));
         return ResponseEntity.ok(debtDTOList);
     }
+
+    @PostMapping("/userdebt")
+    @Secured("ROLE_USER")
+    public ResponseEntity<?> postUserDebt(Principal principal, @Valid @RequestBody DebtDTO debtDTO) {
+        URI location = ServletUriComponentsBuilder
+                .fromPath("/api/v1/debt/userdebt")
+                .buildAndExpand(debtService.saveDebt(debtDTO, principal.getName())).toUri();
+        return ResponseEntity.created(location).body("Debt saved");
+    }
+
 }

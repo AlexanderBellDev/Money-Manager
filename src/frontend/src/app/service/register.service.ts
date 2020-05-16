@@ -22,6 +22,6 @@ export class RegisterService {
 
 
   register(user){
-    return this.http.post<User>(`${environment.API_URL}/api/auth/v1/register`, user)
+    return this.http.post<User>(`${environment.API_URL}/api/v1/auth/register`, user)
   }
 }
