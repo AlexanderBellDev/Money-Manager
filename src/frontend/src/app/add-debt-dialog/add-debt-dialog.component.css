@@ -1,0 +1,19 @@
+.full-width-field {
+  width: 100%;
+}
+
+h3 {
+  font: 400 16px/28px Roboto, "Helvetica Neue", sans-serif;
+  letter-spacing: normal;
+  margin-bottom: -2px;
+}
+
+td.mat-cell:first-of-type {
+  padding-left: 10px;
+}
+
+.close-button {
+  float: right;
+  top: -24px;
+  right: -24px;
+}

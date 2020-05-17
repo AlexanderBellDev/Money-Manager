@@ -4,16 +4,37 @@ import {DebtService} from "../service/debt.service";
 import {MatDialog} from "@angular/material/dialog";
 import {AddDebtDialogComponent} from "../add-debt-dialog/add-debt-dialog.component";
 import {SelectionModel} from "@angular/cdk/collections";
+import {animate, style, transition, trigger} from "@angular/animations";
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+  styleUrls: ['./dashboard.component.css'],
+  animations: [
+    trigger('easeInOut', [
+      transition(':enter', [
+        style({
+          opacity: 0
+        }),
+        animate("0.5s ease-in-out", style({
+          opacity: 1
+        }))
+      ]),
+      transition(':leave', [
+        style({
+          opacity: 1
+        }),
+        animate("0.5s ease-in-out", style({
+          opacity: 0
+        }))
+      ])
+    ])
+  ]
 })
 export class DashboardComponent implements OnInit {
   debts: Debt[] = [];
 
-  displayedColumns: string[] = ['select', 'company', 'amount', 'dueDate', 'details', 'update'];
+  displayedColumns: string[] = ['company', 'amount', 'dueDate', 'details', 'update'];
   selection = new SelectionModel<Debt>(true, []);
 
   ngOnInit(): void {
@@ -31,24 +52,25 @@ export class DashboardComponent implements OnInit {
   constructor(private debtService: DebtService, public dialog: MatDialog) {
   }
 
-  openDialog(): void {
+  openAddDebtDialog(): void {
     const dialogRef = this.dialog.open(AddDebtDialogComponent, {
       width: '300px',
-      height: '320px'
+      height: '365px'
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      console.log(result)
       console.log('The dialog was closed');
     });
   }
 
   toggleDeleteDebt() {
     this.deleteSelected = !this.deleteSelected;
-    // if(this.displayedColumns.includes('select')){
-    //   this.displayedColumns.splice(0,1);
-    // }else{
-    //   this.displayedColumns.unshift('select')
-    // }
+    if (this.displayedColumns.includes('select')) {
+      //  this.displayedColumns.splice(0,1);
+    } else {
+      this.displayedColumns.unshift('select')
+    }
 
   }
 
@@ -77,5 +99,11 @@ export class DashboardComponent implements OnInit {
   deleteDebts() {
     console.log(this.selection.selected)
   }
-}
 
+  removeColumn() {
+    if (this.displayedColumns.includes('select') && !this.deleteSelected) {
+      this.selection.clear()
+      this.displayedColumns.splice(0, 1);
+    }
+  }
+}

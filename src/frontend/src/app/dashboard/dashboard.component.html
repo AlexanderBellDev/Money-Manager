@@ -1,3 +1,4 @@
+
 <div style="text-align: center; padding-top: 2%"><h2>User dashboard</h2>
 </div>
 
@@ -9,11 +10,14 @@
 <br>
 
 <div style="text-align: right; margin-right: 14.5%">
-  <button (click)="deleteDebts()" *ngIf="deleteSelected" color="warn" mat-icon-button>
-    <mat-icon class="mat-18">delete</mat-icon>
+  <button (click)="deleteDebts()" *ngIf="deleteSelected" mat-icon-button>
+    <mat-icon class="mat-18" matTooltip="Delete">delete</mat-icon>
   </button>
   <button (click)="toggleDeleteDebt()" aria-label="Edit" mat-icon-button>
-    <mat-icon matTooltip="Select items">create</mat-icon>
+    <mat-icon class="mat-18" matTooltip="Edit debts">create</mat-icon>
+  </button>
+  <button (click)="openAddDebtDialog()" aria-label="Edit" mat-icon-button>
+    <mat-icon class="mat-18" matTooltip="Add new debt">note_add</mat-icon>
   </button>
 </div>
 
@@ -21,35 +25,32 @@
   <table [dataSource]="debts" class="mat-elevation-z3" mat-table style="text-align: center;">
     <!-- Checkbox Column -->
     <ng-container matColumnDef="select">
-      <th *matHeaderCellDef mat-header-cell style="width: 10%; text-align: center">
-        <mat-checkbox (change)="$event ? masterToggle() : null" *ngIf="deleteSelected"
+      <th *matHeaderCellDef mat-header-cell style="width: 5%; ; padding-left: 1px; text-align: center">
+        <mat-checkbox (@easeInOut.done)="removeColumn()"
+                      (change)="$event ? masterToggle() : null"
+                      *ngIf="deleteSelected"
+                      @easeInOut
                       [aria-label]="checkboxLabel()"
                       [checked]="selection.hasValue() && isAllSelected()"
                       [indeterminate]="selection.hasValue() && !isAllSelected()">
         </mat-checkbox>
       </th>
-      <td *matCellDef="let row" mat-cell style=" width: 10%; text-align: center">
+      <td *matCellDef="let row" mat-cell style=" width: 5%; padding-left: 1px; text-align: center">
         <mat-checkbox (change)="$event ? selection.toggle(row) : null" (click)="$event.stopPropagation()"
                       *ngIf="deleteSelected"
+                      @easeInOut
                       [aria-label]="checkboxLabel(row)"
                       [checked]="selection.isSelected(row)">
         </mat-checkbox>
       </td>
+
     </ng-container>
 
     <!-- Item Column -->
     <ng-container matColumnDef="company">
       <th *matHeaderCellDef mat-header-cell style="text-align: center"> Company</th>
-      <td *matCellDef="let debt" mat-cell>
-        <div style="display: flex;">
-          <mat-checkbox (change)="$event ? selection.toggle(debt) : null" (click)="$event.stopPropagation()"
-                        *ngIf="deleteSelected"
-                        [aria-label]="checkboxLabel(debt)"
-                        [checked]="selection.isSelected(debt)"
-                        style="position: absolute;">
-          </mat-checkbox>
-          <p style="text-align: left; margin-left: 50px;">{{debt.company}}</p>
-        </div>
+      <td *matCellDef="let debt" mat-cell style="text-align: left; width: 50%">
+        {{debt.company}}
       </td>
       <td *matFooterCellDef mat-footer-cell> Total</td>
     </ng-container>
