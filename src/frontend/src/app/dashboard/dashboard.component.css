@@ -1,11 +1,18 @@
+tr.mat-footer-row {
+  font-weight: bold;
+}
+
 table {
   width: 70%;
   margin-left: auto;
   margin-right: auto;
-  /*border-collapse: collapse;*/
-  /*border: 1px solid black;*/
+  overflow-x: auto;
+  overflow-y: hidden;
+  min-width: 500px;
 }
 
-tr.mat-footer-row {
-  font-weight: bold;
+th.mat-header-cell {
+  text-align: left;
+  max-width: 300px;
 }
+

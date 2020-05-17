@@ -18,6 +18,13 @@ import {LogoutComponent} from './logout/logout.component';
 import {MatCardModule} from "@angular/material/card";
 import {MatTableModule} from "@angular/material/table";
 import {AuthInterceptorService} from "./service/auth-interceptor.service";
+import {MatIconModule} from "@angular/material/icon";
+import {MatTooltipModule} from "@angular/material/tooltip";
+import {AddDebtDialogComponent} from './add-debt-dialog/add-debt-dialog.component';
+import {MatDialogModule} from "@angular/material/dialog";
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatNativeDateModule} from "@angular/material/core";
+import {MatCheckboxModule} from "@angular/material/checkbox";
 
 @NgModule({
   declarations: [
@@ -29,6 +36,7 @@ import {AuthInterceptorService} from "./service/auth-interceptor.service";
     FooterComponent,
     DashboardComponent,
     LogoutComponent,
+    AddDebtDialogComponent,
 
   ],
   imports: [
@@ -41,7 +49,13 @@ import {AuthInterceptorService} from "./service/auth-interceptor.service";
     HttpClientModule,
     MatCardModule,
     HttpClientModule,
-    MatTableModule
+    MatTableModule,
+    MatIconModule,
+    MatTooltipModule,
+    MatDialogModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatCheckboxModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true}

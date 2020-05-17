@@ -1,7 +1,5 @@
-<!--suppress ALL -->
 <div style="text-align: center; padding-top: 2%"><h2>User dashboard</h2>
 </div>
-
 
 <div style="margin-left: 2%">
   <p *ngIf="debts.length>1">Currently you are tracking <strong>{{debts.length}}</strong> debts</p>
@@ -10,44 +8,99 @@
 
 <br>
 
+<div style="text-align: right; margin-right: 14.5%">
+  <button (click)="deleteDebts()" *ngIf="deleteSelected" color="warn" mat-icon-button>
+    <mat-icon class="mat-18">delete</mat-icon>
+  </button>
+  <button (click)="toggleDeleteDebt()" aria-label="Edit" mat-icon-button>
+    <mat-icon matTooltip="Select items">create</mat-icon>
+  </button>
+</div>
+
 <div>
   <table [dataSource]="debts" class="mat-elevation-z3" mat-table style="text-align: center;">
+    <!-- Checkbox Column -->
+    <ng-container matColumnDef="select">
+      <th *matHeaderCellDef mat-header-cell style="width: 10%; text-align: center">
+        <mat-checkbox (change)="$event ? masterToggle() : null" *ngIf="deleteSelected"
+                      [aria-label]="checkboxLabel()"
+                      [checked]="selection.hasValue() && isAllSelected()"
+                      [indeterminate]="selection.hasValue() && !isAllSelected()">
+        </mat-checkbox>
+      </th>
+      <td *matCellDef="let row" mat-cell style=" width: 10%; text-align: center">
+        <mat-checkbox (change)="$event ? selection.toggle(row) : null" (click)="$event.stopPropagation()"
+                      *ngIf="deleteSelected"
+                      [aria-label]="checkboxLabel(row)"
+                      [checked]="selection.isSelected(row)">
+        </mat-checkbox>
+      </td>
+    </ng-container>
+
     <!-- Item Column -->
     <ng-container matColumnDef="company">
-      <th *matHeaderCellDef mat-header-cell style="text-align: center" width="33%"> Company</th>
-      <td *matCellDef="let debt" mat-cell> {{debt.company}} </td>
+      <th *matHeaderCellDef mat-header-cell style="text-align: center"> Company</th>
+      <td *matCellDef="let debt" mat-cell>
+        <div style="display: flex;">
+          <mat-checkbox (change)="$event ? selection.toggle(debt) : null" (click)="$event.stopPropagation()"
+                        *ngIf="deleteSelected"
+                        [aria-label]="checkboxLabel(debt)"
+                        [checked]="selection.isSelected(debt)"
+                        style="position: absolute;">
+          </mat-checkbox>
+          <p style="text-align: left; margin-left: 50px;">{{debt.company}}</p>
+        </div>
+      </td>
       <td *matFooterCellDef mat-footer-cell> Total</td>
     </ng-container>
 
-    <!-- Cost Column -->
+    <!-- Amount Column -->
     <ng-container matColumnDef="amount">
-      <th *matHeaderCellDef mat-header-cell style="text-align: center" width="33%"> Amount</th>
-      <td *matCellDef="let debt" mat-cell> {{debt.amount}} </td>
+      <th *matHeaderCellDef mat-header-cell style="text-align: center"> Amount</th>
+      <td *matCellDef="let debt" mat-cell>
+        {{debt.amount}}
+      </td>
+
       <td *matFooterCellDef mat-footer-cell> {{getTotalCost()}} </td>
     </ng-container>
 
-    <!-- Action Column -->
-    <ng-container matColumnDef="action">
-      <th *matHeaderCellDef mat-header-cell style="text-align: center" width="33%"> Action</th>
-      <td *matCellDef="let element" class="action-link" mat-cell>
-        Edit | Delete
-      </td>
-      <td *matFooterCellDef mat-footer-cell></td>
+    <!-- Due Date Column -->
+    <ng-container matColumnDef="dueDate">
+      <th *matHeaderCellDef mat-header-cell style="text-align: center"> Due Date</th>
+      <td *matCellDef="let debt" mat-cell> {{debt.dueDate | date: 'dd-MM-yyyy'}} </td>
     </ng-container>
 
-    <!-- Add column -->
-    <ng-container matColumnDef="disclaimer">
-      <td *matFooterCellDef colspan="3" mat-footer-cell style="text-align: right; padding-right: 5%">
-        <button color="primary" mat-raised-button>Test</button>
+    <ng-container matColumnDef="details">
+      <th *matHeaderCellDef mat-header-cell style="text-align: center"> Details</th>
+      <td *matCellDef="let element" mat-cell>
+        <button color="primary" mat-icon-button>
+          <mat-icon class="mat-18">reorder</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="update">
+      <th *matHeaderCellDef mat-header-cell style="text-align: center"> Update</th>
+      <td *matCellDef="let element" mat-cell>
+        <button color="accent" mat-icon-button>
+          <mat-icon class="mat-18">rate_review</mat-icon>
+        </button>
       </td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
-    <tr *matFooterRowDef="displayedColumns" mat-footer-row></tr>
-    <tr *matFooterRowDef="['disclaimer']" mat-footer-row></tr>
 
   </table>
 
 </div>
+
+
+<!--&lt;!&ndash; Add column &ndash;&gt;-->
+<!--<ng-container matColumnDef="disclaimer">-->
+<!--  <td *matFooterCellDef colspan="3" mat-footer-cell style="text-align: right; padding-right: 5%">-->
+<!--    <button color="primary" mat-raised-button>Test</button>-->
+<!--  </td>-->
+<!--</ng-container>-->
+<!--<tr *matFooterRowDef="['disclaimer']" mat-footer-row></tr>-->
