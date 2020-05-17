@@ -17,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 
 import java.math.BigInteger;
+import java.time.LocalDate;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -55,11 +56,11 @@ class DebtServiceTest {
         roleSet.add(new Role(1L, RoleName.ROLE_USER));
         user = new User(1L, "alex1234", "alex", "smith", "alex@alex.com", "password", roleSet, debtSet);
 
-        debt = new Debt(1L, "Ford", BigInteger.valueOf(10), user);
+        debt = new Debt(1L, "Ford", BigInteger.valueOf(10), LocalDate.now(), user);
         debtSet.add(debt);
         debtList = Collections.singletonList(debt);
 
-        debtDTO = new DebtDTO("Ford", BigInteger.valueOf(10));
+        debtDTO = new DebtDTO("Ford", BigInteger.valueOf(10), LocalDate.now());
 
     }
 
