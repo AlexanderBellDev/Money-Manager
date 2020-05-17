@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.math.BigInteger;
+import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
@@ -18,4 +19,6 @@ public class DebtDTO {
     private String company;
     @NotNull
     private BigInteger amount;
+    @NotNull
+    private LocalDate dueDate;
 }

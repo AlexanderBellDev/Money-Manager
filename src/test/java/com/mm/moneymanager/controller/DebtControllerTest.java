@@ -2,6 +2,8 @@ package com.mm.moneymanager.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.mm.moneymanager.model.debt.Debt;
 import com.mm.moneymanager.model.debt.DebtDTO;
 import com.mm.moneymanager.model.user.User;
@@ -24,6 +26,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.math.BigInteger;
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 
@@ -68,16 +71,18 @@ class DebtControllerTest {
                 .username("alex1234")
                 .build();
 
-        Debt fordDebt = new Debt(1L, "Ford", BigInteger.valueOf(10), user);
+        Debt fordDebt = new Debt(1L, "Ford", BigInteger.valueOf(10), LocalDate.now(), user);
         debtList = Collections.singletonList(fordDebt);
 
-        DebtDTO fordDebtDTO = new DebtDTO("ford", BigInteger.valueOf(10));
+        DebtDTO fordDebtDTO = new DebtDTO("ford", BigInteger.valueOf(10), LocalDate.now());
 
         DebtDTO fordDebtDTOMalformed = DebtDTO.builder()
                 .amount(BigInteger.valueOf(10))
                 .build();
 
         mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+        mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 
         jsonContentDebt = mapper.writeValueAsString(fordDebtDTO);
 
@@ -102,7 +107,7 @@ class DebtControllerTest {
     void getUserDebtMatchingData() throws Exception {
         //given
         given(debtService.getAllDebtsByUser("testuser")).willReturn(debtList);
-        List<DebtDTO> debtDTOList = Collections.singletonList(new DebtDTO("Ford", BigInteger.valueOf(10)));
+        List<DebtDTO> debtDTOList = Collections.singletonList(new DebtDTO("Ford", BigInteger.valueOf(10), LocalDate.now()));
 
         //when
         mvc.perform(get("/api/v1/debt/userdebt")

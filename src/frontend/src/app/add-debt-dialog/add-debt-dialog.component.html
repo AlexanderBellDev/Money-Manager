@@ -1,0 +1,53 @@
+<button [mat-dialog-close]="true" class="close-button" mat-icon-button>
+  <mat-icon class="close-icon" color="warn">close</mat-icon>
+</button>
+
+<h2>Add a debt</h2>
+
+<div>
+  <form [formGroup]="debtForm" autocomplete="off" style="align-content: center">
+
+
+    <div class="form-group">
+      <mat-form-field class="full-width-field" color="accent">
+        <mat-label>Company Name:</mat-label>
+        <input aria-label="company name" cdkFocusInitial formControlName="companyName" matInput required type="text">
+        <mat-error *ngIf="debtForm.get('companyName').invalid">Field is required</mat-error>
+      </mat-form-field>
+    </div>
+    <br>
+    <div class="form-group">
+      <mat-form-field class="full-width-field" color="accent">
+        <mat-label>Currently owned amount:</mat-label>
+        <input aria-label="Debt owed amount" formControlName="owedAmount" matInput required type="number">
+        <mat-error *ngIf="debtForm.get('owedAmount').invalid">Field is required</mat-error>
+      </mat-form-field>
+    </div>
+
+    <br>
+    <div class="form-group">
+      <mat-form-field class="full-width-field">
+        <mat-label>Owed by date:</mat-label>
+        <input [matDatepicker]="picker" aria-label="Owed by date" formControlName="owedByDate" matInput>
+        <mat-datepicker-toggle [for]="picker" matSuffix></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="debtForm.get('owedByDate').invalid">Field is required</mat-error>
+      </mat-form-field>
+    </div>
+
+    <br>
+
+  </form>
+
+  <div>
+    <button (click)="resetDebtForm()" color="warn" mat-raised-button style="text-align: center; float: left"
+            type="reset">Reset
+    </button>
+    <button (click)="saveDebt()" color="primary" mat-raised-button style="text-align: center; float: right"
+            type="submit">Submit
+    </button>
+
+  </div>
+
+
+</div>

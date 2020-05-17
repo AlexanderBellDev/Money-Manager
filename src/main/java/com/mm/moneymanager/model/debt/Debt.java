@@ -6,6 +6,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigInteger;
+import java.time.LocalDate;
 
 @EqualsAndHashCode(callSuper = false)
 @Data
@@ -20,6 +21,8 @@ public class Debt extends DateAudit {
 
     String company;
     BigInteger amount;
+
+    LocalDate dueDate;
 
     @ToString.Exclude
     @ManyToOne
