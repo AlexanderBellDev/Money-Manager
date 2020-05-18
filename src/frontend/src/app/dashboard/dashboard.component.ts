@@ -36,10 +36,13 @@ export class DashboardComponent implements OnInit {
 
   displayedColumns: string[] = ['company', 'amount', 'dueDate', 'details', 'update'];
   selection = new SelectionModel<Debt>(true, []);
+  dataSource: Debt[];
+
 
   ngOnInit(): void {
     this.debtService.retrieveDebts().subscribe(value => {
       this.debts = value
+      this.dataSource = [...this.debts];
     })
   }
 
@@ -59,8 +62,10 @@ export class DashboardComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result)
-      console.log('The dialog was closed');
+      this.debts.push(result)
+      this.dataSource = [...this.debts];
+    }, error => {
+      console.log('error!' + error)
     });
   }
 

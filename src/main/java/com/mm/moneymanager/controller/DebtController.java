@@ -4,6 +4,7 @@ import com.mm.moneymanager.model.debt.Debt;
 import com.mm.moneymanager.model.debt.DebtDTO;
 import com.mm.moneymanager.service.DebtService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -19,6 +20,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/debt")
 @RequiredArgsConstructor
+@Slf4j
 public class DebtController {
     private final DebtService debtService;
     private final ModelMapper modelMapper;
