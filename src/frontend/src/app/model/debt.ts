@@ -10,4 +10,6 @@ export class Debt {
     this.amount = amount;
     this.dueDate = dueDate;
   }
+
+
 }

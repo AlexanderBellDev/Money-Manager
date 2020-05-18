@@ -11,16 +11,16 @@
     <div class="form-group">
       <mat-form-field class="full-width-field" color="accent">
         <mat-label>Company Name:</mat-label>
-        <input aria-label="company name" cdkFocusInitial formControlName="companyName" matInput required type="text">
-        <mat-error *ngIf="debtForm.get('companyName').invalid">Field is required</mat-error>
+        <input aria-label="company name" cdkFocusInitial formControlName="company" matInput required type="text">
+        <mat-error *ngIf="debtForm.get('company').invalid">Field is required</mat-error>
       </mat-form-field>
     </div>
     <br>
     <div class="form-group">
       <mat-form-field class="full-width-field" color="accent">
         <mat-label>Currently owned amount:</mat-label>
-        <input aria-label="Debt owed amount" formControlName="owedAmount" matInput required type="number">
-        <mat-error *ngIf="debtForm.get('owedAmount').invalid">Field is required</mat-error>
+        <input aria-label="Debt owed amount" formControlName="amount" matInput required type="number">
+        <mat-error *ngIf="debtForm.get('amount').invalid">Field is required</mat-error>
       </mat-form-field>
     </div>
 
@@ -28,10 +28,10 @@
     <div class="form-group">
       <mat-form-field class="full-width-field">
         <mat-label>Owed by date:</mat-label>
-        <input [matDatepicker]="picker" aria-label="Owed by date" formControlName="owedByDate" matInput>
+        <input [matDatepicker]="picker" aria-label="Owed by date" formControlName="dueDate" matInput>
         <mat-datepicker-toggle [for]="picker" matSuffix></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
-        <mat-error *ngIf="debtForm.get('owedByDate').invalid">Field is required</mat-error>
+        <mat-error *ngIf="debtForm.get('dueDate').invalid">Field is required</mat-error>
       </mat-form-field>
     </div>
 
