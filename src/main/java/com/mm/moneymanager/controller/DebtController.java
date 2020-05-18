@@ -40,7 +40,6 @@ public class DebtController {
     @PostMapping("/userdebt")
     @Secured("ROLE_USER")
     public ResponseEntity<?> postUserDebt(Principal principal, @Valid @RequestBody DebtDTO debtDTO) {
-        log.info(debtDTO.toString());
         URI location = ServletUriComponentsBuilder
                 .fromPath("/api/v1/debt/userdebt")
                 .buildAndExpand(debtService.saveDebt(debtDTO, principal.getName())).toUri();
