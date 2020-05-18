@@ -21,4 +21,6 @@ public class DebtDTO {
     private BigInteger amount;
     @NotNull
     private LocalDate dueDate;
+
+    private Long id;
 }

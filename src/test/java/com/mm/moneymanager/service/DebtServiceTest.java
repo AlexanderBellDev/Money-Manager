@@ -20,7 +20,8 @@ import java.math.BigInteger;
 import java.time.LocalDate;
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.times;
@@ -45,22 +46,26 @@ class DebtServiceTest {
 
     List<Debt> debtList;
     User user;
+    User user2;
 
 
     DebtDTO debtDTO;
 
     Debt debt;
+    Debt debtWithAlternateUsername;
 
     @BeforeEach
     void beforeEach() {
         roleSet.add(new Role(1L, RoleName.ROLE_USER));
         user = new User(1L, "alex1234", "alex", "smith", "alex@alex.com", "password", roleSet, debtSet);
+        user2 = new User(1L, "bob9999", "Bob", "jim", "bob@bobs.com", "password", roleSet, debtSet);
 
         debt = new Debt(1L, "Ford", BigInteger.valueOf(10), LocalDate.now(), user);
+        debtWithAlternateUsername = new Debt(1L, "Ford", BigInteger.valueOf(10), LocalDate.now(), user2);
         debtSet.add(debt);
         debtList = Collections.singletonList(debt);
 
-        debtDTO = new DebtDTO("Ford", BigInteger.valueOf(10), LocalDate.now());
+        debtDTO = new DebtDTO("Ford", BigInteger.valueOf(10), LocalDate.now(), 1L);
 
     }
 
@@ -97,5 +102,34 @@ class DebtServiceTest {
         //then
         assertEquals(expectedDebt, actualDebt);
 
+    }
+
+
+    @Test
+    void deleteDebtValidDebt() {
+        given(debtRepository.findById(1L)).willReturn(Optional.ofNullable(debt));
+
+
+        //when
+        boolean deleteDebtResult = debtService.deleteDebt(debtDTO, "alex1234");
+
+        //then
+        then(debtRepository).should(times(1)).findById(debt.getId());
+        then(debtRepository).should(times(1)).delete(debt);
+        assertTrue(deleteDebtResult);
+    }
+
+    @Test
+    void deleteDebtInvalidDebt() {
+        given(debtRepository.findById(1L)).willReturn(Optional.ofNullable(debtWithAlternateUsername));
+
+
+        //when
+        boolean deleteDebtResult = debtService.deleteDebt(debtDTO, "alex1234");
+
+        //then
+        then(debtRepository).should(times(1)).findById(debtWithAlternateUsername.getId());
+        then(debtRepository).should(times(0)).delete(any());
+        assertFalse(deleteDebtResult);
     }
 }
