@@ -44,8 +44,12 @@ public class DebtServiceImpl implements DebtService {
                 return true;
             }
         }
-
         return false;
+    }
+
+    @Override
+    public boolean verifyDebtExists(Long id) {
+        return debtRepository.findById(id).isPresent();
     }
 
 }

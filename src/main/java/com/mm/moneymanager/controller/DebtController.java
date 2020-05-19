@@ -49,6 +49,10 @@ public class DebtController {
     @DeleteMapping("/userdebt/{idToDelete}")
     @Secured("ROLE_USER")
     public ResponseEntity<?> deleteUserDebt(Principal principal, @PathVariable Long idToDelete) {
+        if (!debtService.verifyDebtExists(idToDelete)) {
+            return ResponseEntity.notFound().build();
+        }
+
         if (!debtService.deleteDebt(idToDelete, principal.getName())) {
             return ResponseEntity.badRequest().body("Cannot delete debt");
         }

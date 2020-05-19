@@ -71,7 +71,7 @@ class DebtServiceTest {
 
 
     @Test
-    void getAllDebtsByUser() {
+    void testGetAllDebtsByUser() {
 
         //given
         given(debtRepository.findAllByUser_Username(user.getUsername())).willReturn(debtList);
@@ -84,7 +84,7 @@ class DebtServiceTest {
     }
 
     @Test
-    void saveDebt() {
+    void testSaveDebt() {
         //given
         given(modelMapper.map(debtDTO, Debt.class)).willReturn(debt);
         given(userRepository.findByUsername(user.getUsername())).willReturn(Optional.of(user));
@@ -106,7 +106,7 @@ class DebtServiceTest {
 
 
     @Test
-    void deleteDebtValidDebt() {
+    void testDeleteDebtValidDebt() {
         given(debtRepository.findById(1L)).willReturn(Optional.ofNullable(debt));
 
 
@@ -120,7 +120,7 @@ class DebtServiceTest {
     }
 
     @Test
-    void deleteDebtInvalidDebt() {
+    void testDeleteDebtInvalidDebt() {
         given(debtRepository.findById(1L)).willReturn(Optional.ofNullable(debtWithAlternateUsername));
         //when
         boolean deleteDebtResult = debtService.deleteDebt(debtDTO.getId(), "alex1234");
@@ -132,13 +132,25 @@ class DebtServiceTest {
     }
 
     @Test
-    void deleteDebtDoesntExist() {
+    void testVerifyDebtDoesntExist() {
         //when
-        boolean deleteDebtResult = debtService.deleteDebt(debtDTO.getId(), "alex1234");
+        boolean deleteDebtResult = debtService.verifyDebtExists(debtDTO.getId());
 
         //then
         then(debtRepository).should(times(1)).findById(debtWithAlternateUsername.getId());
-        then(debtRepository).should(times(0)).delete(any());
         assertFalse(deleteDebtResult);
+    }
+
+    @Test
+    void testVerifyDebtDoesExist() {
+        //given
+        given(debtRepository.findById(debtDTO.getId())).willReturn(Optional.ofNullable(debt));
+
+        //when
+        boolean deleteDebtResult = debtService.verifyDebtExists(debtDTO.getId());
+
+        //then
+        then(debtRepository).should(times(1)).findById(debtWithAlternateUsername.getId());
+        assertTrue(deleteDebtResult);
     }
 }
