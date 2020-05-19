@@ -160,6 +160,7 @@ class DebtControllerTest {
     @WithMockUser(username = "testuser")
     void testDeleteDebt() throws Exception {
         //given
+        given(debtService.verifyDebtExists(fordDebtDTO.getId())).willReturn(true);
         given(debtService.deleteDebt(fordDebtDTO.getId(), "testuser")).willReturn(true);
 
         //when
@@ -179,6 +180,7 @@ class DebtControllerTest {
     @WithMockUser(username = "testuser")
     void testDeleteDebtUnsuccessful() throws Exception {
         //given
+        given(debtService.verifyDebtExists(fordDebtDTO.getId())).willReturn(true);
         given(debtService.deleteDebt(fordDebtDTO.getId(), "testuser")).willReturn(false);
 
         //when
