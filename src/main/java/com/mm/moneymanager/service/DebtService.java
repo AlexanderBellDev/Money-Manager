@@ -10,5 +10,5 @@ public interface DebtService {
 
     Debt saveDebt(DebtDTO debtDTO, String username);
 
-    boolean deleteDebt(DebtDTO debtDTO, String username);
+    List<Debt> deleteDebt(List<DebtDTO> debtDTO, String username);
 }

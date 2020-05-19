@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,16 +37,19 @@ public class DebtServiceImpl implements DebtService {
     }
 
     @Override
-    public boolean deleteDebt(DebtDTO debtDTO, String username) {
-        Optional<Debt> findDebtById = debtRepository.findById(debtDTO.getId());
-        if (findDebtById.isPresent()) {
-            if (findDebtById.get().getUser().getUsername().equals(username)) {
-                debtRepository.delete(findDebtById.get());
-                return true;
+    public List<Debt> deleteDebt(List<DebtDTO> debtDTO, String username) {
+        List<Debt> debtsToDelete = new ArrayList<>();
+        for (DebtDTO dto : debtDTO) {
+            Optional<Debt> findDebtById = debtRepository.findById(dto.getId());
+            if (findDebtById.isPresent()) {
+                if (findDebtById.get().getUser().getUsername().equals(username)) {
+                    debtsToDelete.add(findDebtById.get());
+                }
             }
         }
+        debtRepository.deleteAll(debtsToDelete);
 
-        return false;
+        return debtsToDelete;
     }
 
 }

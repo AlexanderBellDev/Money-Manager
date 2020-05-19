@@ -59,9 +59,11 @@ class DebtControllerTest {
     private MockMvc mvc;
 
     String jsonContentDebt;
+    String jsonContentDebtList;
     String jsonContentDebtMalformed;
 
     DebtDTO fordDebtDTO;
+    Debt fordDebt;
 
     @BeforeEach
     void setUp() throws JsonProcessingException {
@@ -73,7 +75,7 @@ class DebtControllerTest {
                 .username("alex1234")
                 .build();
 
-        Debt fordDebt = new Debt(1L, "Ford", BigInteger.valueOf(10), LocalDate.now(), user);
+        fordDebt = new Debt(1L, "Ford", BigInteger.valueOf(10), LocalDate.now(), user);
         debtList = Collections.singletonList(fordDebt);
 
         fordDebtDTO = new DebtDTO("ford", BigInteger.valueOf(10), LocalDate.now(), 1L);
@@ -87,6 +89,7 @@ class DebtControllerTest {
         mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 
         jsonContentDebt = mapper.writeValueAsString(fordDebtDTO);
+        jsonContentDebtList = mapper.writeValueAsString(Collections.singletonList(fordDebtDTO));
 
         jsonContentDebtMalformed = mapper.writeValueAsString(fordDebtDTOMalformed);
     }
@@ -156,13 +159,13 @@ class DebtControllerTest {
     @WithMockUser(username = "testuser")
     void testDeleteDebt() throws Exception {
         //given
-        given(debtService.deleteDebt(fordDebtDTO, "testuser")).willReturn(true);
+        given(debtService.deleteDebt(Collections.singletonList(fordDebtDTO), "testuser")).willReturn(Collections.singletonList(fordDebt));
 
         //when
         mvc.perform(MockMvcRequestBuilders.delete("/api/v1/debt/userdebt")
                 .accept(MediaType.APPLICATION_JSON)
                 .characterEncoding("utf-8")
-                .content(jsonContentDebt)
+                .content(jsonContentDebtList)
                 .contentType(MediaType.APPLICATION_JSON))
                 //then
                 .andExpect(status().isOk())
@@ -175,17 +178,17 @@ class DebtControllerTest {
     @WithMockUser(username = "testuser")
     void testDeleteDebtUnsuccessful() throws Exception {
         //given
-        given(debtService.deleteDebt(fordDebtDTO, "testuser")).willReturn(false);
+        given(debtService.deleteDebt(Collections.singletonList(fordDebtDTO), "testuser")).willReturn(Collections.emptyList());
 
         //when
         mvc.perform(MockMvcRequestBuilders.delete("/api/v1/debt/userdebt")
                 .accept(MediaType.APPLICATION_JSON)
                 .characterEncoding("utf-8")
-                .content(jsonContentDebt)
+                .content(jsonContentDebtList)
                 .contentType(MediaType.APPLICATION_JSON))
                 //then
                 .andExpect(status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.content().string("Cannot delete debt"))
+                .andExpect(MockMvcResultMatchers.content().string("Failed to delete debts"))
                 .andDo(print())
                 .andReturn();
     }

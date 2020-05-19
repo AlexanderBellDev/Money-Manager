@@ -111,34 +111,34 @@ class DebtServiceTest {
 
 
         //when
-        boolean deleteDebtResult = debtService.deleteDebt(debtDTO, "alex1234");
+        List<Debt> deleteDebtResult = debtService.deleteDebt(Collections.singletonList(debtDTO), "alex1234");
 
         //then
         then(debtRepository).should(times(1)).findById(debt.getId());
-        then(debtRepository).should(times(1)).delete(debt);
-        assertTrue(deleteDebtResult);
+        then(debtRepository).should(times(1)).deleteAll(Collections.singletonList(debt));
+        assertFalse(deleteDebtResult.isEmpty());
     }
 
     @Test
     void deleteDebtInvalidDebt() {
         given(debtRepository.findById(1L)).willReturn(Optional.ofNullable(debtWithAlternateUsername));
         //when
-        boolean deleteDebtResult = debtService.deleteDebt(debtDTO, "alex1234");
+        List<Debt> deleteDebtResult = debtService.deleteDebt(Collections.singletonList(debtDTO), "alex1234");
 
         //then
         then(debtRepository).should(times(1)).findById(debtWithAlternateUsername.getId());
         then(debtRepository).should(times(0)).delete(any());
-        assertFalse(deleteDebtResult);
+        assertTrue(deleteDebtResult.isEmpty());
     }
 
     @Test
     void deleteDebtDoesntExist() {
         //when
-        boolean deleteDebtResult = debtService.deleteDebt(debtDTO, "alex1234");
+        List<Debt> deleteDebtResult = debtService.deleteDebt(Collections.singletonList(debtDTO), "alex1234");
 
         //then
         then(debtRepository).should(times(1)).findById(debtWithAlternateUsername.getId());
         then(debtRepository).should(times(0)).delete(any());
-        assertFalse(deleteDebtResult);
+        assertTrue(deleteDebtResult.isEmpty());
     }
 }
