@@ -61,6 +61,8 @@ class DebtControllerTest {
     String jsonContentDebt;
     String jsonContentDebtMalformed;
 
+    DebtDTO fordDebtDTO;
+
     @BeforeEach
     void setUp() throws JsonProcessingException {
         user = User.builder()
@@ -74,7 +76,7 @@ class DebtControllerTest {
         Debt fordDebt = new Debt(1L, "Ford", BigInteger.valueOf(10), LocalDate.now(), user);
         debtList = Collections.singletonList(fordDebt);
 
-        DebtDTO fordDebtDTO = new DebtDTO("ford", BigInteger.valueOf(10), LocalDate.now());
+        fordDebtDTO = new DebtDTO("ford", BigInteger.valueOf(10), LocalDate.now(), 1L);
 
         DebtDTO fordDebtDTOMalformed = DebtDTO.builder()
                 .amount(BigInteger.valueOf(10))
@@ -91,7 +93,7 @@ class DebtControllerTest {
 
     @Test
     @WithMockUser(username = "admin")
-    void getUserDebtNoData() throws Exception {
+    void testGetUserDebtNoData() throws Exception {
         //given
 
         //when
@@ -104,10 +106,10 @@ class DebtControllerTest {
 
     @Test
     @WithMockUser(username = "testuser")
-    void getUserDebtMatchingData() throws Exception {
+    void testGetUserDebtMatchingData() throws Exception {
         //given
         given(debtService.getAllDebtsByUser("testuser")).willReturn(debtList);
-        List<DebtDTO> debtDTOList = Collections.singletonList(new DebtDTO("Ford", BigInteger.valueOf(10), LocalDate.now()));
+        List<DebtDTO> debtDTOList = Collections.singletonList(new DebtDTO("Ford", BigInteger.valueOf(10), LocalDate.now(), 1L));
 
         //when
         mvc.perform(get("/api/v1/debt/userdebt")
@@ -121,7 +123,7 @@ class DebtControllerTest {
 
     @Test
     @WithMockUser(username = "testuser")
-    void saveUserDebt() throws Exception {
+    void testSaveUserDebt() throws Exception {
         //when
         mvc.perform(MockMvcRequestBuilders.post("/api/v1/debt/userdebt")
                 .accept(MediaType.APPLICATION_JSON)
@@ -136,7 +138,7 @@ class DebtControllerTest {
 
     @Test
     @WithMockUser(username = "testuser")
-    void saveUserDebtMalformedObject() throws Exception {
+    void testSaveUserDebtMalformedObject() throws Exception {
         //when
         mvc.perform(MockMvcRequestBuilders.post("/api/v1/debt/userdebt")
                 .accept(MediaType.APPLICATION_JSON)
@@ -150,5 +152,41 @@ class DebtControllerTest {
                 .andReturn();
     }
 
+    @Test
+    @WithMockUser(username = "testuser")
+    void testDeleteDebt() throws Exception {
+        //given
+        given(debtService.deleteDebt(fordDebtDTO, "testuser")).willReturn(true);
 
+        //when
+        mvc.perform(MockMvcRequestBuilders.delete("/api/v1/debt/userdebt")
+                .accept(MediaType.APPLICATION_JSON)
+                .characterEncoding("utf-8")
+                .content(jsonContentDebt)
+                .contentType(MediaType.APPLICATION_JSON))
+                //then
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string("Debt deleted"))
+                .andDo(print())
+                .andReturn();
+    }
+
+    @Test
+    @WithMockUser(username = "testuser")
+    void testDeleteDebtUnsuccessful() throws Exception {
+        //given
+        given(debtService.deleteDebt(fordDebtDTO, "testuser")).willReturn(false);
+
+        //when
+        mvc.perform(MockMvcRequestBuilders.delete("/api/v1/debt/userdebt")
+                .accept(MediaType.APPLICATION_JSON)
+                .characterEncoding("utf-8")
+                .content(jsonContentDebt)
+                .contentType(MediaType.APPLICATION_JSON))
+                //then
+                .andExpect(status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().string("Cannot delete debt"))
+                .andDo(print())
+                .andReturn();
+    }
 }

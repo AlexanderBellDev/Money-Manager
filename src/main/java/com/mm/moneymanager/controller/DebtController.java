@@ -46,4 +46,13 @@ public class DebtController {
         return ResponseEntity.created(location).body("Debt saved");
     }
 
+    @DeleteMapping("/userdebt")
+    @Secured("ROLE_USER")
+    public ResponseEntity<?> deleteUserDebt(Principal principal, @Valid @RequestBody DebtDTO debtDTO) {
+        if (!debtService.deleteDebt(debtDTO, principal.getName())) {
+            return ResponseEntity.badRequest().body("Cannot delete debt");
+        }
+        return ResponseEntity.ok().body("Debt deleted");
+    }
+
 }

@@ -9,4 +9,6 @@ public interface DebtService {
     List<Debt> getAllDebtsByUser(String username);
 
     Debt saveDebt(DebtDTO debtDTO, String username);
+
+    boolean deleteDebt(DebtDTO debtDTO, String username);
 }
