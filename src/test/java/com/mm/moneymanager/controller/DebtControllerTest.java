@@ -173,7 +173,7 @@ class DebtControllerTest {
 
     @Test
     @WithMockUser(username = "testuser")
-    void testDeleteDebtUnsuccesful() throws Exception {
+    void testDeleteDebtUnsuccessful() throws Exception {
         //given
         given(debtService.deleteDebt(fordDebtDTO, "testuser")).willReturn(false);
 

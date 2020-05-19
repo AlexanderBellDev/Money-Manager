@@ -122,8 +122,17 @@ class DebtServiceTest {
     @Test
     void deleteDebtInvalidDebt() {
         given(debtRepository.findById(1L)).willReturn(Optional.ofNullable(debtWithAlternateUsername));
+        //when
+        boolean deleteDebtResult = debtService.deleteDebt(debtDTO, "alex1234");
 
+        //then
+        then(debtRepository).should(times(1)).findById(debtWithAlternateUsername.getId());
+        then(debtRepository).should(times(0)).delete(any());
+        assertFalse(deleteDebtResult);
+    }
 
+    @Test
+    void deleteDebtDoesntExist() {
         //when
         boolean deleteDebtResult = debtService.deleteDebt(debtDTO, "alex1234");
 
