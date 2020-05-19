@@ -17,4 +17,9 @@ export class DebtService {
   postDebt(body: Debt) {
     return this.http.post(`${environment.API_URL}/api/v1/debt/userdebt`, body, {responseType: 'text'})
   }
+
+
+  deleteDebt(id: number) {
+    return this.http.delete(`${environment.API_URL}/api/v1/debt/userdebt/${id}`, {responseType: 'text'})
+  }
 }

@@ -156,10 +156,10 @@ class DebtControllerTest {
     @WithMockUser(username = "testuser")
     void testDeleteDebt() throws Exception {
         //given
-        given(debtService.deleteDebt(fordDebtDTO, "testuser")).willReturn(true);
+        given(debtService.deleteDebt(fordDebtDTO.getId(), "testuser")).willReturn(true);
 
         //when
-        mvc.perform(MockMvcRequestBuilders.delete("/api/v1/debt/userdebt")
+        mvc.perform(MockMvcRequestBuilders.delete("/api/v1/debt/userdebt/" + fordDebtDTO.getId())
                 .accept(MediaType.APPLICATION_JSON)
                 .characterEncoding("utf-8")
                 .content(jsonContentDebt)
@@ -175,10 +175,10 @@ class DebtControllerTest {
     @WithMockUser(username = "testuser")
     void testDeleteDebtUnsuccessful() throws Exception {
         //given
-        given(debtService.deleteDebt(fordDebtDTO, "testuser")).willReturn(false);
+        given(debtService.deleteDebt(fordDebtDTO.getId(), "testuser")).willReturn(false);
 
         //when
-        mvc.perform(MockMvcRequestBuilders.delete("/api/v1/debt/userdebt")
+        mvc.perform(MockMvcRequestBuilders.delete("/api/v1/debt/userdebt/" + fordDebtDTO.getId())
                 .accept(MediaType.APPLICATION_JSON)
                 .characterEncoding("utf-8")
                 .content(jsonContentDebt)

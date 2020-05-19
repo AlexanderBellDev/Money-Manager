@@ -36,8 +36,8 @@ public class DebtServiceImpl implements DebtService {
     }
 
     @Override
-    public boolean deleteDebt(DebtDTO debtDTO, String username) {
-        Optional<Debt> findDebtById = debtRepository.findById(debtDTO.getId());
+    public boolean deleteDebt(Long debtToDeleteID, String username) {
+        Optional<Debt> findDebtById = debtRepository.findById(debtToDeleteID);
         if (findDebtById.isPresent()) {
             if (findDebtById.get().getUser().getUsername().equals(username)) {
                 debtRepository.delete(findDebtById.get());

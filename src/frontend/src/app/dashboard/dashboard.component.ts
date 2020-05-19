@@ -103,6 +103,16 @@ export class DashboardComponent implements OnInit {
 
   deleteDebts() {
     console.log(this.selection.selected)
+    this.selection.selected.forEach(value => {
+      this.debtService.deleteDebt(value.id).subscribe(() => {
+        const index = this.debts.indexOf(value);
+        console.log(index)
+        this.debts.splice(index, 1)
+        this.dataSource = [...this.debts];
+      }, error => {
+        console.log('Couldn\'t delete item' + error);
+      })
+    })
   }
 
   removeColumn() {
