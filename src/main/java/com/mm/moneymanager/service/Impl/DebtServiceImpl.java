@@ -58,6 +58,8 @@ public class DebtServiceImpl implements DebtService {
         if (findDebtById.isPresent()) {
             if (findDebtById.get().getUser().getUsername().equals(username)) {
                 Debt debt = modelMapper.map(debtDTO, Debt.class);
+                Optional<User> principalUser = userRepository.findByUsername(username);
+                principalUser.ifPresent(debt::setUser);
                 debtRepository.save(debt);
                 return true;
             }

@@ -34,7 +34,7 @@ import {animate, style, transition, trigger} from "@angular/animations";
 export class DashboardComponent implements OnInit {
   debts: Debt[] = [];
 
-  displayedColumns: string[] = ['company', 'amount', 'dueDate', 'details', 'update'];
+  displayedColumns: string[] = ['company', 'amount', 'dueDate', 'details'];
   selection = new SelectionModel<Debt>(true, []);
   dataSource: Debt[];
 
@@ -55,15 +55,18 @@ export class DashboardComponent implements OnInit {
   constructor(private debtService: DebtService, public dialog: MatDialog) {
   }
 
-  openAddDebtDialog(): void {
+  openAddDebtDialog(debt: any): void {
     const dialogRef = this.dialog.open(AddDebtDialogComponent, {
       width: '300px',
-      height: '365px'
+      height: '365px',
+      data: debt
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.debts.push(result)
-      this.dataSource = [...this.debts];
+      if (result != null) {
+        this.debts.push(result)
+        this.dataSource = [...this.debts];
+      }
     }, error => {
       console.log('error!' + error)
     });
@@ -121,4 +124,5 @@ export class DashboardComponent implements OnInit {
       this.displayedColumns.splice(0, 1);
     }
   }
+
 }

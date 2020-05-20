@@ -16,7 +16,7 @@
   <button (click)="toggleDeleteDebt()" aria-label="Edit" mat-icon-button>
     <mat-icon class="mat-18" matTooltip="Edit debts">create</mat-icon>
   </button>
-  <button (click)="openAddDebtDialog()" aria-label="Edit" mat-icon-button>
+  <button (click)="openAddDebtDialog(null)" aria-label="Edit" mat-icon-button>
     <mat-icon class="mat-18" matTooltip="Add new debt">note_add</mat-icon>
   </button>
 </div>
@@ -49,7 +49,7 @@
     <!-- Item Column -->
     <ng-container matColumnDef="company">
       <th *matHeaderCellDef mat-header-cell style="text-align: center"> Company</th>
-      <td *matCellDef="let debt" mat-cell style="text-align: left; width: 50%">
+      <td (click)="openAddDebtDialog(debt)" *matCellDef="let debt" mat-cell style="text-align: left; width: 50%">
         {{debt.company}}
       </td>
       <td *matFooterCellDef mat-footer-cell> Total</td>
