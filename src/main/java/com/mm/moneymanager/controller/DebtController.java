@@ -59,4 +59,17 @@ public class DebtController {
         return ResponseEntity.ok().body("Debt deleted");
     }
 
+    @PutMapping("/userdebt/{idToUpdate}")
+    @Secured("ROLE_USER")
+    public ResponseEntity<?> updateUserDebt(Principal principal, @PathVariable Long idToUpdate, @Valid @RequestBody DebtDTO debtDTO) {
+        if (!debtService.verifyDebtExists(idToUpdate)) {
+            return ResponseEntity.notFound().build();
+        }
+
+        if (!debtService.updateDebt(debtDTO, idToUpdate, principal.getName())) {
+            return ResponseEntity.badRequest().body("Cannot update debt");
+        }
+        return ResponseEntity.ok().body("Debt updated");
+    }
+
 }

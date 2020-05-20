@@ -52,4 +52,17 @@ public class DebtServiceImpl implements DebtService {
         return debtRepository.findById(id).isPresent();
     }
 
+    @Override
+    public boolean updateDebt(DebtDTO debtDTO, Long id, String username) {
+        Optional<Debt> findDebtById = debtRepository.findById(debtDTO.getId());
+        if (findDebtById.isPresent()) {
+            if (findDebtById.get().getUser().getUsername().equals(username)) {
+                Debt debt = modelMapper.map(debtDTO, Debt.class);
+                debtRepository.save(debt);
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

@@ -57,7 +57,7 @@ class DebtServiceTest {
     @BeforeEach
     void beforeEach() {
         roleSet.add(new Role(1L, RoleName.ROLE_USER));
-        user = new User(1L, "alex1234", "alex", "smith", "alex@alex.com", "password", roleSet, debtSet);
+        user = new User(1L, "test1234", "alex", "smith", "alex@alex.com", "password", roleSet, debtSet);
         user2 = new User(1L, "bob9999", "Bob", "jim", "bob@bobs.com", "password", roleSet, debtSet);
 
         debt = new Debt(1L, "Ford", BigInteger.valueOf(10), LocalDate.now(), user);
@@ -77,9 +77,9 @@ class DebtServiceTest {
         given(debtRepository.findAllByUser_Username(user.getUsername())).willReturn(debtList);
 
         //when
-        List<Debt> allDebtsByUsername = debtService.getAllDebtsByUser("alex1234");
+        List<Debt> allDebtsByUsername = debtService.getAllDebtsByUser("test1234");
 
-        assertEquals("alex1234", allDebtsByUsername.get(0).getUser().getUsername());
+        assertEquals("test1234", allDebtsByUsername.get(0).getUser().getUsername());
         then(debtRepository).should(times(1)).findAllByUser_Username(user.getUsername());
     }
 
@@ -97,7 +97,7 @@ class DebtServiceTest {
         given(debtRepository.save(debt)).willReturn(expectedDebt);
 
         //when
-        Debt actualDebt = debtService.saveDebt(debtDTO, "alex1234");
+        Debt actualDebt = debtService.saveDebt(debtDTO, "test1234");
 
         //then
         assertEquals(expectedDebt, actualDebt);
@@ -111,7 +111,7 @@ class DebtServiceTest {
 
 
         //when
-        boolean deleteDebtResult = debtService.deleteDebt(debtDTO.getId(), "alex1234");
+        boolean deleteDebtResult = debtService.deleteDebt(debtDTO.getId(), "test1234");
 
         //then
         then(debtRepository).should(times(1)).findById(debt.getId());
@@ -123,7 +123,7 @@ class DebtServiceTest {
     void testDeleteDebtInvalidDebt() {
         given(debtRepository.findById(1L)).willReturn(Optional.ofNullable(debtWithAlternateUsername));
         //when
-        boolean deleteDebtResult = debtService.deleteDebt(debtDTO.getId(), "alex1234");
+        boolean deleteDebtResult = debtService.deleteDebt(debtDTO.getId(), "test1234");
 
         //then
         then(debtRepository).should(times(1)).findById(debtWithAlternateUsername.getId());
@@ -152,5 +152,19 @@ class DebtServiceTest {
         //then
         then(debtRepository).should(times(1)).findById(debtWithAlternateUsername.getId());
         assertTrue(deleteDebtResult);
+    }
+
+    @Test
+    void testUpdateDebt() {
+        //given
+        given(debtRepository.findById(debtDTO.getId())).willReturn(Optional.ofNullable(debt));
+        given(modelMapper.map(debtDTO, Debt.class)).willReturn(debt);
+
+        boolean updateDebtResult = debtService.updateDebt(debtDTO, debtDTO.getId(), "test1234");
+
+        //then
+        then(debtRepository).should(times(1)).findById(debtDTO.getId());
+        then(debtRepository).should(times(1)).save(debt);
+        assertTrue(updateDebtResult);
     }
 }
