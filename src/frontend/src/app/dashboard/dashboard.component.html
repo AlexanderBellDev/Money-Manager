@@ -22,7 +22,8 @@
 </div>
 
 <div>
-  <table [dataSource]="dataSource" class="mat-elevation-z3" mat-table style="text-align: center;">
+  <table [dataSource]="dataSource" class="mat-elevation-z3" mat-table matSort matSortActive="amount"
+         matSortDirection="desc" style="text-align: center;">
     <!-- Checkbox Column -->
     <ng-container matColumnDef="select">
       <th *matHeaderCellDef mat-header-cell style="width: 5%; ; padding-left: 1px; text-align: center">
@@ -49,7 +50,7 @@
     <!-- Item Column -->
     <ng-container matColumnDef="company">
       <th *matHeaderCellDef mat-header-cell style="text-align: center"> Company</th>
-      <td (click)="openAddDebtDialog(debt)" *matCellDef="let debt" mat-cell style="text-align: left; width: 50%">
+      <td (click)="openEditDebtDialog(debt)" *matCellDef="let debt" mat-cell style="text-align: left; width: 50%">
         {{debt.company}}
       </td>
       <td *matFooterCellDef mat-footer-cell> Total</td>

@@ -1,10 +1,12 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Debt} from "../model/debt";
 import {DebtService} from "../service/debt.service";
 import {MatDialog} from "@angular/material/dialog";
 import {AddDebtDialogComponent} from "../add-debt-dialog/add-debt-dialog.component";
 import {SelectionModel} from "@angular/cdk/collections";
 import {animate, style, transition, trigger} from "@angular/animations";
+import {MatSort} from "@angular/material/sort";
+import {MatTableDataSource} from "@angular/material/table";
 
 @Component({
   selector: 'app-dashboard',
@@ -36,13 +38,15 @@ export class DashboardComponent implements OnInit {
 
   displayedColumns: string[] = ['company', 'amount', 'dueDate', 'details'];
   selection = new SelectionModel<Debt>(true, []);
-  dataSource: Debt[];
+  dataSource = new MatTableDataSource(this.debts);
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
 
 
   ngOnInit(): void {
     this.debtService.retrieveDebts().subscribe(value => {
       this.debts = value
-      this.dataSource = [...this.debts];
+      this.dataSource.data = [...this.debts];
+      this.dataSource.sort = this.sort;
     })
   }
 
@@ -55,6 +59,26 @@ export class DashboardComponent implements OnInit {
   constructor(private debtService: DebtService, public dialog: MatDialog) {
   }
 
+  openEditDebtDialog(debt: any): void {
+    const dialogRef = this.dialog.open(AddDebtDialogComponent, {
+      width: '300px',
+      height: '365px',
+      data: debt
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result != null) {
+        let foundDebt = this.debts.find(value => value.id === debt.id);
+        let number = this.debts.indexOf(foundDebt);
+        this.debts.splice(number, 1)
+        this.debts.push(result)
+        this.dataSource.data = [...this.debts];
+      }
+    }, error => {
+      console.log('error!' + error)
+    });
+  }
+
   openAddDebtDialog(debt: any): void {
     const dialogRef = this.dialog.open(AddDebtDialogComponent, {
       width: '300px',
@@ -65,7 +89,7 @@ export class DashboardComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result != null) {
         this.debts.push(result)
-        this.dataSource = [...this.debts];
+        this.dataSource.data = [...this.debts];
       }
     }, error => {
       console.log('error!' + error)
@@ -111,7 +135,7 @@ export class DashboardComponent implements OnInit {
         const index = this.debts.indexOf(value);
         console.log(index)
         this.debts.splice(index, 1)
-        this.dataSource = [...this.debts];
+        this.dataSource.data = [...this.debts];
       }, error => {
         console.log('Couldn\'t delete item' + error);
       })
