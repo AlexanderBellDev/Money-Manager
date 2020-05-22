@@ -1,6 +1,6 @@
 package com.mm.moneymanager.model.debt;
 
-import com.mm.moneymanager.model.Audit.DateAudit;
+import com.mm.moneymanager.model.Audit.UserDateAudit;
 import com.mm.moneymanager.model.user.User;
 import lombok.*;
 
@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Debt extends DateAudit {
+public class Debt extends UserDateAudit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
