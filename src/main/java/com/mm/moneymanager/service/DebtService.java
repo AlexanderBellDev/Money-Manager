@@ -13,4 +13,6 @@ public interface DebtService {
     boolean deleteDebt(Long debtToDeleteID, String username);
 
     boolean verifyDebtExists(Long id);
+
+    boolean updateDebt(DebtDTO debtDTO, Long id, String username);
 }

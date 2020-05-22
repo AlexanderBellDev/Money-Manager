@@ -66,7 +66,7 @@ class AuthControllerTest {
                 .firstName("alex")
                 .surname("test")
                 .password("password")
-                .username("alex1234")
+                .username("test1234")
                 .build();
 
         mapper = new ObjectMapper();

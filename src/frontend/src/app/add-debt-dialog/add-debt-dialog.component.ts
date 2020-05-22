@@ -10,7 +10,7 @@ import {DebtService} from "../service/debt.service";
 })
 export class AddDebtDialogComponent implements OnInit {
   debtForm = this.formBuilder.group({
-    id: ['', [Validators.required]],
+    id: [''],
     amount: ['', [Validators.required]],
     company: ['', [Validators.required]],
     dueDate: ['', [Validators.required]]
@@ -28,11 +28,26 @@ export class AddDebtDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (this.data != null) {
+      this.debtForm.patchValue({
+        id: this.data.id,
+        amount: this.data.amount,
+        company: this.data.company,
+        dueDate: this.data.dueDate
+      });
+    }
   }
 
   saveDebt() {
+    if (this.data != null) {
+      console.log('putting data')
+      this.debtService.putDebt(this.data.id, this.debtForm.value).subscribe(() => {
+        this.closeDialog()
+      })
+    }
+
     this.debtService.postDebt(this.debtForm.value).subscribe(() => {
-      this.dialogRef.close(this.debtForm.value);
+      this.closeDialog()
     }, error => {
       console.log(error)
     })
@@ -40,5 +55,13 @@ export class AddDebtDialogComponent implements OnInit {
 
   resetDebtForm() {
     this.debtForm.reset();
+  }
+
+  closeDialog() {
+    if (this.debtForm.value != null) {
+      this.dialogRef.close(this.debtForm.value);
+    } else {
+      this.dialogRef.close();
+    }
   }
 }
