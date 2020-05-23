@@ -20,12 +20,10 @@
 
 
     <li *ngIf="loginService.isUserLoggedIn()" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-      <label for="btn-1" class="show">User Dashboard +</label>
-      <a href="#">User Dashboard</a>
-      <input type="checkbox" id="btn-1">
+      <a [routerLink]="['/dashboard']">User Dashboard</a>
       <ul>
         <li><a href="#">Income</a></li>
-        <li><a href="#">Debts</a></li>
+        <li><a href="">Debts</a></li>
         <li><a href="#">Savings</a></li>
       </ul>
 
