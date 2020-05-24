@@ -3,6 +3,7 @@
 </div>
 
 <div style="margin-left: 2%">
+  <p *ngIf="debts.length==0">Currently you are tracking <strong>{{debts.length}}</strong> debts</p>
   <p *ngIf="debts.length>1">Currently you are tracking <strong>{{debts.length}}</strong> debts</p>
   <p *ngIf="debts.length==1">Currently you are tracking <strong>{{debts.length}}</strong> debt</p>
 </div>

@@ -42,21 +42,27 @@ export class DashboardComponent implements OnInit {
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
 
-  ngOnInit(): void {
-    this.debtService.retrieveDebts().subscribe(value => {
-      this.debts = value
-      this.dataSource.data = [...this.debts];
-      this.dataSource.sort = this.sort;
-    })
+  deleteSelected: boolean = false;
+
+  constructor(private debtService: DebtService, public dialog: MatDialog) {
+
   }
 
   getTotalCost() {
     return this.debts.map(t => t.amount).reduce((acc, value) => acc + value, 0);
   }
 
-  deleteSelected: boolean = false;
+  ngOnInit(): void {
+    this.debtService.retrieveDebts().subscribe(value => {
 
-  constructor(private debtService: DebtService, public dialog: MatDialog) {
+      if (value != null) {
+        this.debts = value
+      }
+      if (this.debts.length != 0) {
+        this.dataSource.data = [...this.debts];
+        this.dataSource.sort = this.sort;
+      }
+    })
   }
 
   openEditDebtDialog(debt: any): void {
@@ -88,8 +94,10 @@ export class DashboardComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result != null) {
-        this.debts.push(result)
-        this.dataSource.data = [...this.debts];
+        if (this.debts != null) {
+          this.debts.push(result)
+          this.dataSource.data = [...this.debts];
+        }
       }
     }, error => {
       console.log('error!' + error)
@@ -99,7 +107,6 @@ export class DashboardComponent implements OnInit {
   toggleDeleteDebt() {
     this.deleteSelected = !this.deleteSelected;
     if (this.displayedColumns.includes('select')) {
-      //  this.displayedColumns.splice(0,1);
     } else {
       this.displayedColumns.unshift('select')
     }
@@ -136,6 +143,7 @@ export class DashboardComponent implements OnInit {
         console.log(index)
         this.debts.splice(index, 1)
         this.dataSource.data = [...this.debts];
+        this.toggleDeleteDebt();
       }, error => {
         console.log('Couldn\'t delete item' + error);
       })
