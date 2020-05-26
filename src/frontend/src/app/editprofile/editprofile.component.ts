@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {FormBuilder, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-editprofile',
@@ -6,11 +7,19 @@ import {Component, OnInit} from '@angular/core';
   styleUrls: ['./editprofile.component.css']
 })
 export class EditprofileComponent implements OnInit {
+  userForm = this.formBuilder.group({
+    id: [''],
+    firstName: ['Alex', [Validators.required]],
+    lastName: ['Test', [Validators.required]],
+    username: ['alex1234', [Validators.required]],
+    password: ['', Validators.required]
+  })
 
-  constructor() {
+  constructor(private formBuilder: FormBuilder) {
   }
 
   ngOnInit(): void {
+
   }
 
 }
