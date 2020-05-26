@@ -26,6 +26,7 @@ import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatNativeDateModule} from "@angular/material/core";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatSortModule} from "@angular/material/sort";
+import {EditprofileComponent} from './editprofile/editprofile.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import {MatSortModule} from "@angular/material/sort";
     DashboardComponent,
     LogoutComponent,
     AddDebtDialogComponent,
+    EditprofileComponent,
 
   ],
   imports: [
