@@ -4,6 +4,7 @@ import com.mm.moneymanager.model.Role;
 import com.mm.moneymanager.model.RoleName;
 import com.mm.moneymanager.model.debt.Debt;
 import com.mm.moneymanager.model.user.User;
+import com.mm.moneymanager.model.user.UserDTO;
 import com.mm.moneymanager.model.user.UserLogin;
 import com.mm.moneymanager.repository.RoleRepository;
 import com.mm.moneymanager.repository.UserRepository;
@@ -15,6 +16,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -53,10 +55,15 @@ class UserServiceTest {
     @Mock
     JwtTokenProvider jwtTokenProvider;
 
+    @Mock
+    ModelMapper modelMapper;
+
     Set<Role> roleSet = new HashSet<>();
     Set<Debt> debtSet = new HashSet<>();
 
     User user;
+
+    UserDTO userDTO;
 
     @BeforeEach
     void beforeEach() {
@@ -64,6 +71,8 @@ class UserServiceTest {
         debtSet.add(new Debt());
 
         user = new User(1L, "test1234", "alex", "smith", "alex@alex.com", "password", roleSet, debtSet);
+
+        userDTO = new UserDTO("test1234", "alex", "smith", "alex@alex.com");
     }
 
     @Test
@@ -174,11 +183,23 @@ class UserServiceTest {
         String returnedToken = userService.login(loginRequest);
 
 
-      assertEquals("12345",returnedToken);
+        assertEquals("12345", returnedToken);
 
         then(authenticationManager).should(times(2)).authenticate(any());
         then(jwtTokenProvider).should(times(1)).generateToken(authentication);
     }
 
+    @Test
+    void testReturnUserDetails() {
+        //given
+        given(userRepository.findByUsername(user.getUsername())).willReturn(Optional.ofNullable(user));
+        given(modelMapper.map(user, UserDTO.class)).willReturn(userDTO);
 
+        //when
+        UserDTO returnUserDto = userService.returnUser(user.getUsername());
+
+        //then
+        assertEquals(user.getEmail(), returnUserDto.getEmail(), "email doesnt match");
+        then(userRepository).should(times(1)).findByUsername(user.getUsername());
+    }
 }

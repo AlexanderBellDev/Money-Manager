@@ -4,15 +4,15 @@ package com.mm.moneymanager.service.Impl;
 import com.mm.moneymanager.exception.AppException;
 import com.mm.moneymanager.model.Role;
 import com.mm.moneymanager.model.RoleName;
+import com.mm.moneymanager.model.user.User;
+import com.mm.moneymanager.model.user.UserDTO;
 import com.mm.moneymanager.model.user.UserLogin;
-import com.mm.moneymanager.payload.JwtAuthenticationResponse;
 import com.mm.moneymanager.repository.RoleRepository;
+import com.mm.moneymanager.repository.UserRepository;
 import com.mm.moneymanager.security.JwtTokenProvider;
 import com.mm.moneymanager.service.UserService;
-import com.mm.moneymanager.model.user.User;
-import com.mm.moneymanager.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
+import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +33,7 @@ public class UserServiceImpl implements UserService {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider tokenProvider;
     private final RoleRepository roleRepository;
+    private final ModelMapper modelMapper;
 
 
     @Transactional(readOnly = true)
@@ -79,6 +81,12 @@ public class UserServiceImpl implements UserService {
 
         return tokenProvider.generateToken(authentication);
 
+    }
+
+    @Override
+    public UserDTO returnUser(String username) {
+        Optional<User> findUserByUsername = userRepository.findByUsername(username);
+        return findUserByUsername.map(user -> modelMapper.map(user, UserDTO.class)).orElse(null);
     }
 
 }
