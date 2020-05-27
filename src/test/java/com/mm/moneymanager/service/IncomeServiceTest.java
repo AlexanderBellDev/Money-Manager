@@ -66,7 +66,7 @@ public class IncomeServiceTest {
         incomeSet.add(income);
         incomes = Collections.singletonList(income);
 
-        incomeDTO = new IncomeDTO(BigDecimal.valueOf(1000.00), "Ford", true, 3, 1l);
+        incomeDTO = new IncomeDTO(BigDecimal.valueOf(1000.00), "Ford", true, 3, 1L);
 
     }
 
