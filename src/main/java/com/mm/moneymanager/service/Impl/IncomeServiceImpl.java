@@ -47,9 +47,11 @@ public class IncomeServiceImpl implements IncomeService {
     @Override
     public boolean deleteIncome(IncomeDTO incomeDTO, String username) {
         Optional<Income> optionalIncome = incomeRepository.findById(incomeDTO.getId());
-        if (optionalIncome.isPresent() && optionalIncome.get().getUser().getUsername().equals(username)) {
-            optionalIncome.get().setIncomeArchived(true);
-            return optionalIncome.get().getIncomeArchived();
+        if (optionalIncome.isPresent()){
+            if (optionalIncome.get().getUser().getUsername().equals(username)) {
+                optionalIncome.get().setIncomeArchived(true);
+                return optionalIncome.get().getIncomeArchived();
+            }
         }
         return false;
     }
@@ -57,12 +59,14 @@ public class IncomeServiceImpl implements IncomeService {
     @Override
     public boolean deleteIncomeRecurrence(IncomeDTO incomeDTO, String username) {
         Optional<Income> optionalIncome = incomeRepository.findById(incomeDTO.getId());
-        if (optionalIncome.isPresent() && optionalIncome.get().getUser().getUsername().equals(username)) {
-            Income selectedIncome = optionalIncome.get();
-            selectedIncome.setRecurringIncome(false);
-            selectedIncome.setDurationOfRecurrence(null);
-            incomeRepository.save(selectedIncome);
-            return true;
+        if (optionalIncome.isPresent()){
+            if (optionalIncome.get().getUser().getUsername().equals(username)) {
+                Income selectedIncome = optionalIncome.get();
+                selectedIncome.setRecurringIncome(false);
+                selectedIncome.setDurationOfRecurrence(null);
+                incomeRepository.save(selectedIncome);
+                return true;
+            }
         }
         return false;
     }
