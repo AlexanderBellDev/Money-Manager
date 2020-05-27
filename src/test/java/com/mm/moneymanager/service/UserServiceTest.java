@@ -62,8 +62,8 @@ class UserServiceTest {
     void beforeEach() {
         roleSet.add(new Role(1L, RoleName.ROLE_USER));
         debtSet.add(new Debt());
+        user = new User(1L, "alex1234", "alex", "smith", "alex@alex.com", "password", roleSet, debtSet, null);
 
-        user = new User(1L, "test1234", "alex", "smith", "alex@alex.com", "password", roleSet, debtSet);
     }
 
     @Test
