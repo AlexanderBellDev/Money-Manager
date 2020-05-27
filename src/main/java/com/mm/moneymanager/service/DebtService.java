@@ -10,5 +10,9 @@ public interface DebtService {
 
     Debt saveDebt(DebtDTO debtDTO, String username);
 
-    boolean deleteDebt(DebtDTO debtDTO, String username);
+    boolean deleteDebt(Long debtToDeleteID, String username);
+
+    boolean verifyDebtExists(Long id);
+
+    boolean updateDebt(DebtDTO debtDTO, Long id, String username);
 }

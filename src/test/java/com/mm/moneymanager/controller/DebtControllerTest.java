@@ -70,7 +70,7 @@ class DebtControllerTest {
                 .firstName("alex")
                 .surname("test")
                 .password("password")
-                .username("alex1234")
+                .username("test1234")
                 .build();
 
         Debt fordDebt = new Debt(1L, "Ford", BigInteger.valueOf(10), LocalDate.now(), user);
@@ -124,6 +124,8 @@ class DebtControllerTest {
     @Test
     @WithMockUser(username = "testuser")
     void testSaveUserDebt() throws Exception {
+        //given
+
         //when
         mvc.perform(MockMvcRequestBuilders.post("/api/v1/debt/userdebt")
                 .accept(MediaType.APPLICATION_JSON)
@@ -139,6 +141,8 @@ class DebtControllerTest {
     @Test
     @WithMockUser(username = "testuser")
     void testSaveUserDebtMalformedObject() throws Exception {
+        //given
+
         //when
         mvc.perform(MockMvcRequestBuilders.post("/api/v1/debt/userdebt")
                 .accept(MediaType.APPLICATION_JSON)
@@ -156,10 +160,11 @@ class DebtControllerTest {
     @WithMockUser(username = "testuser")
     void testDeleteDebt() throws Exception {
         //given
-        given(debtService.deleteDebt(fordDebtDTO, "testuser")).willReturn(true);
+        given(debtService.verifyDebtExists(fordDebtDTO.getId())).willReturn(true);
+        given(debtService.deleteDebt(fordDebtDTO.getId(), "testuser")).willReturn(true);
 
         //when
-        mvc.perform(MockMvcRequestBuilders.delete("/api/v1/debt/userdebt")
+        mvc.perform(MockMvcRequestBuilders.delete("/api/v1/debt/userdebt/" + fordDebtDTO.getId())
                 .accept(MediaType.APPLICATION_JSON)
                 .characterEncoding("utf-8")
                 .content(jsonContentDebt)
@@ -175,10 +180,11 @@ class DebtControllerTest {
     @WithMockUser(username = "testuser")
     void testDeleteDebtUnsuccessful() throws Exception {
         //given
-        given(debtService.deleteDebt(fordDebtDTO, "testuser")).willReturn(false);
+        given(debtService.verifyDebtExists(fordDebtDTO.getId())).willReturn(true);
+        given(debtService.deleteDebt(fordDebtDTO.getId(), "testuser")).willReturn(false);
 
         //when
-        mvc.perform(MockMvcRequestBuilders.delete("/api/v1/debt/userdebt")
+        mvc.perform(MockMvcRequestBuilders.delete("/api/v1/debt/userdebt/" + fordDebtDTO.getId())
                 .accept(MediaType.APPLICATION_JSON)
                 .characterEncoding("utf-8")
                 .content(jsonContentDebt)
@@ -189,4 +195,81 @@ class DebtControllerTest {
                 .andDo(print())
                 .andReturn();
     }
+
+    @Test
+    @WithMockUser(username = "testuser")
+    void testDeleteDebtDoesntExist() throws Exception {
+        //given
+        given(debtService.verifyDebtExists(fordDebtDTO.getId())).willReturn(false);
+
+        //when
+        mvc.perform(MockMvcRequestBuilders.delete("/api/v1/debt/userdebt/" + fordDebtDTO.getId())
+                .accept(MediaType.APPLICATION_JSON)
+                .characterEncoding("utf-8")
+                .content(jsonContentDebt)
+                .contentType(MediaType.APPLICATION_JSON))
+                //then
+                .andExpect(status().isNotFound())
+                .andDo(print())
+                .andReturn();
+    }
+
+    @Test
+    @WithMockUser(username = "testuser")
+    void testUpdateDebt() throws Exception {
+        //given
+        given(debtService.verifyDebtExists(fordDebtDTO.getId())).willReturn(true);
+        given(debtService.updateDebt(fordDebtDTO, fordDebtDTO.getId(), "testuser")).willReturn(true);
+
+        //when
+        mvc.perform(MockMvcRequestBuilders.put("/api/v1/debt/userdebt/" + fordDebtDTO.getId())
+                .accept(MediaType.APPLICATION_JSON)
+                .characterEncoding("utf-8")
+                .content(jsonContentDebt)
+                .contentType(MediaType.APPLICATION_JSON))
+                //then
+                .andExpect(status().isOk())
+                //    .andExpect(MockMvcResultMatchers.content().string("Debt deleted"))
+                .andDo(print())
+                .andReturn();
+    }
+
+    @Test
+    @WithMockUser(username = "testuser")
+    void testUpdateDebtDoesntExist() throws Exception {
+        //given
+        given(debtService.verifyDebtExists(fordDebtDTO.getId())).willReturn(false);
+
+        //when
+        mvc.perform(MockMvcRequestBuilders.put("/api/v1/debt/userdebt/" + fordDebtDTO.getId())
+                .accept(MediaType.APPLICATION_JSON)
+                .characterEncoding("utf-8")
+                .content(jsonContentDebt)
+                .contentType(MediaType.APPLICATION_JSON))
+                //then
+                .andExpect(status().isNotFound())
+                .andDo(print())
+                .andReturn();
+    }
+
+    @Test
+    @WithMockUser(username = "testuser")
+    void testUpdateDebtUnsuccessful() throws Exception {
+        //given
+        given(debtService.verifyDebtExists(fordDebtDTO.getId())).willReturn(true);
+        given(debtService.updateDebt(fordDebtDTO, fordDebtDTO.getId(), "testuser")).willReturn(false);
+
+        //when
+        mvc.perform(MockMvcRequestBuilders.put("/api/v1/debt/userdebt/" + fordDebtDTO.getId())
+                .accept(MediaType.APPLICATION_JSON)
+                .characterEncoding("utf-8")
+                .content(jsonContentDebt)
+                .contentType(MediaType.APPLICATION_JSON))
+                //then
+                .andExpect(status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().string("Cannot update debt"))
+                .andDo(print())
+                .andReturn();
+    }
+
 }

@@ -62,8 +62,8 @@ class UserServiceTest {
     void beforeEach() {
         roleSet.add(new Role(1L, RoleName.ROLE_USER));
         debtSet.add(new Debt());
-
         user = new User(1L, "alex1234", "alex", "smith", "alex@alex.com", "password", roleSet, debtSet, null);
+
     }
 
     @Test
@@ -98,10 +98,10 @@ class UserServiceTest {
     @Test
     void testCheckUsernameExistsUsernameMatch() {
         //given
-        given(userRepository.findAllByUsername("alex1234")).willReturn(Collections.singletonList(user));
+        given(userRepository.findAllByUsername("test1234")).willReturn(Collections.singletonList(user));
 
         //when
-        List<String> returnedUsernameList = userService.checkUsernameExists("alex1234");
+        List<String> returnedUsernameList = userService.checkUsernameExists("test1234");
 
         //then
         assertFalse(returnedUsernameList.isEmpty());
@@ -112,10 +112,10 @@ class UserServiceTest {
     @Test
     void testCheckUsernameExistsNoMatch() {
         //given
-        given(userRepository.findAllByUsername("alex1234")).willReturn(Collections.emptyList());
+        given(userRepository.findAllByUsername("test1234")).willReturn(Collections.emptyList());
 
         //when
-        List<String> returnedUsernameList = userService.checkUsernameExists("alex1234");
+        List<String> returnedUsernameList = userService.checkUsernameExists("test1234");
 
         //then
         assertTrue(returnedUsernameList.isEmpty());
@@ -123,7 +123,7 @@ class UserServiceTest {
     }
 
     @Test
-    void registerUserTest() {
+    void testRegisterUser() {
         User userNew = User.builder()
                 .email("alex@alex.com")
                 .firstName("alex")
@@ -151,8 +151,8 @@ class UserServiceTest {
     }
 
     @Test
-    void loginTest() {
-            UserLogin loginRequest = UserLogin.builder()
+    void testLogin() {
+        UserLogin loginRequest = UserLogin.builder()
                 .username("alex")
                 .password("password")
                 .build();

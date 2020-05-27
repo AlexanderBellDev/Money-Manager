@@ -1,10 +1,12 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Debt} from "../model/debt";
 import {DebtService} from "../service/debt.service";
 import {MatDialog} from "@angular/material/dialog";
 import {AddDebtDialogComponent} from "../add-debt-dialog/add-debt-dialog.component";
 import {SelectionModel} from "@angular/cdk/collections";
 import {animate, style, transition, trigger} from "@angular/animations";
+import {MatSort} from "@angular/material/sort";
+import {MatTableDataSource} from "@angular/material/table";
 
 @Component({
   selector: 'app-dashboard',
@@ -34,36 +36,69 @@ import {animate, style, transition, trigger} from "@angular/animations";
 export class DashboardComponent implements OnInit {
   debts: Debt[] = [];
 
-  displayedColumns: string[] = ['company', 'amount', 'dueDate', 'details', 'update'];
+  displayedColumns: string[] = ['company', 'amount', 'dueDate', 'details'];
   selection = new SelectionModel<Debt>(true, []);
-  dataSource: Debt[];
+  dataSource = new MatTableDataSource(this.debts);
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
 
 
-  ngOnInit(): void {
-    this.debtService.retrieveDebts().subscribe(value => {
-      this.debts = value
-      this.dataSource = [...this.debts];
-    })
+  deleteSelected: boolean = false;
+
+  constructor(private debtService: DebtService, public dialog: MatDialog) {
+
   }
 
   getTotalCost() {
     return this.debts.map(t => t.amount).reduce((acc, value) => acc + value, 0);
   }
 
-  deleteSelected: boolean = false;
+  ngOnInit(): void {
+    this.debtService.retrieveDebts().subscribe(value => {
 
-  constructor(private debtService: DebtService, public dialog: MatDialog) {
+      if (value != null) {
+        this.debts = value
+      }
+      if (this.debts.length != 0) {
+        this.dataSource.data = [...this.debts];
+        this.dataSource.sort = this.sort;
+      }
+    })
   }
 
-  openAddDebtDialog(): void {
+  openEditDebtDialog(debt: any): void {
     const dialogRef = this.dialog.open(AddDebtDialogComponent, {
       width: '300px',
-      height: '365px'
+      height: '365px',
+      data: debt
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.debts.push(result)
-      this.dataSource = [...this.debts];
+      if (result != null) {
+        let foundDebt = this.debts.find(value => value.id === debt.id);
+        let number = this.debts.indexOf(foundDebt);
+        this.debts.splice(number, 1)
+        this.debts.push(result)
+        this.dataSource.data = [...this.debts];
+      }
+    }, error => {
+      console.log('error!' + error)
+    });
+  }
+
+  openAddDebtDialog(debt: any): void {
+    const dialogRef = this.dialog.open(AddDebtDialogComponent, {
+      width: '300px',
+      height: '365px',
+      data: debt
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result != null) {
+        if (this.debts != null) {
+          this.debts.push(result)
+          this.dataSource.data = [...this.debts];
+        }
+      }
     }, error => {
       console.log('error!' + error)
     });
@@ -72,7 +107,6 @@ export class DashboardComponent implements OnInit {
   toggleDeleteDebt() {
     this.deleteSelected = !this.deleteSelected;
     if (this.displayedColumns.includes('select')) {
-      //  this.displayedColumns.splice(0,1);
     } else {
       this.displayedColumns.unshift('select')
     }
@@ -103,6 +137,17 @@ export class DashboardComponent implements OnInit {
 
   deleteDebts() {
     console.log(this.selection.selected)
+    this.selection.selected.forEach(value => {
+      this.debtService.deleteDebt(value.id).subscribe(() => {
+        const index = this.debts.indexOf(value);
+        console.log(index)
+        this.debts.splice(index, 1)
+        this.dataSource.data = [...this.debts];
+        this.toggleDeleteDebt();
+      }, error => {
+        console.log('Couldn\'t delete item' + error);
+      })
+    })
   }
 
   removeColumn() {
@@ -111,4 +156,5 @@ export class DashboardComponent implements OnInit {
       this.displayedColumns.splice(0, 1);
     }
   }
+
 }

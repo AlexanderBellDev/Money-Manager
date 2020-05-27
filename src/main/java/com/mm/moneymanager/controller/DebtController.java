@@ -45,12 +45,30 @@ public class DebtController {
         return ResponseEntity.created(location).body("Debt saved");
     }
 
-    @DeleteMapping("/userdebt")
-    public ResponseEntity<?> deleteUserDebt(Principal principal, @Valid @RequestBody DebtDTO debtDTO) {
-        if (!debtService.deleteDebt(debtDTO, principal.getName())) {
+
+    @DeleteMapping("/userdebt/{idToDelete}")
+    @Secured("ROLE_USER")
+    public ResponseEntity<?> deleteUserDebt(Principal principal, @PathVariable Long idToDelete) {
+        if (!debtService.verifyDebtExists(idToDelete)) {
+            return ResponseEntity.notFound().build();
+        }
+        if (!debtService.deleteDebt(idToDelete, principal.getName())) {
             return ResponseEntity.badRequest().body("Cannot delete debt");
         }
         return ResponseEntity.ok().body("Debt deleted");
+    }
+
+    @PutMapping("/userdebt/{idToUpdate}")
+    @Secured("ROLE_USER")
+    public ResponseEntity<?> updateUserDebt(Principal principal, @PathVariable Long idToUpdate, @Valid @RequestBody DebtDTO debtDTO) {
+        if (!debtService.verifyDebtExists(idToUpdate)) {
+            return ResponseEntity.notFound().build();
+        }
+
+        if (!debtService.updateDebt(debtDTO, idToUpdate, principal.getName())) {
+            return ResponseEntity.badRequest().body("Cannot update debt");
+        }
+        return ResponseEntity.ok().body("Debt updated");
     }
 
 }

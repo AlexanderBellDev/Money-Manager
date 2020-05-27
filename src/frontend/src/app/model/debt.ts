@@ -3,6 +3,7 @@ export class Debt {
   company: string;
   amount: number;
   dueDate: string;
+  id: number;
 
 
   constructor(company: string, amount: number, dueDate: string) {
