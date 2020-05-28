@@ -1,14 +1,13 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {animate, style, transition, trigger} from "@angular/animations";
-import {Debt} from "../model/debt";
-import {SelectionModel} from "@angular/cdk/collections";
-import {MatTableDataSource} from "@angular/material/table";
-import {MatSort} from "@angular/material/sort";
-import {MatDialog} from "@angular/material/dialog";
-import {Income} from "../model/income";
-import {IncomeService} from "../service/income.service";
-import {AddDebtDialogComponent} from "../add-debt-dialog/add-debt-dialog.component";
-import {AddIncomeDialogComponent} from "../add-income-dialog/add-income-dialog.component";
+import {animate, style, transition, trigger} from '@angular/animations';
+import {SelectionModel} from '@angular/cdk/collections';
+import {MatTableDataSource} from '@angular/material/table';
+import {MatSort} from '@angular/material/sort';
+import {MatDialog} from '@angular/material/dialog';
+import {Income} from '../model/income';
+import {IncomeService} from '../service/income.service';
+import {AddDebtDialogComponent} from '../add-debt-dialog/add-debt-dialog.component';
+import {AddIncomeDialogComponent} from '../add-income-dialog/add-income-dialog.component';
 
 @Component({
   selector: 'app-income',
@@ -59,7 +58,7 @@ export class IncomeComponent implements OnInit {
       if (value != null) {
         this.income = value
       }
-      if (this.income.length != 0) {
+      if (this.income.length !== 0) {
         this.dataSource.data = [...this.income];
         this.dataSource.sort = this.sort;
       }
@@ -75,8 +74,8 @@ export class IncomeComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result != null) {
-        let foundDebt = this.income.find(value => value.id === income.id);
-        let number = this.income.indexOf(foundDebt);
+        let foundIncome = this.income.find(value => value.id === income.id);
+        let number = this.income.indexOf(foundIncome);
         this.income.splice(number, 1);
         this.income.push(result);
         this.dataSource.data = [...this.income];
@@ -96,7 +95,7 @@ export class IncomeComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result != null) {
         if (this.income != null) {
-          this.income.push(result)
+          this.income.push(result);
           this.dataSource.data = [...this.income];
         }
       }
@@ -137,11 +136,11 @@ export class IncomeComponent implements OnInit {
   }
 
   deleteIncome() {
-    console.log(this.selection.selected)
+    console.log(this.selection.selected);
     this.selection.selected.forEach(value => {
       this.incomeService.deleteIncome(value.id).subscribe(() => {
         const index = this.income.indexOf(value);
-        console.log(index)
+        console.log(index);
         this.income.splice(index, 1);
         this.dataSource.data = [...this.income];
         this.toggleDeleteIncome();
