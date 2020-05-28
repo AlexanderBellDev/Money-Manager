@@ -43,7 +43,7 @@ public class IncomeController {
     @PostMapping("/userincome")
     public ResponseEntity<?> postUserIncome(Principal principal, @Valid @RequestBody IncomeDTO incomeDTO) {
         URI location = ServletUriComponentsBuilder
-                .fromPath("/api/v1/debt/userincome")
+                .fromPath("/api/v1/income/userincome")
                 .buildAndExpand(incomeService.saveIncome(incomeDTO, principal.getName())).toUri();
         return ResponseEntity.created(location).body("Income Saved");
     }

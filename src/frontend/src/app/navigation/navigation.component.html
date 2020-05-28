@@ -3,11 +3,11 @@
     Money Manager</div>
   <ul>
     <li [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-      <a [routerLink]="['/']">Home</a>-->
+      <a [routerLink]="['/']">Home</a>
     <li>
 
     <li *ngIf="!loginService.isUserLoggedIn()" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-    <a [routerLink]="['/register']">Register</a>-->
+    <a [routerLink]="['/register']">Register</a>
     </li>
 
     <li *ngIf="!loginService.isUserLoggedIn()" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
@@ -18,8 +18,8 @@
     <li *ngIf="loginService.isUserLoggedIn()" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
       <a [routerLink]="['/dashboard']">User Dashboard</a>
       <ul>
-        <li><a href="#">Income</a></li>
-        <li><a href="">Debts</a></li>
+        <li><a [routerLink]="['/income']">Income</a></li>
+        <li><a [routerLink]="['/debts']">Debts</a></li>
         <li><a href="#">Savings</a></li>
       </ul>
 
