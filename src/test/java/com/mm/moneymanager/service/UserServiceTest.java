@@ -202,4 +202,18 @@ class UserServiceTest {
         assertEquals(user.getEmail(), returnUserDto.getEmail(), "email doesnt match");
         then(userRepository).should(times(1)).findByUsername(user.getUsername());
     }
+
+    @Test
+    void testSaveUser() {
+        //given
+        given(userRepository.findByUsername(user.getUsername())).willReturn(Optional.ofNullable(user));
+        given(userRepository.save(user)).willReturn(user);
+
+        //when
+        User updateUserDetailsResult = userService.updateUserDetails(userDTO, userDTO.getUsername());
+
+        //then
+        assertNotNull(updateUserDetailsResult);
+
+    }
 }

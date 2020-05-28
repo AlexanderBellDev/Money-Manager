@@ -17,4 +17,6 @@ public interface UserService {
     String login(UserLogin user);
 
     UserDTO returnUser(String username);
+
+    User updateUserDetails(UserDTO userDTO, String username);
 }

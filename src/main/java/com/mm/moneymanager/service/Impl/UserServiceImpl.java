@@ -89,5 +89,19 @@ public class UserServiceImpl implements UserService {
         return findUserByUsername.map(user -> modelMapper.map(user, UserDTO.class)).orElse(null);
     }
 
+    @Override
+    public User updateUserDetails(UserDTO userDTO, String username) {
+        Optional<User> byUsername = userRepository.findByUsername(username);
+
+        if (byUsername.isPresent()) {
+            byUsername.get().setFirstName(userDTO.getFirstName());
+            byUsername.get().setSurname(userDTO.getSurname());
+            byUsername.get().setUsername(userDTO.getUsername());
+            return userRepository.save(byUsername.get());
+        }
+
+        return null;
+    }
+
 }
 
