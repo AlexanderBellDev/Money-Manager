@@ -37,4 +37,11 @@ export class EditprofileComponent implements OnInit {
     })
   }
 
+  saveDetails() {
+    this.userService.postUserDetails(this.userForm.value).subscribe(value => {
+      console.log(value)
+    }, error => {
+      console.log('Error!')
+    })
+  }
 }

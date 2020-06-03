@@ -15,4 +15,9 @@ export class UserService {
     return this.http.get<User>(`${environment.API_URL}/api/v1/user/userdetails`)
   }
 
+  postUserDetails(user: User) {
+    return this.http.post(`${environment.API_URL}/api/v1/user/userdetails`, user, {responseType: "text"})
+  }
+
+
 }

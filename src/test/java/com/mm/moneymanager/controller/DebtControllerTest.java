@@ -259,6 +259,7 @@ class DebtControllerTest {
         given(debtService.verifyDebtExists(fordDebtDTO.getId())).willReturn(true);
         given(debtService.updateDebt(fordDebtDTO, fordDebtDTO.getId(), "testuser")).willReturn(false);
 
+
         //when
         mvc.perform(MockMvcRequestBuilders.put("/api/v1/debt/userdebt/" + fordDebtDTO.getId())
                 .accept(MediaType.APPLICATION_JSON)
