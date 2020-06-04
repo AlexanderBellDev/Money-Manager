@@ -57,8 +57,8 @@ class DebtServiceTest {
     @BeforeEach
     void beforeEach() {
         roleSet.add(new Role(1L, RoleName.ROLE_USER));
-        user = new User(1L, "test1234", "alex", "smith", "alex@alex.com", "password", roleSet, debtSet);
-        user2 = new User(1L, "bob9999", "Bob", "jim", "bob@bobs.com", "password", roleSet, debtSet);
+        user = new User(1L, "test1234", "alex", "smith", "alex@alex.com", "password", roleSet, debtSet, null);
+        user2 = new User(1L, "bob9999", "Bob", "jim", "bob@bobs.com", "password", roleSet, debtSet, null);
 
         debt = new Debt(1L, "Ford", BigInteger.valueOf(10), LocalDate.now(), user);
         debtWithAlternateUsername = new Debt(1L, "Ford", BigInteger.valueOf(10), LocalDate.now(), user2);

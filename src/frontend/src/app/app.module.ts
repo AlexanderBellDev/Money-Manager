@@ -30,6 +30,9 @@ import {EditprofileComponent} from './editprofile/editprofile.component';
 import {MatDividerModule} from "@angular/material/divider";
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {MatSnackBarModule} from "@angular/material/snack-bar";
+import {DebtComponent } from './debt/debt.component';
+import {IncomeComponent } from './income/income.component';
+import {AddIncomeDialogComponent} from './add-income-dialog/add-income-dialog.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +46,9 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
     LogoutComponent,
     AddDebtDialogComponent,
     EditprofileComponent,
+    AddIncomeDialogComponent,
+    DebtComponent,
+    IncomeComponent,
 
   ],
   imports: [

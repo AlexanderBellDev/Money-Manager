@@ -21,12 +21,12 @@ import java.util.List;
 @RequestMapping("/api/v1/debt")
 @RequiredArgsConstructor
 @Slf4j
+@Secured("ROLE_USER")
 public class DebtController {
     private final DebtService debtService;
     private final ModelMapper modelMapper;
 
     @GetMapping("/userdebt")
-    @Secured("ROLE_USER")
     public ResponseEntity<?> getUserDebt(Principal principal) {
         List<Debt> allDebtsByUser = debtService.getAllDebtsByUser(principal.getName());
         if (allDebtsByUser.size() == 0) {
@@ -38,7 +38,6 @@ public class DebtController {
     }
 
     @PostMapping("/userdebt")
-    @Secured("ROLE_USER")
     public ResponseEntity<?> postUserDebt(Principal principal, @Valid @RequestBody DebtDTO debtDTO) {
         URI location = ServletUriComponentsBuilder
                 .fromPath("/api/v1/debt/userdebt")
@@ -46,13 +45,13 @@ public class DebtController {
         return ResponseEntity.created(location).body("Debt saved");
     }
 
+
     @DeleteMapping("/userdebt/{idToDelete}")
     @Secured("ROLE_USER")
     public ResponseEntity<?> deleteUserDebt(Principal principal, @PathVariable Long idToDelete) {
         if (!debtService.verifyDebtExists(idToDelete)) {
             return ResponseEntity.notFound().build();
         }
-
         if (!debtService.deleteDebt(idToDelete, principal.getName())) {
             return ResponseEntity.badRequest().body("Cannot delete debt");
         }
