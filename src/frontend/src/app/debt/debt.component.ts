@@ -88,7 +88,7 @@ export class DebtComponent implements OnInit {
   openAddDebtDialog(debt: any): void {
     const dialogRef = this.dialog.open(AddDebtDialogComponent, {
       width: '300px',
-      height: '365px',
+      height: '450px',
       data: debt
     });
 
