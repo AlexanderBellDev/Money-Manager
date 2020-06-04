@@ -29,6 +29,7 @@ import {MatSortModule} from "@angular/material/sort";
 import {EditprofileComponent} from './editprofile/editprofile.component';
 import {MatDividerModule} from "@angular/material/divider";
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {MatSnackBarModule} from "@angular/material/snack-bar";
 
 @NgModule({
   declarations: [
@@ -63,7 +64,8 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     MatCheckboxModule,
     MatSortModule,
     MatDividerModule,
-    NgbModule
+    NgbModule,
+    MatSnackBarModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true}
