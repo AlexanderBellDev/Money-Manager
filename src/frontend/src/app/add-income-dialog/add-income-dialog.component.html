@@ -1,0 +1,54 @@
+<button [mat-dialog-close]="true" class="close-button" mat-icon-button>
+  <mat-icon class="close-icon" color="warn">close</mat-icon>
+</button>
+
+<h2>Add a Income</h2>
+
+<div>
+  <form [formGroup]="incomeForm" autocomplete="off" style="align-content: center">
+
+
+    <div class="form-group">
+      <mat-form-field class="full-width-field" color="accent">
+        <mat-label>Company Name:</mat-label>
+        <input aria-label="company name" cdkFocusInitial formControlName="company" matInput required type="text">
+        <mat-error *ngIf="incomeForm.get('company').invalid">Field is required</mat-error>
+      </mat-form-field>
+    </div>
+    <br>
+    <div class="form-group">
+      <mat-form-field class="full-width-field" color="accent">
+        <mat-label>Income Amount:</mat-label>
+        <input aria-label="Income amount" formControlName="amount" matInput required type="number">
+        <mat-error *ngIf="incomeForm.get('amount').invalid">Field is required</mat-error>
+      </mat-form-field>
+    </div>
+
+    <br>
+    <div class="form-group">
+      <mat-form-field class="full-width-field">
+        <mat-label>Payment Date</mat-label>
+        <input [matDatepicker]="picker" aria-label="Payment Date" formControlName="paymentDate" matInput>
+        <mat-datepicker-toggle [for]="picker" matSuffix></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="incomeForm.get('paymentDate').invalid">Field is required</mat-error>
+      </mat-form-field>
+    </div>
+
+    <br>
+
+  </form>
+
+  <div>
+    <button (click)="resetIncomeForm()" color="warn" mat-raised-button style="text-align: center; float: left"
+            type="reset">Reset
+    </button>
+    <button (click)="saveIncome()" [disabled]="!incomeForm.valid" color="primary" mat-raised-button
+            style="text-align: center; float: right"
+            type="submit">Submit
+    </button>
+
+  </div>
+
+
+</div>

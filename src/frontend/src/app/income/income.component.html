@@ -1,0 +1,96 @@
+<div style="margin-left: 2%">
+  <p *ngIf="income.length==0">Currently you are tracking <strong>{{income.length}}</strong> income</p>
+  <p *ngIf="income.length>1">Currently you are tracking <strong>{{income.length}}</strong> income</p>
+  <p *ngIf="income.length==1">Currently you are tracking <strong>{{income.length}}</strong> debt</p>
+</div>
+
+<br>
+
+<div style="text-align: right; margin-right: 14.5%">
+  <button (click)="deleteIncome()" *ngIf="deleteSelected" mat-icon-button>
+    <mat-icon class="mat-18" matTooltip="Delete">delete</mat-icon>
+  </button>
+  <button (click)="toggleDeleteIncome()" aria-label="Edit" mat-icon-button>
+    <mat-icon class="mat-18" matTooltip="Edit income">create</mat-icon>
+  </button>
+  <button (click)="openAddIncomeDialog(null)" aria-label="Edit" mat-icon-button>
+    <mat-icon class="mat-18" matTooltip="Add new income">note_add</mat-icon>
+  </button>
+</div>
+
+<div>
+  <table [dataSource]="dataSource" class="mat-elevation-z3" mat-table matSort matSortActive="amount"
+         matSortDirection="desc" style="text-align: center;">
+    <!-- Checkbox Column -->
+    <ng-container matColumnDef="select">
+      <th *matHeaderCellDef mat-header-cell style="width: 5%; ; padding-left: 1px; text-align: center">
+        <mat-checkbox (@easeInOut.done)="removeColumn()"
+                      (change)="$event ? masterToggle() : null"
+                      *ngIf="deleteSelected"
+                      @easeInOut
+                      [aria-label]="checkboxLabel()"
+                      [checked]="selection.hasValue() && isAllSelected()"
+                      [indeterminate]="selection.hasValue() && !isAllSelected()">
+        </mat-checkbox>
+      </th>
+      <td *matCellDef="let row" mat-cell style=" width: 5%; padding-left: 1px; text-align: center">
+        <mat-checkbox (change)="$event ? selection.toggle(row) : null" (click)="$event.stopPropagation()"
+                      *ngIf="deleteSelected"
+                      @easeInOut
+                      [aria-label]="checkboxLabel(row)"
+                      [checked]="selection.isSelected(row)">
+        </mat-checkbox>
+      </td>
+
+    </ng-container>
+
+    <!-- Item Column -->
+    <ng-container matColumnDef="company">
+      <th *matHeaderCellDef mat-header-cell style="text-align: center"> Company</th>
+      <td (click)="openEditIncomeDialog(income)" *matCellDef="let income" mat-cell style="text-align: left; width: 50%">
+        {{income.company}}
+      </td>
+      <td *matFooterCellDef mat-footer-cell> Total</td>
+    </ng-container>
+
+    <!-- Amount Column -->
+    <ng-container matColumnDef="amount">
+      <th *matHeaderCellDef mat-header-cell style="text-align: center"> Total Amount</th>
+      <td *matCellDef="let income" mat-cell>
+        {{income.amount}}
+      </td>
+
+      <td *matFooterCellDef mat-footer-cell> {{getTotalCost()}} </td>
+    </ng-container>
+
+    <!-- Due Date Column -->
+    <ng-container matColumnDef="paymentDate">
+      <th *matHeaderCellDef mat-header-cell style="text-align: center"> Payment Date</th>
+      <td *matCellDef="let income" mat-cell> {{income.paymentDate | date: 'dd-MM-yyyy'}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="details">
+      <th *matHeaderCellDef mat-header-cell style="text-align: center"> Details</th>
+      <td *matCellDef="let element" mat-cell>
+        <button color="primary" mat-icon-button>
+          <mat-icon class="mat-18">reorder</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="update">
+      <th *matHeaderCellDef mat-header-cell style="text-align: center"> Update</th>
+      <td *matCellDef="let element" mat-cell>
+        <button color="accent" mat-icon-button>
+          <mat-icon class="mat-18">rate_review</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+
+  </table>
+
+</div>
