@@ -39,12 +39,10 @@
 
   </form>
 
-  <div>
-    <button (click)="resetDebtForm()" color="warn" mat-raised-button style="text-align: center; float: left"
-            type="reset">Reset
+  <div style="padding-top: 2%">
+    <button (click)="resetDebtForm()" color="warn" mat-raised-button type="reset">Reset
     </button>
-    <button (click)="saveDebt()" [disabled]="!debtForm.valid" color="primary" mat-raised-button
-            style="text-align: center; float: right"
+    <button (click)="saveDebt()" style="margin-left: 40%" [disabled]="!debtForm.valid" color="primary" mat-raised-button
             type="submit">Submit
     </button>
 

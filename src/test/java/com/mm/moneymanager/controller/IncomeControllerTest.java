@@ -7,6 +7,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.mm.moneymanager.model.Income.Income;
 import com.mm.moneymanager.model.Income.IncomeDTO;
 import com.mm.moneymanager.model.user.User;
+import com.mm.moneymanager.repository.RoleRepository;
 import com.mm.moneymanager.repository.UserRepository;
 import com.mm.moneymanager.service.IncomeService;
 import org.junit.jupiter.api.BeforeEach;
@@ -43,6 +44,9 @@ public class IncomeControllerTest {
 
     @MockBean
     IncomeService incomeService;
+
+   @MockBean
+    RoleRepository repository;
 
     @Autowired
     MockMvc mvc;

@@ -21,6 +21,9 @@
         <li><a [routerLink]="['/income']">Income</a></li>
         <li><a [routerLink]="['/debts']">Debts</a></li>
         <li><a href="#">Savings</a></li>
+        <li>
+          <a [routerLink]="['/editprofile']">Edit Profile</a>
+        </li>
       </ul>
 
     <li *ngIf="loginService.isUserLoggedIn()" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">

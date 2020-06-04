@@ -1,0 +1,51 @@
+<h1 style="font-weight: bold; text-align: center; margin-top: 2%; font-size: 28pt;">Edit Profile</h1>
+
+<form [formGroup]="userForm" autocomplete="off">
+  <div style="font-weight: bold; text-align: center; font-size: 22pt;">
+    <br>
+    <p>About Me</p>
+    <mat-divider style="  width: 30%;margin-left: auto;margin-right: auto;"></mat-divider>
+    <br>
+    <br>
+  </div>
+
+  <div style="font-size: 18pt; text-align: center">
+
+    <mat-form-field class="custom">
+      <mat-label>First Name</mat-label>
+      <input aria-label="first name" formControlName="firstName" matInput>
+      <mat-error *ngIf="userForm.get('firstName').invalid">Field is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Last Name</mat-label>
+      <input aria-label="last name" formControlName="surname" matInput>
+      <mat-error *ngIf="userForm.get('surname').invalid">Field is required</mat-error>
+    </mat-form-field>
+
+  </div>
+  <br>
+  <br>
+  <br>
+  <div style=" font-weight: bold; text-align: center; font-size: 22pt;">
+
+    <p>Account Details</p>
+    <mat-divider style="  width: 30%;margin-left: auto;margin-right: auto;"></mat-divider>
+    <br>
+    <br>
+  </div>
+  <div style="font-size: 18pt; text-align: center">
+    <mat-form-field class="customField">
+      <mat-label>Username</mat-label>
+      <input aria-label="username" formControlName="username" matInput>
+      <mat-icon matSuffix>account_circle</mat-icon>
+      <mat-error *ngIf="userForm.get('username').invalid">Field is required</mat-error>
+    </mat-form-field>
+  </div>
+
+</form>
+
+
+<div class="container" style="text-align: center">
+  <button (click)="saveDetails()" class="btn btn-info btn-lg" type="button">Save Changes</button>
+</div>

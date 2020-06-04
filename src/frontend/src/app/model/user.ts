@@ -12,6 +12,7 @@ export class User {
     this.postalCode = postalCode;
   }
 
+  id: number;
   username: string;
   firstName: string;
   surname: string;

@@ -26,6 +26,10 @@ import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatNativeDateModule} from "@angular/material/core";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatSortModule} from "@angular/material/sort";
+import {EditprofileComponent} from './editprofile/editprofile.component';
+import {MatDividerModule} from "@angular/material/divider";
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {DebtComponent } from './debt/debt.component';
 import {IncomeComponent } from './income/income.component';
 import {AddIncomeDialogComponent} from './add-income-dialog/add-income-dialog.component';
@@ -41,6 +45,7 @@ import {AddIncomeDialogComponent} from './add-income-dialog/add-income-dialog.co
     DashboardComponent,
     LogoutComponent,
     AddDebtDialogComponent,
+    EditprofileComponent,
     AddIncomeDialogComponent,
     DebtComponent,
     IncomeComponent,
@@ -63,7 +68,10 @@ import {AddIncomeDialogComponent} from './add-income-dialog/add-income-dialog.co
     MatDatepickerModule,
     MatNativeDateModule,
     MatCheckboxModule,
-    MatSortModule
+    MatSortModule,
+    MatDividerModule,
+    NgbModule,
+    MatSnackBarModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true}
