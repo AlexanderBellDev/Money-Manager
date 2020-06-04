@@ -7,6 +7,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.mm.moneymanager.model.debt.Debt;
 import com.mm.moneymanager.model.debt.DebtDTO;
 import com.mm.moneymanager.model.user.User;
+import com.mm.moneymanager.repository.RoleRepository;
 import com.mm.moneymanager.repository.UserRepository;
 import com.mm.moneymanager.service.DebtService;
 import org.hamcrest.core.Is;
@@ -45,6 +46,9 @@ class DebtControllerTest {
 
     @MockBean
     DebtService debtService;
+
+    @MockBean
+    RoleRepository repository;
 
     @MockBean
     UserRepository userRepository;

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.mm.moneymanager.model.user.User;
 import com.mm.moneymanager.model.user.UserDTO;
+import com.mm.moneymanager.repository.RoleRepository;
 import com.mm.moneymanager.repository.UserRepository;
 import com.mm.moneymanager.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
@@ -41,7 +42,12 @@ public class UserControllerTest {
     UserService userService;
     @MockBean
     UserRepository userRepository;
+
+    @MockBean
+    RoleRepository repository;
+
     UserDTO userDTO;
+
     @Autowired
     private MockMvc mvc;
 

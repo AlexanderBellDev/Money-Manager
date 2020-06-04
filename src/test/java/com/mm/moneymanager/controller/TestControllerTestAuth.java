@@ -1,5 +1,6 @@
 package com.mm.moneymanager.controller;
 
+import com.mm.moneymanager.repository.RoleRepository;
 import com.mm.moneymanager.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,6 +23,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class TestControllerTestAuth {
     @Autowired
     private MockMvc mvc;
+
+    @MockBean
+    RoleRepository repository;
 
     @MockBean
     UserRepository userRepository;

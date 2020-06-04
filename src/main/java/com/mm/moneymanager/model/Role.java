@@ -10,6 +10,8 @@ import javax.persistence.*;
 @Entity
 @Table(name = "roles")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +26,4 @@ public class Role {
         this.name = name;
     }
 
-    public Role() {
-    }
 }
