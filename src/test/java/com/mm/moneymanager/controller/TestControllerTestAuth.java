@@ -2,6 +2,7 @@ package com.mm.moneymanager.controller;
 
 import com.mm.moneymanager.repository.RoleRepository;
 import com.mm.moneymanager.repository.UserRepository;
+import com.mm.moneymanager.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +31,11 @@ class TestControllerTestAuth {
     @MockBean
     UserRepository userRepository;
 
+    @MockBean
+    UserService userService;
+
     @Test
-    @WithMockUser(username="admin",roles={"USER","ADMIN"})
+    @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
     void testAuthorizedUser() throws Exception {
         mvc.perform(get("/api/test/testcontroller")
                 .accept(MediaType.APPLICATION_JSON)
