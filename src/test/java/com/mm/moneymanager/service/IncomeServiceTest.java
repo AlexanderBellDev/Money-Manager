@@ -17,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -54,15 +55,15 @@ public class IncomeServiceTest {
     @BeforeEach
     void beforeEach() {
         roleSet.add(new Role(1L, RoleName.ROLE_USER));
-        user = new User(1L, "test123", "alex", "smith", "alex@alex.com", "password", roleSet ,null, incomeSet);
+        user = new User(1L, "test123", "alex", "smith", "alex@alex.com", "password", roleSet, null, incomeSet);
         user2 = new User(1L, "test245", "Bob", "jim", "bob@bobs.com", "password", roleSet, null, incomeSet);
 
-        income = new Income(1L, 1L, BigDecimal.valueOf(1000.00), "Ford", true, false,3, user);
-        incomeWithAlternativeUser = new Income(1L, 1L, BigDecimal.valueOf(1000.00), "Ford", true, false, 3, user2);
+        income = new Income(1L, 1L, BigDecimal.valueOf(1000.00), "Ford", true, false, 3, LocalDate.now(), user);
+        incomeWithAlternativeUser = new Income(1L, 1L, BigDecimal.valueOf(1000.00), "Ford", true, false, 3, LocalDate.now(), user2);
         incomeSet.add(income);
         incomes = Collections.singletonList(income);
 
-        incomeDTO = new IncomeDTO(BigDecimal.valueOf(1000.00), "Ford", true, 3, 1L);
+        incomeDTO = new IncomeDTO(BigDecimal.valueOf(1000.00), "Ford", true, LocalDate.now(), 3, 1L);
 
     }
 
@@ -163,7 +164,7 @@ public class IncomeServiceTest {
         given(incomeRepository.findById(incomeDTO.getId())).willReturn(Optional.ofNullable(income));
         given(modelMapper.map(incomeDTO, Income.class)).willReturn(income);
 
-        boolean updateIncomeResult = incomeService.updateIncome(incomeDTO, incomeDTO.getId(), "test1234");
+        boolean updateIncomeResult = incomeService.updateIncome(incomeDTO, incomeDTO.getId(), "test123");
 
         //then
         then(incomeRepository).should(times(1)).findById(incomeDTO.getId());

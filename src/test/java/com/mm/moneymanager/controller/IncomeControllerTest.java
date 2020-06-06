@@ -26,6 +26,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 
@@ -75,10 +76,10 @@ public class IncomeControllerTest {
                 .username("alex1234")
                 .build();
 
-        Income testIncome = new Income(1L, 1L, BigDecimal.valueOf(1000.00), "Salary", true, false,12,  user);
+        Income testIncome = new Income(1L, 1L, BigDecimal.valueOf(1000.00), "Salary", true, false, 12, LocalDate.now(), user);
         incomeList = Collections.singletonList(testIncome);
 
-        incomeDTO = new IncomeDTO(BigDecimal.valueOf(1000.00),"Salary", true, 12, 1L);
+        incomeDTO = new IncomeDTO(BigDecimal.valueOf(1000.00), "Salary", true, LocalDate.now(), 12, 1L);
         incomeDTOList = Collections.singletonList(incomeDTO);
 
         IncomeDTO incomeTestMalformed = IncomeDTO.builder()
