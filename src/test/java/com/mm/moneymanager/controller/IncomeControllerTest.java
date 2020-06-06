@@ -10,6 +10,7 @@ import com.mm.moneymanager.model.user.User;
 import com.mm.moneymanager.repository.RoleRepository;
 import com.mm.moneymanager.repository.UserRepository;
 import com.mm.moneymanager.service.IncomeService;
+import com.mm.moneymanager.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -45,8 +46,11 @@ public class IncomeControllerTest {
     @MockBean
     IncomeService incomeService;
 
-   @MockBean
+    @MockBean
     RoleRepository repository;
+
+    @MockBean
+    UserService userService;
 
     @Autowired
     MockMvc mvc;
@@ -65,6 +69,7 @@ public class IncomeControllerTest {
 
     String jsonContentIncome;
     String jsonContentIncomeMalformed;
+
     @BeforeEach
     void setUp() throws JsonProcessingException {
         user = User.builder()
@@ -75,10 +80,10 @@ public class IncomeControllerTest {
                 .username("alex1234")
                 .build();
 
-        Income testIncome = new Income(1L, 1L, BigDecimal.valueOf(1000.00), "Salary", true, false,12,  user);
+        Income testIncome = new Income(1L, 1L, BigDecimal.valueOf(1000.00), "Salary", true, false, 12, user);
         incomeList = Collections.singletonList(testIncome);
 
-        incomeDTO = new IncomeDTO(BigDecimal.valueOf(1000.00),"Salary", true, 12, 1L);
+        incomeDTO = new IncomeDTO(BigDecimal.valueOf(1000.00), "Salary", true, 12, 1L);
         incomeDTOList = Collections.singletonList(incomeDTO);
 
         IncomeDTO incomeTestMalformed = IncomeDTO.builder()
@@ -103,11 +108,11 @@ public class IncomeControllerTest {
 
         //when
         mvc.perform(get("/api/v1/income/userincome")
-            .accept(MediaType.APPLICATION_JSON))
+                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.content().string(mapper.writeValueAsString(incomeDTOList)))
 
                 //then
-        .andExpect(status().isOk());
+                .andExpect(status().isOk());
     }
 
 
