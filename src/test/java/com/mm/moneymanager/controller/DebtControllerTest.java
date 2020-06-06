@@ -10,6 +10,7 @@ import com.mm.moneymanager.model.user.User;
 import com.mm.moneymanager.repository.RoleRepository;
 import com.mm.moneymanager.repository.UserRepository;
 import com.mm.moneymanager.service.DebtService;
+import com.mm.moneymanager.service.UserService;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -49,6 +50,9 @@ class DebtControllerTest {
 
     @MockBean
     RoleRepository repository;
+
+    @MockBean
+    UserService userService;
 
     @MockBean
     UserRepository userRepository;
