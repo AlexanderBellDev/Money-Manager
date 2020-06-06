@@ -28,9 +28,9 @@ jobs:
         with:
           name: 'test-report'
           path: build/reports/tests/test/*
-          - name: Run codacy-coverage-reporter
-              uses: codacy/codacy-coverage-reporter-action@master
-              with:
-                project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
-                path: build/reports/jacoco/test/*
-                coverage-reports: jacocoTestReport.xml
+      - name: Run codacy-coverage-reporter
+        uses: codacy/codacy-coverage-reporter-action@master
+        with:
+            project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+            path: build/reports/jacoco/test/*
+            coverage-reports: jacocoTestReport.xml
