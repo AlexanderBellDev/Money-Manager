@@ -6,9 +6,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.time.LocalDate;
-import java.util.Date;
 
 @EqualsAndHashCode(callSuper = false)
 @Data
@@ -33,6 +31,8 @@ public class Income extends DateAudit {
     Boolean incomeArchived;
 
     Integer durationOfRecurrence;
+
+    LocalDate paymentDate;
 
     @ToString.Exclude
     @ManyToOne

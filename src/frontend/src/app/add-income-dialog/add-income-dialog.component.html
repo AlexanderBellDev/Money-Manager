@@ -11,16 +11,16 @@
     <div class="form-group">
       <mat-form-field class="full-width-field" color="accent">
         <mat-label>Company Name:</mat-label>
-        <input aria-label="company name" cdkFocusInitial formControlName="company" matInput required type="text">
-        <mat-error *ngIf="incomeForm.get('company').invalid">Field is required</mat-error>
+        <input aria-label="company name" cdkFocusInitial formControlName="incomeSource" matInput required type="text">
+        <mat-error *ngIf="incomeForm.get('incomeSource').invalid">Field is required</mat-error>
       </mat-form-field>
     </div>
     <br>
     <div class="form-group">
       <mat-form-field class="full-width-field" color="accent">
         <mat-label>Income Amount:</mat-label>
-        <input aria-label="Income amount" formControlName="amount" matInput required type="number">
-        <mat-error *ngIf="incomeForm.get('amount').invalid">Field is required</mat-error>
+        <input aria-label="Income amount" formControlName="incomeAmount" matInput required type="number">
+        <mat-error *ngIf="incomeForm.get('incomeAmount').invalid">Field is required</mat-error>
       </mat-form-field>
     </div>
 
@@ -37,6 +37,21 @@
 
     <br>
 
+    <div class="form-group">
+      <mat-checkbox [(ngModel)]="recurringPayment" formControlName="recurringIncome" matInput required type="boolean">
+        Recurring Payment
+      </mat-checkbox>
+    </div>
+
+
+    <div *ngIf="recurringPayment" class="form-group">
+      <mat-form-field class="full-width-field" color="accent">
+        <mat-label>Duration of Recurrence:</mat-label>
+        <input aria-label="Duration of Recurrence" formControlName="durationOfRecurrence" matInput required
+               type="number">
+        <mat-error *ngIf="incomeForm.get('durationOfRecurrence').invalid">Field is required</mat-error>
+      </mat-form-field>
+    </div>
   </form>
 
   <div>

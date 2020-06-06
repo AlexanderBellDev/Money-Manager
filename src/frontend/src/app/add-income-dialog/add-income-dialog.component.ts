@@ -9,11 +9,16 @@ import {IncomeService} from "../service/income.service";
   styleUrls: ['./add-income-dialog.component.css']
 })
 export class AddIncomeDialogComponent implements OnInit {
+
+  public recurringPayment: boolean
+
   incomeForm = this.formBuilder.group({
     id: [''],
-    amount: ['', [Validators.required]],
-    company: ['', [Validators.required]],
-    paymentDate: ['', [Validators.required]]
+    incomeAmount: ['', [Validators.required]],
+    incomeSource: ['', [Validators.required]],
+    paymentDate: ['', [Validators.required]],
+    recurringIncome: [false],
+    durationOfRecurrence: ['', [Validators.required]]
   });
 
   constructor(
@@ -31,9 +36,11 @@ export class AddIncomeDialogComponent implements OnInit {
     if (this.data != null) {
       this.incomeForm.patchValue({
         id: this.data.id,
-        amount: this.data.amount,
-        company: this.data.company,
-        paymentDate: this.data.paymentDate
+        incomeAmount: this.data.amount,
+        incomeSource: this.data.company,
+        paymentDate: this.data.paymentDate,
+        recurringIncome: this.data.recurringPayment,
+        durationOfRecurrence: this.data.recurringIncome
       });
     }
   }

@@ -17,13 +17,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.time.LocalDate;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.times;
@@ -136,6 +132,43 @@ public class IncomeServiceTest {
 
         //then
         assertFalse(deleteIncomeResult);
+    }
+
+    @Test
+    void testVerifyIncomeDoesntExist() {
+        //when
+        boolean deleteIncomeResult = incomeService.verifyIncomeExists(incomeDTO.getId());
+
+        //then
+        then(incomeRepository).should(times(1)).findById(incomeWithAlternativeUser.getId());
+        assertFalse(deleteIncomeResult);
+    }
+
+    @Test
+    void testVerifyIncomeDoesExist() {
+        //given
+        given(incomeRepository.findById(incomeDTO.getId())).willReturn(Optional.ofNullable(income));
+
+        //when
+        boolean deleteIncomeResult = incomeService.verifyIncomeExists(incomeDTO.getId());
+
+        //then
+        then(incomeRepository).should(times(1)).findById(incomeWithAlternativeUser.getId());
+        assertTrue(deleteIncomeResult);
+    }
+
+    @Test
+    void testUpdateIncome() {
+        //given
+        given(incomeRepository.findById(incomeDTO.getId())).willReturn(Optional.ofNullable(income));
+        given(modelMapper.map(incomeDTO, Income.class)).willReturn(income);
+
+        boolean updateIncomeResult = incomeService.updateIncome(incomeDTO, incomeDTO.getId(), "test1234");
+
+        //then
+        then(incomeRepository).should(times(1)).findById(incomeDTO.getId());
+        then(incomeRepository).should(times(1)).save(income);
+        assertTrue(updateIncomeResult);
     }
 
 }

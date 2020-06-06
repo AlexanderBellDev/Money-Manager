@@ -32,6 +32,7 @@ dependencies {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
     compile group: 'org.modelmapper', name: 'modelmapper', version: '2.3.7'
+    runtime 'com.h2database:h2'
 
 }
 
