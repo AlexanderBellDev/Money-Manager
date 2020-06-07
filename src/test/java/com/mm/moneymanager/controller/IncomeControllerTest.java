@@ -22,6 +22,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.context.WebApplicationContext;
@@ -31,6 +32,7 @@ import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -108,12 +110,14 @@ public class IncomeControllerTest {
         given(incomeService.getAllIncomesByUser("admin")).willReturn(incomeList);
 
         //when
-        mvc.perform(get("/api/v1/income/userincome")
+        MvcResult mvcResult = mvc.perform(get("/api/v1/income/userincome")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.content().string(mapper.writeValueAsString(incomeDTOList)))
-
                 //then
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andReturn();
+
+        assertNotNull(mvcResult.getResponse());
     }
 
 
@@ -123,7 +127,7 @@ public class IncomeControllerTest {
         //given
         given(incomeService.deleteIncome(incomeDTO, "testuser")).willReturn(true);
         //when
-        mvc.perform(MockMvcRequestBuilders.delete("/api/v1/income/userincome")
+        MvcResult income_deleted = mvc.perform(MockMvcRequestBuilders.delete("/api/v1/income/userincome")
                 .accept(MediaType.APPLICATION_JSON)
                 .characterEncoding("utf-8")
                 .content(jsonContentIncome)
@@ -133,6 +137,8 @@ public class IncomeControllerTest {
                 .andExpect(MockMvcResultMatchers.content().string("Income deleted"))
                 .andDo(print())
                 .andReturn();
+
+        assertNotNull(income_deleted.getResponse());
     }
 
     @Test
@@ -142,7 +148,7 @@ public class IncomeControllerTest {
         given(incomeService.deleteIncome(incomeDTO, "testuser")).willReturn(false);
 
         //when
-        mvc.perform(MockMvcRequestBuilders.delete("/api/v1/income/userincome")
+        MvcResult cannot_delete_income = mvc.perform(MockMvcRequestBuilders.delete("/api/v1/income/userincome")
                 .accept(MediaType.APPLICATION_JSON)
                 .characterEncoding("utf-8")
                 .content(jsonContentIncome)
@@ -152,6 +158,8 @@ public class IncomeControllerTest {
                 .andExpect(MockMvcResultMatchers.content().string("Cannot delete income"))
                 .andDo(print())
                 .andReturn();
+
+        assertNotNull(cannot_delete_income.getResponse());
     }
 
     @Test
@@ -160,7 +168,7 @@ public class IncomeControllerTest {
         //given
 
         //when
-        mvc.perform(MockMvcRequestBuilders.post("/api/v1/income/userincome")
+        MvcResult income_saved = mvc.perform(MockMvcRequestBuilders.post("/api/v1/income/userincome")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonContentIncome))
@@ -169,6 +177,8 @@ public class IncomeControllerTest {
                 .andExpect(MockMvcResultMatchers.content().string("Income Saved"))
                 .andDo(print())
                 .andReturn();
+
+        assertNotNull(income_saved.getResponse());
     }
 
     @Test
@@ -177,7 +187,7 @@ public class IncomeControllerTest {
         //given
 
         //when
-        mvc.perform(MockMvcRequestBuilders.post("/api/v1/income/userincome")
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post("/api/v1/income/userincome")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonContentIncomeMalformed))
@@ -186,6 +196,8 @@ public class IncomeControllerTest {
                 .andExpect(MockMvcResultMatchers.content().string("{\"recurringIncome\":\"must not be null\",\"incomeSource\":\"income source is mandatory\",\"paymentDate\":\"must not be null\"}"))
                 .andDo(print())
                 .andReturn();
+
+        assertNotNull(mvcResult.getResponse());
     }
 
 
@@ -197,7 +209,7 @@ public class IncomeControllerTest {
         given(incomeService.updateIncome(incomeDTO, incomeDTO.getId(), "testuser")).willReturn(true);
 
         //when
-        mvc.perform(MockMvcRequestBuilders.put("/api/v1/income/userincome/" + incomeDTO.getId())
+        MvcResult income_updated = mvc.perform(MockMvcRequestBuilders.put("/api/v1/income/userincome/" + incomeDTO.getId())
                 .accept(MediaType.APPLICATION_JSON)
                 .characterEncoding("utf-8")
                 .content(jsonContentIncome)
@@ -207,6 +219,8 @@ public class IncomeControllerTest {
                 .andExpect(MockMvcResultMatchers.content().string("Income updated"))
                 .andDo(print())
                 .andReturn();
+
+        assertNotNull(income_updated.getResponse());
     }
 
 
