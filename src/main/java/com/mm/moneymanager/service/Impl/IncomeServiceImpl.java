@@ -37,12 +37,10 @@ public class IncomeServiceImpl implements IncomeService {
     @Override
     public boolean deleteIncome(IncomeDTO incomeDTO, String username) {
         Optional<Income> optionalIncome = incomeRepository.findById(incomeDTO.getId());
-        if (optionalIncome.isPresent()) {
-            if (optionalIncome.get().getUser().getUsername().equals(username)) {
+            if (optionalIncome.isPresent() && optionalIncome.get().getUser().getUsername().equals(username)) {
                 optionalIncome.get().setIncomeArchived(true);
                 return optionalIncome.get().getIncomeArchived();
             }
-        }
         return false;
     }
 
@@ -54,14 +52,12 @@ public class IncomeServiceImpl implements IncomeService {
     @Override
     public boolean updateIncome(IncomeDTO incomeDTO, Long id, String username) {
         Optional<Income> findDebtById = incomeRepository.findById(incomeDTO.getId());
-        if (findDebtById.isPresent()) {
-            if (findDebtById.get().getUser().getUsername().equals(username)) {
-                Income income = modelMapper.map(incomeDTO, Income.class);
-                Optional<User> principalUser = userRepository.findByUsername(username);
-                principalUser.ifPresent(income::setUser);
-                incomeRepository.save(income);
-                return true;
-            }
+        if (findDebtById.isPresent() && findDebtById.get().getUser().getUsername().equals(username)) {
+            Income income = modelMapper.map(incomeDTO, Income.class);
+            Optional<User> principalUser = userRepository.findByUsername(username);
+            principalUser.ifPresent(income::setUser);
+            incomeRepository.save(income);
+            return true;
         }
         return false;
     }

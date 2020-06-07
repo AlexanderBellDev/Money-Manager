@@ -38,12 +38,10 @@ public class DebtServiceImpl implements DebtService {
     @Override
     public boolean deleteDebt(Long debtToDeleteID, String username) {
         Optional<Debt> findDebtById = debtRepository.findById(debtToDeleteID);
-        if (findDebtById.isPresent()) {
-            if (findDebtById.get().getUser().getUsername().equals(username)) {
+            if (findDebtById.isPresent() && findDebtById.get().getUser().getUsername().equals(username)) {
                 debtRepository.delete(findDebtById.get());
                 return true;
             }
-        }
         return false;
     }
 
@@ -55,14 +53,12 @@ public class DebtServiceImpl implements DebtService {
     @Override
     public boolean updateDebt(DebtDTO debtDTO, Long id, String username) {
         Optional<Debt> findDebtById = debtRepository.findById(debtDTO.getId());
-        if (findDebtById.isPresent()) {
-            if (findDebtById.get().getUser().getUsername().equals(username)) {
-                Debt debt = modelMapper.map(debtDTO, Debt.class);
-                Optional<User> principalUser = userRepository.findByUsername(username);
-                principalUser.ifPresent(debt::setUser);
-                debtRepository.save(debt);
-                return true;
-            }
+        if (findDebtById.isPresent() && findDebtById.get().getUser().getUsername().equals(username)) {
+            Debt debt = modelMapper.map(debtDTO, Debt.class);
+            Optional<User> principalUser = userRepository.findByUsername(username);
+            principalUser.ifPresent(debt::setUser);
+            debtRepository.save(debt);
+            return true;
         }
         return false;
     }

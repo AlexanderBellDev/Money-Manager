@@ -65,9 +65,9 @@ public class IncomeController {
         }
 
         if (!incomeService.updateIncome(incomeDTO, idToUpdate, principal.getName())) {
-            return ResponseEntity.badRequest().body("Cannot update debt");
+            return ResponseEntity.badRequest().body("Cannot update income");
         }
-        return ResponseEntity.ok().body("Debt updated");
+        return ResponseEntity.ok().body("Income updated");
     }
 
 

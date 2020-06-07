@@ -32,6 +32,7 @@ jacocoTestReport {
 }
 
 dependencies {
+    annotationProcessor group: 'org.springframework.boot', name: 'spring-boot-configuration-processor'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.10.1'
     compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
@@ -45,7 +46,6 @@ dependencies {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
     compile group: 'org.modelmapper', name: 'modelmapper', version: '2.3.7'
-    runtime 'com.h2database:h2'
 
 }
 

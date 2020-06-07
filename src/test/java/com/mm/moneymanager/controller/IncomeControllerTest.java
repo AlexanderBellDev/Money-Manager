@@ -98,7 +98,7 @@ public class IncomeControllerTest {
 
         jsonContentIncome = mapper.writeValueAsString(incomeDTO);
 
-        jsonContentIncomeMalformed = mapper.writeValueAsString(jsonContentIncomeMalformed);
+        jsonContentIncomeMalformed = mapper.writeValueAsString(incomeTestMalformed);
     }
 
     @Test
@@ -157,7 +157,7 @@ public class IncomeControllerTest {
     @Test
     @WithMockUser(username = "testuser")
     void testSaveIncome() throws Exception {
-
+        //given
 
         //when
         mvc.perform(MockMvcRequestBuilders.post("/api/v1/income/userincome")
@@ -170,5 +170,44 @@ public class IncomeControllerTest {
                 .andDo(print())
                 .andReturn();
     }
+
+    @Test
+    @WithMockUser(username = "testuser")
+    void testSaveMalformedIncome() throws Exception {
+        //given
+
+        //when
+        mvc.perform(MockMvcRequestBuilders.post("/api/v1/income/userincome")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonContentIncomeMalformed))
+                //then
+                .andExpect(status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().string("{\"recurringIncome\":\"must not be null\",\"incomeSource\":\"income source is mandatory\",\"paymentDate\":\"must not be null\"}"))
+                .andDo(print())
+                .andReturn();
+    }
+
+
+    @Test
+    @WithMockUser(username = "testuser")
+    void testUpdateIncome() throws Exception {
+        //given
+        given(incomeService.verifyIncomeExists(incomeDTO.getId())).willReturn(true);
+        given(incomeService.updateIncome(incomeDTO, incomeDTO.getId(), "testuser")).willReturn(true);
+
+        //when
+        mvc.perform(MockMvcRequestBuilders.put("/api/v1/income/userincome/" + incomeDTO.getId())
+                .accept(MediaType.APPLICATION_JSON)
+                .characterEncoding("utf-8")
+                .content(jsonContentIncome)
+                .contentType(MediaType.APPLICATION_JSON))
+                //then
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string("Income updated"))
+                .andDo(print())
+                .andReturn();
+    }
+
 
 }
