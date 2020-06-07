@@ -37,7 +37,7 @@ import {AddIncomeDialogComponent} from '../add-income-dialog/add-income-dialog.c
 export class IncomeComponent implements OnInit {
   income: Income[] = [];
 
-  displayedColumns: string[] = ['company', 'amount', 'paymentDate', 'details'];
+  displayedColumns: string[] = ['source', 'amount', 'paymentDate', 'details'];
   selection = new SelectionModel<Income>(true, []);
   dataSource = new MatTableDataSource(this.income);
   @ViewChild(MatSort, {static: true}) sort: MatSort;
@@ -49,7 +49,7 @@ export class IncomeComponent implements OnInit {
   }
 
   getTotalCost() {
-    return this.income.map(t => t.amount).reduce((acc, value) => acc + value, 0);
+    return this.income.map(t => t.incomeAmount).reduce((acc, value) => acc + value, 0);
   }
 
   ngOnInit(): void {
@@ -132,7 +132,7 @@ export class IncomeComponent implements OnInit {
     if (!row) {
       return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
     }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.company + 1}`;
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.incomeSource + 1}`;
   }
 
   deleteIncome() {

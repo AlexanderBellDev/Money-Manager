@@ -2,11 +2,9 @@ package com.mm.moneymanager.controller;
 
 import com.mm.moneymanager.model.Income.Income;
 import com.mm.moneymanager.model.Income.IncomeDTO;
-import com.mm.moneymanager.model.debt.DebtDTO;
 import com.mm.moneymanager.service.IncomeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.annotations.GeneratorType;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -31,6 +29,7 @@ public class IncomeController {
 
 
     @GetMapping("/userincome")
+    @Secured("ROLE_USER")
     public ResponseEntity<?> getUserIncome(Principal principal){
         List<Income> incomeList =  incomeService.getAllIncomesByUser(principal.getName());
         if (incomeList.size() == 0){
@@ -41,6 +40,7 @@ public class IncomeController {
     }
 
     @PostMapping("/userincome")
+    @Secured("ROLE_USER")
     public ResponseEntity<?> postUserIncome(Principal principal, @Valid @RequestBody IncomeDTO incomeDTO) {
         URI location = ServletUriComponentsBuilder
                 .fromPath("/api/v1/income/userincome")
@@ -49,11 +49,25 @@ public class IncomeController {
     }
 
     @DeleteMapping("/userincome")
+    @Secured("ROLE_USER")
     public ResponseEntity<?> deleteUserDebt(Principal principal, @Valid @RequestBody IncomeDTO incomeDTO) {
         if (!incomeService.deleteIncome(incomeDTO, principal.getName())) {
             return ResponseEntity.badRequest().body("Cannot delete income");
         }
         return ResponseEntity.ok().body("Income deleted");
+    }
+
+    @PutMapping("/userincome/{idToUpdate}")
+    @Secured("ROLE_USER")
+    public ResponseEntity<?> updateUserDebt(Principal principal, @PathVariable Long idToUpdate, @Valid @RequestBody IncomeDTO incomeDTO) {
+        if (!incomeService.verifyIncomeExists(idToUpdate)) {
+            return ResponseEntity.notFound().build();
+        }
+
+        if (!incomeService.updateIncome(incomeDTO, idToUpdate, principal.getName())) {
+            return ResponseEntity.badRequest().body("Cannot update income");
+        }
+        return ResponseEntity.ok().body("Income updated");
     }
 
 

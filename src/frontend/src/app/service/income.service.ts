@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {environment} from "../../environments/environment";
-import {Debt} from "../model/debt";
 import {HttpClient} from "@angular/common/http";
+import {Income} from "../model/income";
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +14,7 @@ export class IncomeService {
     return this.http.get<any>(`${environment.API_URL}/api/v1/income/userincome`)
   }
 
-  postIncome(body: Debt) {
+  postIncome(body: Income) {
     return this.http.post(`${environment.API_URL}/api/v1/income/userincome`, body, {responseType: 'text'})
   }
 

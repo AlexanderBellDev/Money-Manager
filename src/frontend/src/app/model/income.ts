@@ -1,14 +1,19 @@
 export class Income {
 
-  company: string;
-  amount: number;
+  incomeSource: string;
+  incomeAmount: number;
   paymentDate: string;
   id: number;
+  recurringIncome: boolean
+  durationOfRecurrence: number
 
 
-  constructor(company: string, amount: number, paymentDate: string) {
-    this.company = company;
-    this.amount = amount;
+  constructor(incomeSource: string, incomeAmount: number, paymentDate: string, recurringIncome: boolean,
+              durationOfRecurrence: number) {
+    this.incomeSource = incomeSource;
+    this.incomeAmount = incomeAmount;
     this.paymentDate = paymentDate;
+    this.recurringIncome = recurringIncome;
+    this.durationOfRecurrence = durationOfRecurrence;
   }
 }

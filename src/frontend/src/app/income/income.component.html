@@ -45,19 +45,19 @@
     </ng-container>
 
     <!-- Item Column -->
-    <ng-container matColumnDef="company">
-      <th *matHeaderCellDef mat-header-cell style="text-align: center"> Company</th>
+    <ng-container matColumnDef="source">
+      <th *matHeaderCellDef mat-header-cell style="text-align: center">Source</th>
       <td (click)="openEditIncomeDialog(income)" *matCellDef="let income" mat-cell style="text-align: left; width: 50%">
-        {{income.company}}
+        {{income.incomeSource}}
       </td>
       <td *matFooterCellDef mat-footer-cell> Total</td>
     </ng-container>
 
     <!-- Amount Column -->
     <ng-container matColumnDef="amount">
-      <th *matHeaderCellDef mat-header-cell style="text-align: center"> Total Amount</th>
+      <th *matHeaderCellDef mat-header-cell style="text-align: center"> Amount</th>
       <td *matCellDef="let income" mat-cell>
-        {{income.amount}}
+        {{income.incomeAmount}}
       </td>
 
       <td *matFooterCellDef mat-footer-cell> {{getTotalCost()}} </td>

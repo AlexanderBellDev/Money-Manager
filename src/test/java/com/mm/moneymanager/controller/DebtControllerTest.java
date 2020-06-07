@@ -237,7 +237,6 @@ class DebtControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 //then
                 .andExpect(status().isOk())
-                //    .andExpect(MockMvcResultMatchers.content().string("Debt deleted"))
                 .andDo(print())
                 .andReturn();
     }

@@ -6,9 +6,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.time.LocalDate;
-import java.util.Date;
 
 @EqualsAndHashCode(callSuper = false)
 @Data
@@ -19,20 +17,22 @@ import java.util.Date;
 public class Income extends DateAudit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
     @Version
-    Long version;
+    private Long version;
 
-    BigDecimal incomeAmount;
+    private BigDecimal incomeAmount;
 
-    String incomeSource;
+    private String incomeSource;
 
-    Boolean recurringIncome;
+    private Boolean recurringIncome;
 
-    Boolean incomeArchived;
+    private Boolean incomeArchived;
 
-    Integer durationOfRecurrence;
+    private Integer durationOfRecurrence;
+
+    private LocalDate paymentDate;
 
     @ToString.Exclude
     @ManyToOne
