@@ -6,9 +6,7 @@ import com.mm.moneymanager.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.security.Principal;
 
 @RequestMapping("/api/v1/user")
@@ -31,17 +29,10 @@ public class UserController {
 
     @PostMapping("/userdetails")
     public ResponseEntity<?> saveUserDetails(Principal principal, @RequestBody UserDTO userDTO) {
-
-
         User user = userService.updateUserDetails(userDTO, principal.getName());
-
         if (user == null) {
             return ResponseEntity.noContent().build();
         }
-
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest().path("/{id}")
-                .buildAndExpand(user.getId()).toUri();
-        return ResponseEntity.created(location).body("User saved");
+        return ResponseEntity.ok("User saved");
     }
 }

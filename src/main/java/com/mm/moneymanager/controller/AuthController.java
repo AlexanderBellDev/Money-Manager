@@ -44,23 +44,14 @@ public class AuthController {
         userService.registerUser(user);
 
         URI location = ServletUriComponentsBuilder
-                .fromPath("/api/users/{username}")
-                .buildAndExpand(user.getUsername()).toUri();
+                .fromPath("/api/v1/user/userdetails/{id}")
+                .buildAndExpand(user.getId()).toUri();
 
         return ResponseEntity.created(location).body(new ApiResponse(true, "User registered successfully"));
     }
-
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody UserLogin loginRequest) {
         return ResponseEntity.ok(new JwtAuthenticationResponse(userService.login(loginRequest)));
     }
-
-
-//    @GetMapping("/{pollId}")
-//    public PollResponse getPollById(@CurrentUser UserPrincipal currentUser,
-//                                    @PathVariable Long pollId) {
-//        return pollService.getPollById(pollId, currentUser);
-//    }
-
 }
