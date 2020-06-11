@@ -1,7 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {FormBuilder, Validators} from "@angular/forms";
-import {IncomeService} from "../service/income.service";
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {FormBuilder, Validators} from '@angular/forms';
+import {IncomeService} from '../service/income.service';
 
 @Component({
   selector: 'app-add-income-dialog',
@@ -10,7 +10,7 @@ import {IncomeService} from "../service/income.service";
 })
 export class AddIncomeDialogComponent implements OnInit {
 
-  public recurringPayment: boolean
+  public recurringPayment: boolean;
 
   incomeForm = this.formBuilder.group({
     id: [''],
@@ -49,15 +49,15 @@ export class AddIncomeDialogComponent implements OnInit {
     if (this.data != null) {
       console.log('putting data');
       this.incomeService.putIncome(this.data.id, this.incomeForm.value).subscribe(() => {
-        this.closeDialog()
-      })
+        this.closeDialog();
+      });
     }
 
     this.incomeService.postIncome(this.incomeForm.value).subscribe(() => {
-      this.closeDialog()
+      this.closeDialog();
     }, error => {
-      console.log(error)
-    })
+      console.log(error);
+    });
   }
 
   resetIncomeForm() {

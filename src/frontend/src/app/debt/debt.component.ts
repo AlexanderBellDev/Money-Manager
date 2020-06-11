@@ -1,12 +1,12 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {animate, style, transition, trigger} from "@angular/animations";
-import {Debt} from "../model/debt";
-import {SelectionModel} from "@angular/cdk/collections";
-import {MatTableDataSource} from "@angular/material/table";
-import {MatSort} from "@angular/material/sort";
-import {DebtService} from "../service/debt.service";
-import {MatDialog} from "@angular/material/dialog";
-import {AddDebtDialogComponent} from "../add-debt-dialog/add-debt-dialog.component";
+import {animate, style, transition, trigger} from '@angular/animations';
+import {Debt} from '../model/debt';
+import {SelectionModel} from '@angular/cdk/collections';
+import {MatTableDataSource} from '@angular/material/table';
+import {MatSort} from '@angular/material/sort';
+import {DebtService} from '../service/debt.service';
+import {MatDialog} from '@angular/material/dialog';
+import {AddDebtDialogComponent} from '../add-debt-dialog/add-debt-dialog.component';
 
 @Component({
   selector: 'app-debt',
@@ -18,7 +18,7 @@ import {AddDebtDialogComponent} from "../add-debt-dialog/add-debt-dialog.compone
         style({
           opacity: 0
         }),
-        animate("0.5s ease-in-out", style({
+        animate('0.5s ease-in-out', style({
           opacity: 1
         }))
       ]),
@@ -26,7 +26,7 @@ import {AddDebtDialogComponent} from "../add-debt-dialog/add-debt-dialog.compone
         style({
           opacity: 1
         }),
-        animate("0.5s ease-in-out", style({
+        animate('0.5s ease-in-out', style({
           opacity: 0
         }))
       ])
@@ -42,7 +42,7 @@ export class DebtComponent implements OnInit {
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
 
-  deleteSelected: boolean = false;
+  deleteSelected = false;
 
   constructor(private debtService: DebtService, public dialog: MatDialog) {
 
@@ -56,13 +56,13 @@ export class DebtComponent implements OnInit {
     this.debtService.retrieveDebts().subscribe(value => {
 
       if (value != null) {
-        this.debts = value
+        this.debts = value;
       }
       if (this.debts.length != 0) {
         this.dataSource.data = [...this.debts];
         this.dataSource.sort = this.sort;
       }
-    })
+    });
   }
 
   openEditDebtDialog(debt: any): void {
@@ -74,14 +74,14 @@ export class DebtComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result != null) {
-        let foundDebt = this.debts.find(value => value.id === debt.id);
-        let number = this.debts.indexOf(foundDebt);
-        this.debts.splice(number, 1)
-        this.debts.push(result)
+        const foundDebt = this.debts.find(value => value.id === debt.id);
+        const number = this.debts.indexOf(foundDebt);
+        this.debts.splice(number, 1);
+        this.debts.push(result);
         this.dataSource.data = [...this.debts];
       }
     }, error => {
-      console.log('error!' + error)
+      console.log('error!' + error);
     });
   }
 
@@ -95,12 +95,12 @@ export class DebtComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result != null) {
         if (this.debts != null) {
-          this.debts.push(result)
+          this.debts.push(result);
           this.dataSource.data = [...this.debts];
         }
       }
     }, error => {
-      console.log('error!' + error)
+      console.log('error!' + error);
     });
   }
 
@@ -108,7 +108,7 @@ export class DebtComponent implements OnInit {
     this.deleteSelected = !this.deleteSelected;
     if (this.displayedColumns.includes('select')) {
     } else {
-      this.displayedColumns.unshift('select')
+      this.displayedColumns.unshift('select');
     }
 
   }
@@ -136,18 +136,18 @@ export class DebtComponent implements OnInit {
   }
 
   deleteDebts() {
-    console.log(this.selection.selected)
+    console.log(this.selection.selected);
     this.selection.selected.forEach(value => {
       this.debtService.deleteDebt(value.id).subscribe(() => {
         const index = this.debts.indexOf(value);
-        console.log(index)
+        console.log(index);
         this.debts.splice(index, 1);
         this.dataSource.data = [...this.debts];
         this.toggleDeleteDebt();
       }, error => {
         console.log('Couldn\'t delete item' + error);
-      })
-    })
+      });
+    });
   }
 
   removeColumn() {

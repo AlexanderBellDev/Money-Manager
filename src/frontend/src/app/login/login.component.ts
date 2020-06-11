@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import {User} from "../model/user";
-import {FormBuilder, Validators} from "@angular/forms";
-import {HttpClient} from "@angular/common/http";
-import {Router} from "@angular/router";
-import {RegisterService} from "../service/register.service";
-import {LoginService} from "../service/login.service";
-import {JwtToken} from "../model/jwt-token";
+import {User} from '../model/user';
+import {FormBuilder, Validators} from '@angular/forms';
+import {HttpClient} from '@angular/common/http';
+import {Router} from '@angular/router';
+import {RegisterService} from '../service/register.service';
+import {LoginService} from '../service/login.service';
+import {JwtToken} from '../model/jwt-token';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +17,7 @@ export class LoginComponent implements OnInit {
   user: User;
   jwtToken: JwtToken;
   usererror = false;
-  constructor(private formBuilder: FormBuilder, private http:HttpClient, private route:Router, private registerService: RegisterService,
+  constructor(private formBuilder: FormBuilder, private http: HttpClient, private route: Router, private registerService: RegisterService,
               private loginService: LoginService) { }
   loginForm = this.formBuilder.group({
     username: ['', [Validators.required]],
@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
   });
   ngOnInit(
   ) {
-    if(this.registerService.username){
+    if (this.registerService.username){
       this.loginForm.patchValue({
         username: this.registerService.username
       });
@@ -44,9 +44,9 @@ export class LoginComponent implements OnInit {
         this.route.navigate(['dashboard']);
       },
       error  => {
-        console.log("Error", error);
+        console.log('Error', error);
         this.usererror = true;
-      })
+      });
   }
 
 }

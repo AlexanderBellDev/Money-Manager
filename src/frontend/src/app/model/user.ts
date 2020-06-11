@@ -22,5 +22,5 @@ export class User {
   address1: string;
   address2: string;
   city: string;
-  postalCode: string
+  postalCode: string;
 }

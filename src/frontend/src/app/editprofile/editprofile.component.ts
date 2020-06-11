@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, Validators} from "@angular/forms";
-import {UserService} from "../service/user.service";
-import {User} from "../model/user";
-import {Router} from "@angular/router";
-import {MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition} from "@angular/material/snack-bar";
+import {FormBuilder, Validators} from '@angular/forms';
+import {UserService} from '../service/user.service';
+import {User} from '../model/user';
+import {Router} from '@angular/router';
+import {MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-editprofile',
@@ -21,9 +21,9 @@ export class EditprofileComponent implements OnInit {
     surname: ['', [Validators.required]],
     username: ['', [Validators.required]],
     password: ['', Validators.required]
-  })
+  });
 
-  constructor(private formBuilder: FormBuilder, private userService: UserService,  private router: Router ,private _snackBar: MatSnackBar) {
+  constructor(private formBuilder: FormBuilder, private userService: UserService,  private router: Router , private _snackBar: MatSnackBar) {
   }
 
   ngOnInit(): void {
@@ -37,8 +37,8 @@ export class EditprofileComponent implements OnInit {
         });
       }
     }, error => {
-     this.openSnackBar(error)
-    })
+     this.openSnackBar(error);
+    });
   }
 
   saveDetails() {
@@ -46,10 +46,10 @@ export class EditprofileComponent implements OnInit {
       this.openSnackBar(value);
     }, error => {
       this.openSnackBar(error);
-    })
+    });
   }
 
-  openSnackBar(message:string) {
+  openSnackBar(message: string) {
     this._snackBar.open(message, '', {
       duration: 500,
       horizontalPosition: this.horizontalPosition,
