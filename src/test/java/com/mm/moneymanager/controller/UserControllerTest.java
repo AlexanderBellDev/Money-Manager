@@ -117,7 +117,7 @@ public class UserControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonContentUser))
                 //then
-                .andExpect(status().isCreated())
+                .andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.content().string("User saved"))
                 .andDo(print())
                 .andReturn();
