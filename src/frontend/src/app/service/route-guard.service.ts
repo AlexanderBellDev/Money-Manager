@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import {Router} from "@angular/router";
-import {LoginService} from "./login.service";
+import {Router} from '@angular/router';
+import {LoginService} from './login.service';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +8,7 @@ import {LoginService} from "./login.service";
 export class RouteGuardService {
 
   constructor(
-    private router: Router, private loginService:LoginService) {
+    private router: Router, private loginService: LoginService) {
 
   }
 

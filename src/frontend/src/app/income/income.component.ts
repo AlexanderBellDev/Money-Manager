@@ -19,7 +19,7 @@ import {AddIncomeDialogComponent} from '../add-income-dialog/add-income-dialog.c
         style({
           opacity: 0
         }),
-        animate("0.5s ease-in-out", style({
+        animate('0.5s ease-in-out', style({
           opacity: 1
         }))
       ]),
@@ -27,7 +27,7 @@ import {AddIncomeDialogComponent} from '../add-income-dialog/add-income-dialog.c
         style({
           opacity: 1
         }),
-        animate("0.5s ease-in-out", style({
+        animate('0.5s ease-in-out', style({
           opacity: 0
         }))
       ])
@@ -43,7 +43,7 @@ export class IncomeComponent implements OnInit {
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
 
-  deleteSelected: boolean = false;
+  deleteSelected = false;
 
   constructor(private incomeService: IncomeService, public dialog: MatDialog) {
   }
@@ -56,13 +56,13 @@ export class IncomeComponent implements OnInit {
     this.incomeService.retrieveIncome().subscribe(value => {
 
       if (value != null) {
-        this.income = value
+        this.income = value;
       }
       if (this.income.length !== 0) {
         this.dataSource.data = [...this.income];
         this.dataSource.sort = this.sort;
       }
-    })
+    });
   }
 
   openEditIncomeDialog(income: any): void {
@@ -74,14 +74,14 @@ export class IncomeComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result != null) {
-        let foundIncome = this.income.find(value => value.id === income.id);
-        let number = this.income.indexOf(foundIncome);
+        const foundIncome = this.income.find(value => value.id === income.id);
+        const number = this.income.indexOf(foundIncome);
         this.income.splice(number, 1);
         this.income.push(result);
         this.dataSource.data = [...this.income];
       }
     }, error => {
-      console.log('error!' + error)
+      console.log('error!' + error);
     });
   }
 
@@ -100,7 +100,7 @@ export class IncomeComponent implements OnInit {
         }
       }
     }, error => {
-      console.log('error!' + error)
+      console.log('error!' + error);
     });
   }
 
@@ -108,7 +108,7 @@ export class IncomeComponent implements OnInit {
     this.deleteSelected = !this.deleteSelected;
     if (this.displayedColumns.includes('select')) {
     } else {
-      this.displayedColumns.unshift('select')
+      this.displayedColumns.unshift('select');
     }
 
   }
@@ -146,8 +146,8 @@ export class IncomeComponent implements OnInit {
         this.toggleDeleteIncome();
       }, error => {
         console.log('Couldn\'t delete item' + error);
-      })
-    })
+      });
+    });
   }
 
   removeColumn() {

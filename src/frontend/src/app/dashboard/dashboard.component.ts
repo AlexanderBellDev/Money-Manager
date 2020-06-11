@@ -1,12 +1,12 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {Debt} from "../model/debt";
-import {DebtService} from "../service/debt.service";
-import {MatDialog} from "@angular/material/dialog";
-import {AddDebtDialogComponent} from "../add-debt-dialog/add-debt-dialog.component";
-import {SelectionModel} from "@angular/cdk/collections";
-import {animate, style, transition, trigger} from "@angular/animations";
-import {MatSort} from "@angular/material/sort";
-import {MatTableDataSource} from "@angular/material/table";
+import {Debt} from '../model/debt';
+import {DebtService} from '../service/debt.service';
+import {MatDialog} from '@angular/material/dialog';
+import {AddDebtDialogComponent} from '../add-debt-dialog/add-debt-dialog.component';
+import {SelectionModel} from '@angular/cdk/collections';
+import {animate, style, transition, trigger} from '@angular/animations';
+import {MatSort} from '@angular/material/sort';
+import {MatTableDataSource} from '@angular/material/table';
 
 @Component({
   selector: 'app-dashboard',
@@ -18,7 +18,7 @@ import {MatTableDataSource} from "@angular/material/table";
         style({
           opacity: 0
         }),
-        animate("0.5s ease-in-out", style({
+        animate('0.5s ease-in-out', style({
           opacity: 1
         }))
       ]),
@@ -26,7 +26,7 @@ import {MatTableDataSource} from "@angular/material/table";
         style({
           opacity: 1
         }),
-        animate("0.5s ease-in-out", style({
+        animate('0.5s ease-in-out', style({
           opacity: 0
         }))
       ])

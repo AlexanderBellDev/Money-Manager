@@ -4,8 +4,8 @@ export class Income {
   incomeAmount: number;
   paymentDate: string;
   id: number;
-  recurringIncome: boolean
-  durationOfRecurrence: number
+  recurringIncome: boolean;
+  durationOfRecurrence: number;
 
 
   constructor(incomeSource: string, incomeAmount: number, paymentDate: string, recurringIncome: boolean,

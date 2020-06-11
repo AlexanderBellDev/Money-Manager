@@ -1,7 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {FormBuilder, Validators} from "@angular/forms";
-import {DebtService} from "../service/debt.service";
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {FormBuilder, Validators} from '@angular/forms';
+import {DebtService} from '../service/debt.service';
 
 @Component({
   selector: 'app-add-debt-dialog',
@@ -40,17 +40,17 @@ export class AddDebtDialogComponent implements OnInit {
 
   saveDebt() {
     if (this.data != null) {
-      console.log('putting data')
+      console.log('putting data');
       this.debtService.putDebt(this.data.id, this.debtForm.value).subscribe(() => {
-        this.closeDialog()
-      })
+        this.closeDialog();
+      });
     }
 
     this.debtService.postDebt(this.debtForm.value).subscribe(() => {
-      this.closeDialog()
+      this.closeDialog();
     }, error => {
-      console.log(error)
-    })
+      console.log(error);
+    });
   }
 
   resetDebtForm() {
