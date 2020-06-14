@@ -1,5 +1,8 @@
 package com.mm.moneymanager.controller;
 
+import com.mm.moneymanager.exception.ApiBadRequestException;
+import com.mm.moneymanager.exception.ApiNoContentException;
+import com.mm.moneymanager.exception.ApiNotFoundException;
 import com.mm.moneymanager.model.Income.Income;
 import com.mm.moneymanager.model.Income.IncomeDTO;
 import com.mm.moneymanager.service.IncomeService;
@@ -33,7 +36,7 @@ public class IncomeController {
     public ResponseEntity<?> getUserIncome(Principal principal){
         List<Income> incomeList =  incomeService.getAllIncomesByUser(principal.getName());
         if (incomeList.size() == 0){
-            return ResponseEntity.noContent().build();
+            throw new ApiNoContentException("No Income/s Found");
         }
         List<IncomeDTO> incomeDTOList = Arrays.asList(modelMapper.map(incomeList, IncomeDTO[].class));
         return ResponseEntity.ok().body(incomeDTOList);
@@ -52,7 +55,7 @@ public class IncomeController {
     @Secured("ROLE_USER")
     public ResponseEntity<?> deleteUserDebt(Principal principal, @Valid @RequestBody IncomeDTO incomeDTO) {
         if (!incomeService.deleteIncome(incomeDTO, principal.getName())) {
-            return ResponseEntity.badRequest().body("Cannot delete income");
+            throw new ApiBadRequestException("Cannot delete income");
         }
         return ResponseEntity.ok().body("Income deleted");
     }
@@ -61,11 +64,11 @@ public class IncomeController {
     @Secured("ROLE_USER")
     public ResponseEntity<?> updateUserDebt(Principal principal, @PathVariable Long idToUpdate, @Valid @RequestBody IncomeDTO incomeDTO) {
         if (!incomeService.verifyIncomeExists(idToUpdate)) {
-            return ResponseEntity.notFound().build();
+            throw new ApiNotFoundException("Income not found");
         }
 
         if (!incomeService.updateIncome(incomeDTO, idToUpdate, principal.getName())) {
-            return ResponseEntity.badRequest().body("Cannot update income");
+            throw new ApiBadRequestException("Cannot update income");
         }
         return ResponseEntity.ok().body("Income updated");
     }

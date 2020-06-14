@@ -163,7 +163,7 @@ class AuthControllerTest {
                 .content(jsonContentUser))
                 //then
                 .andExpect(status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.content().string("{\"success\":false,\"message\":\"Username is already taken\"}"))
+                .andExpect(MockMvcResultMatchers.content().string("{\"message\":\"Username is already taken\",\"httpStatus\":\"BAD_REQUEST\"}"))
                 .andReturn();
 
     }
@@ -181,7 +181,7 @@ class AuthControllerTest {
                 .content(jsonContentUser))
                 //then
                 .andExpect(status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.content().string("{\"success\":false,\"message\":\"Email is already taken\"}"))
+                .andExpect(MockMvcResultMatchers.content().string("{\"message\":\"Email is already taken\",\"httpStatus\":\"BAD_REQUEST\"}"))
                 .andReturn();
 
     }

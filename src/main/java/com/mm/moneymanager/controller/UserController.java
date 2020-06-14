@@ -1,5 +1,6 @@
 package com.mm.moneymanager.controller;
 
+import com.mm.moneymanager.exception.ApiNoContentException;
 import com.mm.moneymanager.model.user.User;
 import com.mm.moneymanager.model.user.UserDTO;
 import com.mm.moneymanager.service.UserService;
@@ -24,14 +25,14 @@ public class UserController {
         if (userDTO != null) {
             return ResponseEntity.ok(userDTO);
         }
-        return ResponseEntity.noContent().build();
+        throw new ApiNoContentException("No user found");
     }
 
     @PostMapping("/userdetails")
     public ResponseEntity<?> saveUserDetails(Principal principal, @RequestBody UserDTO userDTO) {
         User user = userService.updateUserDetails(userDTO, principal.getName());
         if (user == null) {
-            return ResponseEntity.noContent().build();
+            throw new ApiNoContentException("No user found");
         }
         return ResponseEntity.ok("User saved");
     }

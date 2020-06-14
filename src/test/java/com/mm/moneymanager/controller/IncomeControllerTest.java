@@ -155,7 +155,7 @@ public class IncomeControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 //then
                 .andExpect(status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.content().string("Cannot delete income"))
+                .andExpect(MockMvcResultMatchers.content().string("{\"message\":\"Cannot delete income\",\"httpStatus\":\"BAD_REQUEST\"}"))
                 .andDo(print())
                 .andReturn();
 

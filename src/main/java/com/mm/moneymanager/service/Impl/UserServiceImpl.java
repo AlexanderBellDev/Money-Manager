@@ -1,7 +1,7 @@
 package com.mm.moneymanager.service.Impl;
 
 
-import com.mm.moneymanager.exception.AppException;
+import com.mm.moneymanager.exception.ApiBadRequestException;
 import com.mm.moneymanager.model.Role;
 import com.mm.moneymanager.model.RoleName;
 import com.mm.moneymanager.model.user.User;
@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
-                .orElseThrow(() -> new AppException("User Role not set."));
+                .orElseThrow(() -> new ApiBadRequestException("User Role not set."));
 
         user.setRoles(Collections.singleton(userRole));
 

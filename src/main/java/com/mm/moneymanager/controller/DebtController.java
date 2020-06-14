@@ -1,5 +1,8 @@
 package com.mm.moneymanager.controller;
 
+import com.mm.moneymanager.exception.ApiBadRequestException;
+import com.mm.moneymanager.exception.ApiNoContentException;
+import com.mm.moneymanager.exception.ApiNotFoundException;
 import com.mm.moneymanager.model.debt.Debt;
 import com.mm.moneymanager.model.debt.DebtDTO;
 import com.mm.moneymanager.service.DebtService;
@@ -30,7 +33,7 @@ public class DebtController {
     public ResponseEntity<?> getUserDebt(Principal principal) {
         List<Debt> allDebtsByUser = debtService.getAllDebtsByUser(principal.getName());
         if (allDebtsByUser.size() == 0) {
-            return ResponseEntity.noContent().build();
+            throw new ApiNoContentException("No Debt/s Found");
         }
 
         List<DebtDTO> debtDTOList = Arrays.asList(modelMapper.map(allDebtsByUser, DebtDTO[].class));
@@ -50,10 +53,10 @@ public class DebtController {
     @Secured("ROLE_USER")
     public ResponseEntity<?> deleteUserDebt(Principal principal, @PathVariable Long idToDelete) {
         if (!debtService.verifyDebtExists(idToDelete)) {
-            return ResponseEntity.notFound().build();
+            throw new ApiNotFoundException("Debt not found");
         }
         if (!debtService.deleteDebt(idToDelete, principal.getName())) {
-            return ResponseEntity.badRequest().body("Cannot delete debt");
+            throw new ApiBadRequestException("Cannot delete debt");
         }
         return ResponseEntity.ok().body("Debt deleted");
     }
@@ -62,11 +65,11 @@ public class DebtController {
     @Secured("ROLE_USER")
     public ResponseEntity<?> updateUserDebt(Principal principal, @PathVariable Long idToUpdate, @Valid @RequestBody DebtDTO debtDTO) {
         if (!debtService.verifyDebtExists(idToUpdate)) {
-            return ResponseEntity.notFound().build();
+            throw new ApiNotFoundException("Debt not found");
         }
 
         if (!debtService.updateDebt(debtDTO, idToUpdate, principal.getName())) {
-            return ResponseEntity.badRequest().body("Cannot update debt");
+            throw new ApiBadRequestException("Cannot update debt");
         }
         return ResponseEntity.ok().body("Debt updated");
     }
