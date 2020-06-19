@@ -159,7 +159,7 @@ class DebtControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 //then
                 .andExpect(status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.company", Is.is("company is mandatory")))
+                .andExpect(MockMvcResultMatchers.content().string("{\"message\":\"{dueDate=must not be null, company=company is mandatory}\",\"httpStatus\":\"BAD_REQUEST\"}"))
                 .andDo(print())
                 .andReturn();
     }
@@ -199,7 +199,7 @@ class DebtControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 //then
                 .andExpect(status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.content().string("Cannot delete debt"))
+                .andExpect(MockMvcResultMatchers.content().string("{\"message\":\"Cannot delete debt\",\"httpStatus\":\"BAD_REQUEST\"}"))
                 .andDo(print())
                 .andReturn();
     }
@@ -275,7 +275,7 @@ class DebtControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 //then
                 .andExpect(status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.content().string("Cannot update debt"))
+                .andExpect(MockMvcResultMatchers.content().string("{\"message\":\"Cannot update debt\",\"httpStatus\":\"BAD_REQUEST\"}"))
                 .andDo(print())
                 .andReturn();
     }

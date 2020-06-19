@@ -1,5 +1,6 @@
 package com.mm.moneymanager.controller;
 
+import com.mm.moneymanager.exception.ApiBadRequestException;
 import com.mm.moneymanager.model.user.User;
 import com.mm.moneymanager.model.user.UserLogin;
 import com.mm.moneymanager.payload.ApiResponse;
@@ -34,11 +35,11 @@ public class AuthController {
     public ResponseEntity<?> registerUser(@Valid @RequestBody User user) {
 
         if (!userService.checkEmailExists(user.getEmail()).isEmpty()) {
-            return ResponseEntity.badRequest().body(new ApiResponse(false, "Email is already taken"));
+            throw new ApiBadRequestException("Email is already taken");
         }
 
         if (!userService.checkUsernameExists(user.getUsername()).isEmpty()) {
-            return ResponseEntity.badRequest().body(new ApiResponse(false, "Username is already taken"));
+            throw new ApiBadRequestException("Username is already taken");
         }
 
         userService.registerUser(user);

@@ -155,7 +155,7 @@ public class IncomeControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 //then
                 .andExpect(status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.content().string("Cannot delete income"))
+                .andExpect(MockMvcResultMatchers.content().string("{\"message\":\"Cannot delete income\",\"httpStatus\":\"BAD_REQUEST\"}"))
                 .andDo(print())
                 .andReturn();
 
@@ -193,7 +193,7 @@ public class IncomeControllerTest {
                 .content(jsonContentIncomeMalformed))
                 //then
                 .andExpect(status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.content().string("{\"recurringIncome\":\"must not be null\",\"incomeSource\":\"income source is mandatory\",\"paymentDate\":\"must not be null\"}"))
+                .andExpect(MockMvcResultMatchers.content().string("{\"message\":\"{recurringIncome=must not be null, incomeSource=income source is mandatory, paymentDate=must not be null}\",\"httpStatus\":\"BAD_REQUEST\"}"))
                 .andDo(print())
                 .andReturn();
 
